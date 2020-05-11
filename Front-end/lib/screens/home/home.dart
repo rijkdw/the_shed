@@ -7,20 +7,20 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: MyHomePage(),
+      child: UserHomePage(),
     );
   }
 }
-class MyHomePage extends StatefulWidget {
+class UserHomePage extends StatefulWidget {
   void pressedB() {
     print('mooo');
   }
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _UserHomePageState createState() => _UserHomePageState();
 
 
 }
-class _MyHomePageState extends State<MyHomePage> {
+class _UserHomePageState extends State<UserHomePage> {
   @override
   Widget build(BuildContext context) {
 

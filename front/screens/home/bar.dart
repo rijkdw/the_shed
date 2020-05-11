@@ -1,7 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:rw334/screens/home/body.dart';
+import 'package:rw334/screens/home/post.dart';
+import 'package:rw334/screens/home/search.dart';
 import 'home.dart';
+import 'liked.dart';
 
 class BarB extends StatefulWidget {
   @override
@@ -31,18 +33,18 @@ class _BarBState extends State<BarB> {
           );
         }
         else if (index == 0) {
-          Navigator.pop(context,
+          Navigator.push(context,
             MaterialPageRoute(builder: (context) => UserHomePage()),
           );
         }
         else if (index == 2) {
-          Navigator.pop(context,
+          Navigator.push(context,
             MaterialPageRoute(builder: (context) => UserLiked()),
           );
         }
         else if (index == 3) {
-          Navigator.pop(context,
-            MaterialPageRoute(builder: (context) => UserPost()),
+          Navigator.push(context,
+            MaterialPageRoute(builder: (context) => UserPosts()),
           );
         }
       },

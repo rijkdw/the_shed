@@ -27,12 +27,22 @@ class _BarBState extends State<BarB> {
       onTap: (index){
         if (index == 1) {
           Navigator.push(context,
-            MaterialPageRoute(builder: (context) => Body1()),
+            MaterialPageRoute(builder: (context) => Search()),
           );
         }
         else if (index == 0) {
           Navigator.pop(context,
-            MaterialPageRoute(builder: (context) => MyHomePage()),
+            MaterialPageRoute(builder: (context) => UserHomePage()),
+          );
+        }
+        else if (index == 2) {
+          Navigator.pop(context,
+            MaterialPageRoute(builder: (context) => UserLiked()),
+          );
+        }
+        else if (index == 3) {
+          Navigator.pop(context,
+            MaterialPageRoute(builder: (context) => UserPost()),
           );
         }
       },

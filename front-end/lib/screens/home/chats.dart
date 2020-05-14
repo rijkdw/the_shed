@@ -8,13 +8,15 @@ class Chats extends StatelessWidget {
   final _messageTimeFont = const TextStyle(fontSize: 14.0);
 
   var _messagesArr = [
-    { 'name': 'Rijk', 'last_message': 'Hello World!', 'last_message_time': '21:09', 'unread': true },
-    { 'name': 'Ronaldo', 'last_message': 'Flutter is cool!', 'last_message_time': '10:42', 'unread': false },
-    { 'name': 'Bill Gates', 'last_message': 'Nice app!', 'last_message_time': '13:14', 'unread': true }
+    { 'name': 'Rijk', 'last_message': 'Hello World!', 'last_message_time': '21:09', 'unread': 3 },
+    { 'name': 'Ronaldo', 'last_message': 'Flutter is cool!', 'last_message_time': '10:42', 'unread': 0 },
+    { 'name': 'Bill Gates', 'last_message': 'Nice app!', 'last_message_time': '13:14', 'unread': 1 }
   ];
   
   @override
   Widget build(BuildContext context) {
+    // sort the list of messages by time
+    _messagesArr.sort((a, b) => b['last_message_time'].toString().compareTo(a['last_message_time'].toString()));
     return Scaffold(
       appBar: AppBar(
         title: Text("Chats Screen"),
@@ -42,7 +44,7 @@ class Chats extends StatelessWidget {
     String _username = messageDict['name'];
     String _message_text = messageDict['last_message'];
     String _message_time = messageDict['last_message_time'];
-    bool _unread = messageDict['unread'];
+    bool _unread = messageDict['unread'] > 0;
 
     return Container(
       padding: const EdgeInsets.all(4),

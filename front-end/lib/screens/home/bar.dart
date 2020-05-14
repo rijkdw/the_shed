@@ -1,9 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:rw334/screens/home/post.dart';
-import 'package:rw334/screens/home/search.dart';
-import 'home.dart';
-import 'liked.dart';
+import 'package:rw334/service/barIndex.dart';
+import 'package:rw334/service/constants.dart';
+
 
 class BarB extends StatefulWidget {
   @override
@@ -18,7 +17,7 @@ class _BarBState extends State<BarB> {
       color: Colors.white,//Color.fromRGBO(128, 128, 128, 1),
       height: 60,
       animationDuration: Duration(milliseconds: 1000),
-      index: 0,
+      index: barIndex,
       animationCurve: Curves.fastLinearToSlowEaseIn,
       items: <Widget>[
         Icon(Icons.home, size: 30, color: Colors.black,),
@@ -27,25 +26,22 @@ class _BarBState extends State<BarB> {
         Icon(Icons.person, size: 30, color: Colors.black),
       ],
       onTap: (index){
-        if (index == 1) {
-          Navigator.push(context,
-            MaterialPageRoute(builder: (context) => Search()),
-          );
+        if (index == 1 && barIndex != 1) {
+          barIndex = 1;
+          Navigator.pushNamed(context,SEARCH, arguments: context);
         }
-        else if (index == 0) {
-          Navigator.push(context,
-            MaterialPageRoute(builder: (context) => UserHomePage()),
-          );
+        else if (index == 0 && barIndex != 0) {
+          barIndex = 0;
+          index = 0;
+          Navigator.popUntil(context,ModalRoute.withName(HOME));
         }
-        else if (index == 2) {
-          Navigator.push(context,
-            MaterialPageRoute(builder: (context) => UserLiked()),
-          );
+        else if (index == 2 && barIndex != 2) {
+          barIndex = 2;
+          Navigator.pushNamed(context, LIKE, arguments: context);
         }
-        else if (index == 3) {
-          Navigator.push(context,
-            MaterialPageRoute(builder: (context) => UserPosts()),
-          );
+        else if (index == 3 && barIndex != 3) {
+          barIndex = 3;
+          Navigator.pushNamed(context, POST, arguments: context);
         }
       },
     );

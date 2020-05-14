@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rw334/screens/home/bar.dart';
+
+import 'body.dart';
 
 class UserPosts extends StatelessWidget {
   @override
@@ -7,7 +10,9 @@ class UserPosts extends StatelessWidget {
       appBar: AppBar(
         title: Text("Own Thread Screen"),
       ),
-
+      bottomNavigationBar: BarB(),
+      body: Body1(),
     );
+
   }
 }

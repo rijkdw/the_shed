@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rw334/screens/home/bar.dart';
+
+import 'body.dart';
 
 class Search extends StatelessWidget {
   @override
@@ -7,7 +10,8 @@ class Search extends StatelessWidget {
       appBar: AppBar(
         title: Text("Search Screen"),
       ),
-
+      bottomNavigationBar: BarB(),
+      body: Body1(),
     );
   }
 }

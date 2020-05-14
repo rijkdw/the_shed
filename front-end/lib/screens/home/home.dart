@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/screens/home/body.dart';
-import 'chats.dart';
+import 'package:rw334/service/constants.dart';
 import 'package:rw334/screens/home/bar.dart';
 
 class Home extends StatelessWidget {
@@ -34,9 +34,7 @@ class _UserHomePageState extends State<UserHomePage> {
             IconButton(
               icon: const Icon(Icons.near_me, color: Colors.grey,),
               onPressed: () {
-                Navigator.push(context,
-                MaterialPageRoute(builder: (context)=> Chats()),
-                );
+                Navigator.pushNamed(context, CHAT, arguments: context);
               },
             ),
           ],

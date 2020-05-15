@@ -4,21 +4,15 @@ class LikePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        backgroundColor: Colors.black,
-        title: Image.asset(
-          "assets/logo.png",
-          width: 120,
+      body: Container(
+        color: Color.fromRGBO(41, 41, 41, 1),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: [Text("THIS IS THE LIKE PAGE")],
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.add_a_photo,
-              color: Colors.grey,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
     );
   }

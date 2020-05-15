@@ -14,6 +14,8 @@ class Chats extends StatelessWidget {
   // colors
   final _titlebarColor = Color.fromRGBO(10, 10, 10, 1.0);
   final _iconColor = Colors.orange;
+  final _unreadChatColor = Colors.orange.withOpacity(0.1);
+  final _readChatColor = Color.fromRGBO(0, 0, 0, 0.0);
 
   // list of dummy chats
   var _chatsArr = [
@@ -46,11 +48,11 @@ class Chats extends StatelessWidget {
     return ListView.builder(
       padding: const EdgeInsets.all(4),
       itemBuilder: (context, i) {
-        // removed:  Divider code
+        // removed divided list code
         // if (i.isOdd) return Divider();  // to put dividers inbetween chats
         // final index = i ~/ 2;  // divide by 2, round down
 
-        // replaced with:  Prettier colored box code
+        // replaced with prettier colored box list code
         final index = i;
         if (index < _chatsArr.length) return _buildRow(context, _chatsArr[index]);
         else return null;
@@ -67,7 +69,7 @@ class Chats extends StatelessWidget {
     String _message_time = messageDict['last_message_time'];
     bool _unread = messageDict['unread'] > 0;
 
-    return GestureDetector(
+    return InkWell(
 
       // tapping opens the chat
       onTap: () {
@@ -84,7 +86,7 @@ class Chats extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: _unread? Colors.orange.withOpacity(0.1): Color.fromRGBO(0, 0, 0, 0.0), // to allow tapping anywhere on the chat name
+          color: _unread? _unreadChatColor: _readChatColor, // to allow tapping anywhere on the chat name
         ),
         child: Row(
           children: [

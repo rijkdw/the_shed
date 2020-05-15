@@ -19,6 +19,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case POST:
       return MaterialPageRoute(builder: (context) => UserPosts());
     case CHAT:
-      return MaterialPageRoute(builder: (context)=> Chats());
+      return MaterialPageRoute(builder: (context) => Chats());
   }
 }

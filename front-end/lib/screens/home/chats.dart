@@ -38,7 +38,7 @@ class Chats extends StatelessWidget {
     },
     {
       'name': 'Big Data Dave',
-      'last_message': 'bitcoin' * 100,
+      'last_message': 'bitcoin ' * 100,
       'last_message_time': '19:20',
       'unread': 0
     },

@@ -8,13 +8,25 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: new AppBar(
+        backgroundColor: Colors.black,
+        title: Text("Welcome " + user.getUsername()),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.menu,
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      ),
       body: Container(
         color: Color.fromRGBO(41, 41, 41, 1),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: ListView(
           scrollDirection: Axis.vertical,
-          children:[Text(user.getEmail())],
+          children: [Text(user.getEmail())],
         ),
       ),
     );

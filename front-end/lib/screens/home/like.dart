@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class SearchPage extends StatelessWidget {
+class LikePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("HELLO SEARCH")
+        child: Text("HELLO LIKE PAGE")
     );
   }
 }

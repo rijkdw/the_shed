@@ -27,6 +27,10 @@ class FeedPage extends StatelessWidget {
         color: Color.fromRGBO(41, 41, 41, 1),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: [Text("THIS IS THE FEED PAGE")],
+        ),
       ),
     );
   }

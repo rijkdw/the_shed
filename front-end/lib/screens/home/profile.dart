@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:rw334/models/user.dart';
+import 'global.dart' as usr;
 
 class ProfilePage extends StatelessWidget {
+  final User user = usr.dummy;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,7 +14,7 @@ class ProfilePage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: ListView(
           scrollDirection: Axis.vertical,
-          children:[Text("THIS IS THE PROFILE PAGE")],
+          children:[Text(user.getEmail())],
         ),
       ),
     );

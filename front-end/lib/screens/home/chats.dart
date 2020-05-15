@@ -4,18 +4,18 @@ class Chats extends StatelessWidget {
   
   // class constants
 
-  // fonts
-  final _senderUnreadFont = const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
-  final _senderReadFont = const TextStyle(fontSize: 18.0);
-  final _messageReadFont = const TextStyle(fontSize: 14.0);
-  final _messageUnreadFont = const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold);
-  final _messageTimeFont = const TextStyle(fontSize: 14.0);
+    // fonts
+    final _senderUnreadFont = const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
+    final _senderReadFont = const TextStyle(fontSize: 18.0);
+    final _messageReadFont = const TextStyle(fontSize: 14.0);
+    final _messageUnreadFont = const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold);
+    final _messageTimeFont = const TextStyle(fontSize: 14.0);
 
-  // colors
-  final _titlebarColor = Color.fromRGBO(10, 10, 10, 1.0);
-  final _iconColor = Colors.orange;
-  final _unreadChatColor = Colors.orange.withOpacity(0.1);
-  final _readChatColor = Color.fromRGBO(0, 0, 0, 0.0);
+    // colors
+    final _titlebarColor = Color.fromRGBO(10, 10, 10, 1.0);
+    final _iconColor = Colors.orange;
+    final _unreadChatColor = Colors.orange.withOpacity(0.1);
+    final _readChatColor = Color.fromRGBO(0, 0, 0, 0.0);
 
   // list of dummy chats
   var _chatsArr = [
@@ -36,7 +36,7 @@ class Chats extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chats Screen"),
+        title: Text('Chats Screen'),
         backgroundColor: _titlebarColor,
       ),
       body: _buildChatsList(),
@@ -64,10 +64,10 @@ class Chats extends StatelessWidget {
   Widget _buildRow(context, messageDict) {
     
     // the data to be displayed in this row
-    String _username = messageDict['name'];
-    String _message_text = messageDict['last_message'];
-    String _message_time = messageDict['last_message_time'];
-    bool _unread = messageDict['unread'] > 0;
+    String username = messageDict['name'];
+    String message_text = messageDict['last_message'];
+    String message_time = messageDict['last_message_time'];
+    bool unread = messageDict['unread'] > 0;
 
     return InkWell(
 
@@ -75,7 +75,7 @@ class Chats extends StatelessWidget {
       onTap: () {
         final snackBar = SnackBar(
           content: Text(
-            'Chat \"' + _username + '\" selected.'
+            'Chat \"' + username + '\" selected.'
           )
         );
         Scaffold.of(context).showSnackBar(snackBar);
@@ -86,7 +86,7 @@ class Chats extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: _unread? _unreadChatColor: _readChatColor, // to allow tapping anywhere on the chat name
+          color: unread? _unreadChatColor: _readChatColor, // to allow tapping anywhere on the chat name
         ),
         child: Row(
           children: [
@@ -120,18 +120,18 @@ class Chats extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.only(bottom: 4),
                       child: Text(
-                        _username,
-                        style: _unread? _senderUnreadFont : _senderReadFont,  // if the message is unread, use bold font
+                        username,
+                        style: unread? _senderUnreadFont : _senderReadFont,  // if the message is unread, use bold font
                         textAlign: TextAlign.left
                       ),
                     ),
                     // build message
                     Text(
-                      _message_text,
+                      message_text,
                       overflow: TextOverflow.ellipsis,  // fade the text out if it's longer than the row allows
                       maxLines: 1,
                       softWrap: false,
-                      style: _unread? _messageUnreadFont : _messageReadFont,  // if the message is unread, use bold font
+                      style: unread? _messageUnreadFont : _messageReadFont,  // if the message is unread, use bold font
                       textAlign: TextAlign.left
                     )
                   ]
@@ -150,7 +150,7 @@ class Chats extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.only(top: 2),
                       child: Icon(
-                        _unread? Icons.notifications : null,
+                        unread? Icons.notifications : null,
                         color: _iconColor,
                         size: 20,
                       ),
@@ -159,7 +159,7 @@ class Chats extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.only(top: 5),
                       child: Text(
-                        _message_time,
+                        message_time,
                         style: _messageTimeFont,
                         textAlign: TextAlign.left
                       ),

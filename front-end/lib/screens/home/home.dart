@@ -31,6 +31,14 @@ class _UserHomePageState extends State<UserHomePage> {
             width: 120,
           ),
           actions: <Widget>[
+            // button to open one chat (only for debug purposes) - Rijk
+            IconButton(
+              icon: const Icon(Icons.face, color: Colors.grey,),
+              onPressed: () {
+                Navigator.pushNamed(context, CHATSCREEN, arguments: context);
+              },
+            ),
+            // button to open chats
             IconButton(
               icon: const Icon(Icons.near_me, color: Colors.grey,),
               onPressed: () {

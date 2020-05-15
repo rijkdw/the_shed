@@ -4,12 +4,10 @@ class Chats extends StatelessWidget {
   // class constants
 
   // fonts
-  final _senderUnreadFont =
-      const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
+  final _senderUnreadFont = const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
   final _senderReadFont = const TextStyle(fontSize: 18.0);
   final _messageReadFont = const TextStyle(fontSize: 14.0);
-  final _messageUnreadFont =
-      const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold);
+  final _messageUnreadFont = const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold);
   final _messageTimeFont = const TextStyle(fontSize: 14.0);
 
   // colors
@@ -90,107 +88,107 @@ class Chats extends StatelessWidget {
 
   // build one chat row
   Widget _buildRow(context, messageDict) {
+
     // the data to be displayed in this row
     String username = messageDict['name'];
-    String message_text = messageDict['last_message'];
-    String message_time = messageDict['last_message_time'];
+    String messageText = messageDict['last_message'];
+    String messageTime = messageDict['last_message_time'];
     bool unread = messageDict['unread'] > 0;
 
     return InkWell(
 
-        // tapping opens the chat
-        onTap: () {
-          final snackBar =
-              SnackBar(content: Text('Chat \"' + username + '\" selected.'));
-          Scaffold.of(context).showSnackBar(snackBar);
-        },
+      // tapping opens the chat
+      onTap: () {
+        final snackBar =
+            SnackBar(content: Text('Chat \"' + username + '\" selected.'));
+        Scaffold.of(context).showSnackBar(snackBar);
+      },
 
-        // build the chat row
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: unread
-                ? _unreadChatColor
-                : _readChatColor, // to allow tapping anywhere on the chat name
-          ),
-          child: Row(
-            children: [
-              // build profile picture
-              Expanded(
-                flex: 20,
-                child: Container(
-                  alignment: Alignment(-0.5, 0.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.face,
-                          color: _iconColor,
-                          size: 30,
-                        )
-                      ]),
-                ),
+      // build the chat row
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          color: unread
+              ? _unreadChatColor
+              : _readChatColor, // to allow tapping anywhere on the chat name
+        ),
+        child: Row(
+          children: [
+            // build profile picture
+            Expanded(
+              flex: 20,
+              child: Container(
+                alignment: Alignment(-0.5, 0.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.face,
+                        color: _iconColor,
+                        size: 30,
+                      )
+                    ]),
               ),
+            ),
 
-              // build name and message
-              Expanded(
-                flex: 80,
-                child: Container(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // build name
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          child: Text(username,
-                              style: unread
-                                  ? _senderUnreadFont
-                                  : _senderReadFont, // if the message is unread, use bold font
-                              textAlign: TextAlign.left),
-                        ),
-                        // build message
-                        Text(message_text,
-                            overflow: TextOverflow
-                                .ellipsis, // fade the text out if it's longer than the row allows
-                            maxLines: 1,
-                            softWrap: false,
+            // build name and message
+            Expanded(
+              flex: 80,
+              child: Container(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // build name
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Text(username,
                             style: unread
-                                ? _messageUnreadFont
-                                : _messageReadFont, // if the message is unread, use bold font
-                            textAlign: TextAlign.left)
-                      ]),
-                ),
+                                ? _senderUnreadFont
+                                : _senderReadFont, // if the message is unread, use bold font
+                            textAlign: TextAlign.left),
+                      ),
+                      // build message
+                      Text(messageText,
+                          overflow: TextOverflow.ellipsis, // fade the text out if it's longer than the row allows
+                          maxLines: 1,
+                          softWrap: false,
+                          style: unread ? _messageUnreadFont : _messageReadFont, // if the message is unread, use bold font
+                          textAlign: TextAlign.left)
+                    ]),
               ),
+            ),
 
-              // build time of message and new message notification
-              Expanded(
-                flex: 20,
-                child: Container(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        // build message notification
-                        Container(
-                          padding: const EdgeInsets.only(top: 2),
-                          child: Icon(
-                            unread ? Icons.notifications : null,
-                            color: _iconColor,
-                            size: 20,
-                          ),
-                        ),
-                        // build time of message
-                        Container(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(message_time,
-                              style: _messageTimeFont,
-                              textAlign: TextAlign.left),
-                        ),
-                      ]),
+            // build time of message and new message notification
+            Expanded(
+              flex: 20,
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    // build message notification
+                    Container(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Icon(
+                        unread ? Icons.notifications : null,
+                        color: _iconColor,
+                        size: 20,
+                      ),
+                    ),
+                    // build time of message
+                    Container(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(messageTime,
+                          style: _messageTimeFont,
+                          textAlign: TextAlign.left),
+                    ),
+                  ]
                 ),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      )
+    );
   }
 }

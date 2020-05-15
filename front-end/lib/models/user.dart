@@ -6,13 +6,10 @@ class User {
   final Map following;
 
   const User(
-      {
-        this.email,
-        this.username,
-        this.picture,
-        this.followers,
-        this.following
-  }
-);
-  //Get info from DB
+      {this.email,
+      this.username,
+      this.picture,
+      this.followers,
+      this.following});
+//Get info from DB
 }

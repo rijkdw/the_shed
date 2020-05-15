@@ -5,11 +5,11 @@ import 'constants.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   BuildContext context = settings.arguments;
-  Navigator.popUntil(context,ModalRoute.withName(HOME));
+  Navigator.popUntil(context, ModalRoute.withName(HOME));
   switch (settings.name) {
     case HOME:
       return MaterialPageRoute(builder: (context) => UserHomePage());
     case CHAT:
-      return MaterialPageRoute(builder: (context)=> Chats());
+      return MaterialPageRoute(builder: (context) => Chats());
   }
 }

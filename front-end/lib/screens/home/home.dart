@@ -16,10 +16,6 @@ class Home extends StatelessWidget {
 }
 
 class UserHomePage extends StatefulWidget {
-  /* TODO: app bar for all the pages, dummy user
-   * 
-   */
-
   @override
   _UserHomePageState createState() => _UserHomePageState();
 }
@@ -53,7 +49,7 @@ class _UserHomePageState extends State<UserHomePage> {
         color: Colors.white,
         //Color.fromRGBO(128, 128, 128, 1),
         height: 60,
-        animationDuration: Duration(milliseconds: 1000),
+        animationDuration: Duration(milliseconds: 300),
         index: _page,
         animationCurve: Curves.fastLinearToSlowEaseIn,
         items: <Widget>[

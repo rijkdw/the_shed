@@ -1,0 +1,4 @@
+Username:	b31b37e8de0610
+Password:	f9a37d3d 
+host:		us-cdbr-east-06.cleardb.net
+mysql://b31b37e8de0610:f9a37d3d@us-cdbr-east-06.cleardb.net/heroku_6cb56d01d2bbcf3?reconnect=true

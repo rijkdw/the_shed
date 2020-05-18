@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Chats extends StatelessWidget {
+  
   // class constants
 
   // fonts
@@ -56,8 +57,9 @@ class Chats extends StatelessWidget {
 
     // sort the list of messages by time
     _chatsArr.sort((a, b) => b['last_message_time']
-        .toString()
-        .compareTo(a['last_message_time'].toString()));
+      .toString()
+      .compareTo(a['last_message_time'].toString())
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -71,19 +73,19 @@ class Chats extends StatelessWidget {
   // build the list of chats
   Widget _buildChatsList() {
     return ListView.builder(
-        padding: const EdgeInsets.all(4),
-        itemBuilder: (context, i) {
-          // removed divided list code
-          // if (i.isOdd) return Divider();  // to put dividers inbetween chats
-          // final index = i ~/ 2;  // divide by 2, round down
+      padding: const EdgeInsets.all(4),
+      itemBuilder: (context, i) {
+        // removed divided list code
+        // if (i.isOdd) return Divider();  // to put dividers inbetween chats
+        // final index = i ~/ 2;  // divide by 2, round down
 
-          // replaced with prettier colored box list code
-          final index = i;
-          if (index < _chatsArr.length)
-            return _buildRow(context, _chatsArr[index]);
-          else
-            return null;
-        });
+        // replaced with prettier colored box list code
+        final index = i;
+        if (index < _chatsArr.length)
+          return _buildRow(context, _chatsArr[index]);
+        else
+          return null;
+      });
   }
 
   // build one chat row
@@ -99,8 +101,7 @@ class Chats extends StatelessWidget {
 
       // tapping opens the chat
       onTap: () {
-        final snackBar =
-            SnackBar(content: Text('Chat \"' + username + '\" selected.'));
+        final snackBar = SnackBar(content: Text('Chat \"' + username + '\" selected.'));
         Scaffold.of(context).showSnackBar(snackBar);
       },
 

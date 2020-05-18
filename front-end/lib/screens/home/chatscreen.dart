@@ -1,141 +1,158 @@
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatelessWidget {
+// dummy messages
+var _messageMapList = [
+  {
+    'me': true,
+    'text': 'Hey there!',
+    'time': '12:00',
+    'unread': false
+  },
+  {
+    'me': true,
+    'text': 'Isn\'t this app awesome?',
+    'time': '12:01',
+    'unread': false
+  },
+  {
+    'me': false,
+    'text': 'It\'s pretty cool.',
+    'time': '12:02',
+    'unread': false
+  },
+  {
+    'me': false,
+    'text': 'Flutter is awesome.',
+    'time': '12:05',
+    'unread': true
+  },
+  {
+    'me': false,
+    'text': 'This message is rather long for a reason.  '*10,
+    'time': '12:05',
+    'unread': true
+  },
+];
+
+class ChatScreen extends StatefulWidget {
+
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  
+  // colors
+  final _titlebarColor = Color.fromRGBO(10, 10, 10, 1.0);
+    
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ChatAppBar(),
+      appBar: AppBar(
+        title: Text('Rijk'),
+        backgroundColor: _titlebarColor,
+      ),
+      body: ConversationWidget()
+    );
+  }
+
+}
+
+class ConversationWidget extends StatelessWidget{
+  
+  final ScrollController controller = new ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.all(10.0),
+      itemBuilder: (context, index) {
+        if (index < _messageMapList.length)
+            return MessageWidget(index);
+          else
+            return null;
+      },
+      controller: controller,
     );
   }
 }
 
-// using wisdom from the 60-day-flutter Medium page
-class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double height = new AppBar().preferredSize.height;
-
-  // class constants
+class MessageWidget extends StatelessWidget {
+  
+  // fonts
+  final _messageStyle = const TextStyle(fontSize: 14.0);
+  final _messageTimeStyle = const TextStyle(fontSize: 13.0, color: Color.fromRGBO(120, 120, 120, 1.0));  
 
   // colors
-  final _titlebarColor = Color.fromRGBO(10, 10, 10, 1.0);
-  final _iconColor = Colors.white;
+  final _unreadReceivedMessageColor = Colors.orange;
+  final _readReceivedMessageColor = Colors.green;
+  final _sentMessageColor = Colors.blue;
+  
+  // index of message
+  final int index;
 
-  // fonts
-  final _headingFont = TextStyle(color: Colors.white, fontSize: 20);
-  final _subheadingFont = TextStyle(color: Colors.white, fontSize: 16);
-
-  // values to display
-  final String username = 'Rijk';
-
-  final AppBar dummy = new AppBar();
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar();
-  }
-
-  /*
+  // constructor
+  MessageWidget(this.index);
 
   @override
   Widget build(BuildContext context) {
     
-    double width = MediaQuery.of(context).size.width; // calculate the screen width
-    return Material(
-      child: Container(
-        decoration: new BoxDecoration(
-            boxShadow: [
-            //adds a shadow to the appbar
-            new BoxShadow(
-              color: Colors.black,
-              blurRadius: 5.0,
-            )
-          ]
-        ),
-        child: Container(
-          color: _titlebarColor,
-          child: Row(
-            children: [
-              Expanded(
-                flex: 7,
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                          height: 70 - (width * .06),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Center(
-                                  child: Icon( Icons.attach_file, color: _iconColor )
-                                )
-                              ),
-                              Expanded(
-                                  flex: 6,
-                                  child: Container(
-                                      child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text( 'Rijk de Wet', style: _headingFont ),
-                                      Text( '@rijkdw', style: _subheadingFont )
-                                    ],
-                                  )
-                                )
-                              ),
-                            ],
-                          )),
-                      
-                      //second row containing the buttons for media
-                      Container(
-                        height: 23,
-                        padding: EdgeInsets.fromLTRB(20, 5, 5, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text( 'Photos', style: _subheadingFont ),
-                            VerticalDivider( width: 30, color: _iconColor ),
-                            Text( 'Videos', style: _subheadingFont ),
-                            VerticalDivider( width: 30, color: _iconColor ),
-                            Text( 'Files', style: _subheadingFont )
-                          ],
-                        )
-                      ),
-                    ],
-                  )
-                )
-              ),
+    // data to be displayed
+    var messageMap = _messageMapList[index];
+    String text = messageMap['text'];
+    String time = messageMap['time'];
+    bool unread = messageMap['unread'];
+    bool me = messageMap['me'];
 
-              //This is the display picture
-              Expanded(
-                flex: 3,
-                child: Container(
-                  child: Center(
-                    child: CircleAvatar(
-                      radius: (80 - (width * .06)) / 2,
-                      // image
-                      // backgroundImage: Image.asset(
-                      //   Assets.user,
-                      // ).image,
-                    ),
-                  ),
-                )
-              ),
-            ]
+    // some logic for choosing colors
+    Color messageColor;
+    if (me) {
+      messageColor = _sentMessageColor;
+    } else {
+      if (unread) {
+        messageColor = _unreadReceivedMessageColor;
+      } else {
+        messageColor = _readReceivedMessageColor;
+      }
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(6),
+      child: Column(
+        crossAxisAlignment: me
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
+        children: <Widget>[
+          // the text
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(1, 1),
+                  blurRadius: 4,
+                  color: Colors.black.withOpacity(0.3)
+                ),
+              ],
+              color: messageColor
+            ),
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+            child: Text(
+              text,
+              style: _messageStyle,
+            ),
+          ),
+          // the time
+          Container(
+            padding: const EdgeInsets.only(top: 3, bottom: 4, left: 8, right: 8),
+            child: Text(
+              time,
+              style: _messageTimeStyle,
+            ),
           )
-        )
-      )
+        ],
+      ),
     );
   }
-
-  */
-
-  @override
-  Size get preferredSize => Size.fromHeight(height);
-  
 }

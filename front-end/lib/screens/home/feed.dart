@@ -21,6 +21,15 @@ class FeedPage extends StatelessWidget {
               Navigator.pushNamed(context, CHAT, arguments: context);
             },
           ),
+          IconButton(
+            icon: const Icon(
+              Icons.message,
+              color: Colors.grey,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, CHATSCREEN, arguments: context);
+            },
+          ),
         ],
       ),
       body: Container(

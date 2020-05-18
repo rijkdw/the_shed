@@ -61,7 +61,7 @@ class Chats extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chats Screen'),
+        title: Text('Conversations'),
         backgroundColor: _titlebarColor,
       ),
       body: _buildChatsList(),

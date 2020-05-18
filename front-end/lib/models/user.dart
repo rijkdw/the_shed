@@ -6,6 +6,7 @@ class User {
   int posts;
   int follow;
   bool login;
+  String password;
   //final Map followers;
   //final Map following;
 
@@ -18,6 +19,7 @@ class User {
     this.posts = post;
     this.follow = follow;
     this.login = true;
+    this.password = 'ScrrtScrrt';
     //this.followers,
     //this.following
   }
@@ -44,6 +46,7 @@ class User {
     return follow;
   }
 
+
   String getPost() {
     int post = this.posts;
     String posts = post.toString() + " ";
@@ -55,6 +58,18 @@ class User {
     this.login = false;
     print("user loged out, take me to sign up page. ples pappy");
     return null;
+  }
+
+  bool update(String username, String psw) {
+    bool fine = false;
+    this.username = username;
+    this.password = psw;
+    print(psw + " "+ username);
+    /* if (database allows username)
+    *   fine = true;
+    */
+    fine = true;
+    return fine;
   }
 
 //Get info from DB

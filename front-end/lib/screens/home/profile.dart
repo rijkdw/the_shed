@@ -12,7 +12,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.deepOrange,
-        title: Text("Welcome " + user.getUsername()),
+        title: Text(user.getUsername()),
       ),
       endDrawer: SettingsDrawer(),
       body: Container(
@@ -63,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                   Column(
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(left: 35, bottom: 5, top: 5),
+                        padding: EdgeInsets.only(left: 35, top: 28),
                         child: Align(
                           //alignment: Alignment.topRight,
                           child: Text(
@@ -95,7 +95,7 @@ class ProfilePage extends StatelessWidget {
                   Column(
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(left: 25, bottom: 5, top: 5),
+                        padding: EdgeInsets.only(left: 25, top: 28),
                         child: Align(
                           //alignment: Alignment.topRight,
                           child: Text(
@@ -126,6 +126,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ],
               ),
+
             ),
           ],
         ),

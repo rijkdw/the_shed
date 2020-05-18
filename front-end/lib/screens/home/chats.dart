@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rw334/service/constants.dart';
 
 class Chats extends StatelessWidget {
   
@@ -103,6 +104,7 @@ class Chats extends StatelessWidget {
       onTap: () {
         final snackBar = SnackBar(content: Text('Chat \"' + username + '\" selected.'));
         Scaffold.of(context).showSnackBar(snackBar);
+        Navigator.pushNamed(context, CHATSCREEN, arguments: context);
       },
 
       // build the chat row

@@ -85,9 +85,9 @@ class MessageWidget extends StatelessWidget {
   final _messageTimeStyle = const TextStyle(fontSize: 13.0, color: Color.fromRGBO(120, 120, 120, 1.0));  
 
   // colors
-  final _unreadReceivedMessageColor = Colors.orange;
-  final _readReceivedMessageColor = Colors.green;
-  final _sentMessageColor = Colors.blue;
+  final _unreadReceivedMessageColor = Colors.orange[100];
+  final _readReceivedMessageColor = Colors.green[100];
+  final _sentMessageColor = Colors.blue[100];
   
   // index of message
   final int index;

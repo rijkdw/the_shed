@@ -5,6 +5,7 @@ class User {
   String name;
   int posts;
   int follow;
+  bool login;
   //final Map followers;
   //final Map following;
 
@@ -16,6 +17,7 @@ class User {
     this.name = name;
     this.posts = post;
     this.follow = follow;
+    this.login = true;
     //this.followers,
     //this.following
   }
@@ -46,6 +48,13 @@ class User {
     int post = this.posts;
     String posts = post.toString() + " ";
     return posts;
+  }
+
+  // ignore: missing_return
+  String logout () {
+    this.login = false;
+    print("user loged out, take me to sign up page. ples pappy");
+    return null;
   }
 
 //Get info from DB

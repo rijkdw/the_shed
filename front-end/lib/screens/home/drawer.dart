@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rw334/models/user.dart';
+import 'package:rw334/service/constants.dart';
+import 'global.dart' as usr;
 
 class SettingsDrawer extends StatelessWidget {
+  final User user = usr.dummy;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -34,7 +39,9 @@ class SettingsDrawer extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  onTap: null,
+                  onTap: () {
+                    Navigator.pushNamed(context, EDIT, arguments: context);
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.settings),
@@ -44,7 +51,9 @@ class SettingsDrawer extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  onTap: null,
+                  onTap: () {
+                    Navigator.pushNamed(context, SETTINGS, arguments: context);
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.arrow_back),
@@ -54,7 +63,9 @@ class SettingsDrawer extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  onTap: null,
+                  onTap: () {
+                    user.logout();
+                  },
                 ),
               ],
             ),

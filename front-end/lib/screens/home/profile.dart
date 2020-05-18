@@ -85,7 +85,7 @@ class ProfilePage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white,
-                              letterSpacing: 0.3,
+                              letterSpacing: 0.7,
                             ),
                           ),
                         ),
@@ -117,7 +117,7 @@ class ProfilePage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white,
-                              letterSpacing: 0.3,
+                              letterSpacing: 0.7,
                             ),
                           ),
                         ),
@@ -127,8 +127,6 @@ class ProfilePage extends StatelessWidget {
                 ],
               ),
             ),
-
-            //TODO: body (my posts)
           ],
         ),
       ),

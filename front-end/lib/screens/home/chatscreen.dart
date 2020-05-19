@@ -36,6 +36,10 @@ var _messageMapList = [
 
 class ChatScreen extends StatefulWidget {
 
+  final String recipientName;
+
+  const ChatScreen(this.recipientName);
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 
@@ -50,7 +54,11 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rijk'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ), 
+        title: Text(widget.recipientName),
         backgroundColor: _titlebarColor,
       ),
       body: ConversationWidget()
@@ -126,6 +134,9 @@ class MessageWidget extends StatelessWidget {
         children: <Widget>[
           // the text
           Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width*0.7
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(4)),
               boxShadow: [

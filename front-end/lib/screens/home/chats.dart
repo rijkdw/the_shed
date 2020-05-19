@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rw334/service/constants.dart';
+import 'package:rw334/screens/home/chatscreen.dart';
 
 class Chats extends StatelessWidget {
   
@@ -46,7 +46,7 @@ class Chats extends StatelessWidget {
     },
     {
       'name': 'Barack Obama',
-      'last_message': 'Nice dick bro',
+      'last_message': 'Nice app bro',
       'last_message_time': '09:24',
       'unread': 0
     },
@@ -102,9 +102,9 @@ class Chats extends StatelessWidget {
 
       // tapping opens the chat
       onTap: () {
-        final snackBar = SnackBar(content: Text('Chat \"' + username + '\" selected.'));
-        Scaffold.of(context).showSnackBar(snackBar);
-        Navigator.pushNamed(context, CHATSCREEN, arguments: context);
+        // final snackBar = SnackBar(content: Text('Chat \"' + username + '\" selected.'));
+        // Scaffold.of(context).showSnackBar(snackBar);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatScreen(username)));
       },
 
       // build the chat row

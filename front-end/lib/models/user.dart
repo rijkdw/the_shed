@@ -10,8 +10,7 @@ class User {
   //final Map followers;
   //final Map following;
 
-  User(String email, String username, String name, String picture, int post,
-      int follow) {
+  User(String email, String username, String name, String picture, int post, int follow) {
     this.email = email;
     this.username = username;
     this.picture = picture;

@@ -14,8 +14,8 @@ class Chats extends StatelessWidget {
 
   // colors
   final _titlebarColor = Color.fromRGBO(10, 10, 10, 1.0);
-  final _iconColor = Colors.orange;
-  final _unreadChatColor = Colors.orange.withOpacity(0.1);
+  final _iconColor = Colors.deepOrange;
+  final _unreadChatColor = Colors.deepOrange.withOpacity(0.2);
   final _readChatColor = Color.fromRGBO(0, 0, 0, 0.0);
 
   // list of dummy chats
@@ -113,8 +113,8 @@ class Chats extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
           color: unread
-              ? _unreadChatColor
-              : _readChatColor, // to allow tapping anywhere on the chat name
+            ? _unreadChatColor
+            : _readChatColor, // to allow tapping anywhere on the chat name
         ),
         child: Row(
           children: [
@@ -124,14 +124,15 @@ class Chats extends StatelessWidget {
               child: Container(
                 alignment: Alignment(-0.5, 0.0),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.face,
-                        color: _iconColor,
-                        size: 30,
-                      )
-                    ]),
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.face,
+                      color: _iconColor,
+                      size: 30,
+                    )
+                  ]
+                ),
               ),
             ),
 
@@ -140,25 +141,29 @@ class Chats extends StatelessWidget {
               flex: 80,
               child: Container(
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // build name
-                      Container(
-                        padding: const EdgeInsets.only(bottom: 4),
-                        child: Text(username,
-                            style: unread
-                                ? _senderUnreadFont
-                                : _senderReadFont, // if the message is unread, use bold font
-                            textAlign: TextAlign.left),
-                      ),
-                      // build message
-                      Text(messageText,
-                          overflow: TextOverflow.ellipsis, // fade the text out if it's longer than the row allows
-                          maxLines: 1,
-                          softWrap: false,
-                          style: unread ? _messageUnreadFont : _messageReadFont, // if the message is unread, use bold font
-                          textAlign: TextAlign.left)
-                    ]),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // build name
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Text(username,
+                        style: unread   // if the message is unread, use bold font
+                          ? _senderUnreadFont
+                          : _senderReadFont, 
+                        textAlign: TextAlign.left),
+                    ),
+                    // build message
+                    Text(messageText,
+                      overflow: TextOverflow.ellipsis, // fade the text out if it's longer than the row allows
+                      maxLines: 1,
+                      softWrap: false,
+                      style: unread   // if the message is unread, use bold font
+                        ? _messageUnreadFont
+                        : _messageReadFont, 
+                      textAlign: TextAlign.left
+                    )
+                  ]
+                ),
               ),
             ),
 
@@ -182,8 +187,9 @@ class Chats extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.only(top: 5),
                       child: Text(messageTime,
-                          style: _messageTimeFont,
-                          textAlign: TextAlign.left),
+                        style: _messageTimeFont,
+                        textAlign: TextAlign.left
+                      ),
                     ),
                   ]
                 ),

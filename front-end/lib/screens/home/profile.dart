@@ -29,6 +29,8 @@ class ProfilePage extends StatelessWidget {
               height: 125,
               child: Row(
                 children: [
+
+                  // profile picture and display name
                   Container(
                     child: Row(
                       children: <Widget>[
@@ -60,6 +62,8 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  
+                  // posts
                   Column(
                     children: <Widget>[
                       Container(
@@ -92,6 +96,8 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  
+                  // followers
                   Column(
                     children: <Widget>[
                       Container(
@@ -126,7 +132,6 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ],
               ),
-
             ),
           ],
         ),

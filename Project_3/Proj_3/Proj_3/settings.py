@@ -51,6 +51,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MIGRATIONS_MODULES = {'app':'app.migrations'}
+
 ROOT_URLCONF = 'Proj_3.urls'
 
 TEMPLATES = [

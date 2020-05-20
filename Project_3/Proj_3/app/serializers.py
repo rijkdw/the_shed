@@ -6,23 +6,20 @@ from app.models import Post
 
 
 class UserSerializer(serializers.ModelSerializer):
-    posts = serializers.PrimaryKeyRelatedField(many=True, queryset=Post.objects.all())
-
     class Meta:
         model = User
-        fields = ['username', 'id', 'posts']
+        fields = ['username', 'id']
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    posts = serializers.PrimaryKeyRelatedField(many=True, queryset=Post.objects.all())
 
     class Meta:
         model = Group
-        fields = ['name', 'id', 'description', 'date_created', 'posts']
+        fields = ['name', 'id', 'description', 'date_created']
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
-    owner = serializers.ReadOnlyField(source='users.username')
+    owner = serializers.CurrentUserDefault()
 
     class Meta:
         model = Post

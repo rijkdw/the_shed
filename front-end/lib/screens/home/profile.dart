@@ -12,7 +12,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.deepOrange,
-        title: Text("Welcome " + user.getUsername()),
+        title: Text(user.getUsername()),
       ),
       endDrawer: SettingsDrawer(),
       body: Container(
@@ -29,6 +29,8 @@ class ProfilePage extends StatelessWidget {
               height: 125,
               child: Row(
                 children: [
+
+                  // profile picture and display name
                   Container(
                     child: Row(
                       children: <Widget>[
@@ -60,10 +62,12 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  
+                  // posts
                   Column(
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(left: 35, bottom: 5, top: 5),
+                        padding: EdgeInsets.only(left: 35, top: 28),
                         child: Align(
                           //alignment: Alignment.topRight,
                           child: Text(
@@ -85,17 +89,19 @@ class ProfilePage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white,
-                              letterSpacing: 0.3,
+                              letterSpacing: 0.7,
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
+                  
+                  // followers
                   Column(
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(left: 25, bottom: 5, top: 5),
+                        padding: EdgeInsets.only(left: 25, top: 28),
                         child: Align(
                           //alignment: Alignment.topRight,
                           child: Text(
@@ -117,7 +123,7 @@ class ProfilePage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white,
-                              letterSpacing: 0.3,
+                              letterSpacing: 0.7,
                             ),
                           ),
                         ),
@@ -127,8 +133,6 @@ class ProfilePage extends StatelessWidget {
                 ],
               ),
             ),
-
-            //TODO: body (my posts)
           ],
         ),
       ),

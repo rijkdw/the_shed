@@ -10,7 +10,7 @@ Group.add_to_class('date_created', models.DateTimeField(null=True, auto_now_add=
 class Post(models.Model):
     text = models.CharField(max_length=200)
     group = models.ForeignKey('auth.Group', on_delete=models.CASCADE, null=True)  # Field name made lowercase.
-    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE)  # Field name made lowercase.
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)  # Field name made lowercase.
     latitude = models.FloatField()
     longitude = models.FloatField()
     timestamp = models.DateTimeField(blank=True, null=True, auto_now_add=True)

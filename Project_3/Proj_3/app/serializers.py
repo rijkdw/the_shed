@@ -6,11 +6,11 @@ from app.models import Post
 
 
 class UserSerializer(serializers.ModelSerializer):
-
+    posts = serializers.PrimaryKeyRelatedField(many=True, queryset=Post.objects.all())
 
     class Meta:
         model = User
-        fields = ['username', 'id']
+        fields = ['username', 'id', 'posts']
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):

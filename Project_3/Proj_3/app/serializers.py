@@ -1,30 +1,32 @@
-from django.contrib.auth.models import User, Group
+
 from rest_framework import serializers
-from app.models import Post, Messages
+
+from django.contrib.auth.models import User, Group
+from app.models import Post
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    posts = serializers.PrimaryKeyRelatedField(many=True, queryset=Post.objects.all())
+class UserSerializer(serializers.ModelSerializer):
+
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'password']
+        fields = ['username', 'id']
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    posts = serializers.PrimaryKeyRelatedField(many=True, queryset=Post.objects.all())
+
     class Meta:
         model = Group
-        fields = ['id', 'name', 'date_created', 'description']
+        fields = ['name', 'id', 'description', 'date_created', 'posts']
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.ReadOnlyField(source='users.username')
+
     class Meta:
         model = Post
-        fields = ['id', ' timestamp', 'text', 'users_id', 'group_id','latitude', 'longitude']
+        fields = "__all__"
+        ordering = ['created_on']
 
 
-class MessageSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Messages
-        fields = ['id', 'timestamp', 'text', 'sender_id'
-                                             '']

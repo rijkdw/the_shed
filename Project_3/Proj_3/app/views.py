@@ -27,6 +27,9 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
 
-
+class UserCreate(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = permissions.AllowAny
 
 

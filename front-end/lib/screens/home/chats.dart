@@ -19,7 +19,7 @@ class Chats extends StatelessWidget {
   final _readChatColor = Color.fromRGBO(0, 0, 0, 0.0);
 
   // list of dummy chats
-  var _chatsArr = [
+  final _chatsArr = [
     {
       'name': 'Rijk',
       'last_message': 'Hello World!',

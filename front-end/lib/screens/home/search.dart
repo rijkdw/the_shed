@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/service/constants.dart';
+import 'package:rw334/widgets/searchbar.dart';
 
 class SearchPage extends StatelessWidget {
   @override
@@ -29,7 +30,9 @@ class SearchPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: ListView(
           scrollDirection: Axis.vertical,
-          children:[Text("THIS IS THE SEARCH PAGE")],
+          children:[
+            SearchBar(),
+          ],
         ),
       ),
     );

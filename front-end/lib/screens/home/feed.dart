@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/service/constants.dart';
 import 'package:rw334/widgets/post.dart';
+import 'package:rw334/widgets/appnametitlebar.dart';
 
 var _dummyPosts = [
   {
@@ -17,7 +18,7 @@ var _dummyPosts = [
   },
   {
     'title': 'How to overthrow a lawfully elected government?',
-    'categories': ['Politics', 'Military tactics', 'Genocide'],
+    'categories': ['Politics', 'Military Tactics', 'Genocide'],
     'username': 'Shmadolf Shmitler',
     'groupname': 'Local Politics Group',
   },

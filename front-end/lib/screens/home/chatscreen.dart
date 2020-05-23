@@ -1,49 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:rw334/models/message.dart';
 
 // dummy messages
-var _messageMapList = [
-  {
-    'me': true,
-    'text': 'Hey there!',
-    'time': '12:00',
-    'unread': false
-  },
-  {
-    'me': true,
-    'text': 'Isn\'t this app awesome?',
-    'time': '12:01',
-    'unread': false
-  },
-  {
-    'me': false,
-    'text': 'It\'s pretty cool.',
-    'time': '12:02',
-    'unread': false
-  },
-  {
-    'me': false,
-    'text': 'Flutter is awesome.',
-    'time': '12:05',
-    'unread': true
-  },
-  {
-    'me': false,
-    'text': 'What the f*ck did you just f*cking say about me, you little bitch? I\'ll have you know I graduated top of my class in the Navy Seals, and I\'ve been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I\'m the top sniper in the entire US armed forces. You are nothing to me but just another target. I will wipe you the f*ck out with precision the likes of which has never been seen before on this Earth, mark my f*cking words. You think you can get away with saying that shit to me over the Internet? Think again, f*cker. As we speak I am contacting my secret network of spies across the USA and your IP is being traced right now so you better prepare for the storm, maggot. The storm that wipes out the pathetic little thing you call your life. You\'re f*cking dead, kid. I can be anywhere, anytime, and I can kill you in over seven hundred ways, and that\'s just with my bare hands. Not only am I extensively trained in unarmed combat, but I have access to the entire arsenal of the United States Marine Corps and I will use it to its full extent to wipe your miserable ass off the face of the continent, you little shit. If only you could have known what unholy retribution your little "clever" comment was about to bring down upon you, maybe you would have held your f*cking tongue. But you couldn\'t, you didn\'t, and now you\'re paying the price, you goddamn idiot. I will shit fury all over you and you will drown in it. You\'re f*cking dead, kiddo.',
-    'time': '12:05',
-    'unread': true
-  },
-  {
-    'me': false,
-    'text': 'Subscribe to PewDiePie.',
-    'time': '12:05',
-    'unread': true
-  },
-];
+// var _messageMapList = [
+//   {
+//     'me': true,
+//     'text': 'Hey there!',
+//     'time': '12:00',
+//     'unread': false
+//   },
+//   {
+//     'me': true,
+//     'text': 'Isn\'t this app awesome?',
+//     'time': '12:01',
+//     'unread': false
+//   },
+//   {
+//     'me': false,
+//     'text': 'It\'s pretty cool.',
+//     'time': '12:02',
+//     'unread': false
+//   },
+//   {
+//     'me': false,
+//     'text': 'Flutter is awesome.',
+//     'time': '12:05',
+//     'unread': true
+//   },
+//   {
+//     'me': false,
+//     'text': 'What the f*ck did you just f*cking say about me, you little bitch? I\'ll have you know I graduated top of my class in the Navy Seals, and I\'ve been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I\'m the top sniper in the entire US armed forces. You are nothing to me but just another target. I will wipe you the f*ck out with precision the likes of which has never been seen before on this Earth, mark my f*cking words. You think you can get away with saying that shit to me over the Internet? Think again, f*cker. As we speak I am contacting my secret network of spies across the USA and your IP is being traced right now so you better prepare for the storm, maggot. The storm that wipes out the pathetic little thing you call your life. You\'re f*cking dead, kid. I can be anywhere, anytime, and I can kill you in over seven hundred ways, and that\'s just with my bare hands. Not only am I extensively trained in unarmed combat, but I have access to the entire arsenal of the United States Marine Corps and I will use it to its full extent to wipe your miserable ass off the face of the continent, you little shit. If only you could have known what unholy retribution your little "clever" comment was about to bring down upon you, maybe you would have held your f*cking tongue. But you couldn\'t, you didn\'t, and now you\'re paying the price, you goddamn idiot. I will shit fury all over you and you will drown in it. You\'re f*cking dead, kiddo.',
+//     'time': '12:05',
+//     'unread': true
+//   },
+//   {
+//     'me': false,
+//     'text': 'Subscribe to PewDiePie.',
+//     'time': '12:05',
+//     'unread': true
+//   },
+// ];
 
 class ChatScreen extends StatefulWidget {
 
-  final String recipientName;
-  const ChatScreen(this.recipientName);
+  final List<Message> messageList;
+  const ChatScreen(this.messageList);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -59,13 +60,16 @@ class _ChatScreenState extends State<ChatScreen> {
     
   @override
   Widget build(BuildContext context) {
+
+    widget.messageList.sort((a, b) => -b.epochTime.compareTo(a.epochTime));
+
     return Scaffold(
       appBar: AppBar(
         // leading: IconButton(
         //   icon: Icon(Icons.arrow_back),
         //   onPressed: () => Navigator.of(context).pop(),
         // ), 
-        title: Text(widget.recipientName),
+        title: Text(widget.messageList[0].getSenderName()),
         backgroundColor: _titlebarColor,
         actions: [
           IconButton(
@@ -82,7 +86,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: <Widget>[
           Column(
             children: <Widget>[
-              ConversationWidget(),
+              ConversationWidget(widget.messageList),
               InputWidget()
             ],
           )
@@ -95,6 +99,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class ConversationWidget extends StatelessWidget{
   
+  final List<Message> messageList;
+  ConversationWidget(this.messageList);
+
   final ScrollController controller = new ScrollController();
 
   @override
@@ -106,8 +113,8 @@ class ConversationWidget extends StatelessWidget{
         child: ListView.builder(
           padding: EdgeInsets.all(10.0),
           itemBuilder: (context, index) {
-            if (index < _messageMapList.length)
-                return MessageWidget(index);
+            if (index < this.messageList.length)
+                return MessageWidget(messageList[index]);
               else
                 return null;
           },
@@ -205,36 +212,29 @@ class MessageWidget extends StatelessWidget {
 
   // colors
   static final int intensity = 700;
-  final _unreadReceivedMessageColor = Colors.deepOrange[intensity];
-  final _readReceivedMessageColor = Colors.green[intensity];
+  final _receivedMessageColor = Colors.green[intensity];
   final _sentMessageColor = Colors.blue[intensity];
   
-  // index of message
-  final int index;
+  // Message
+  final Message message;
 
   // constructor
-  MessageWidget(this.index);
+  MessageWidget(this.message);
 
   @override
   Widget build(BuildContext context) {
     
     // data to be displayed
-    var messageMap = _messageMapList[index];
-    String text = messageMap['text'];
-    String time = messageMap['time'];
-    bool unread = messageMap['unread'];
-    bool me = messageMap['me'];
+    String text = this.message.text;
+    String time = this.message.getTimeStamp();
+    bool me = false;
 
     // some logic for choosing colors
     Color messageColor;
     if (me) {
       messageColor = _sentMessageColor;
     } else {
-      if (unread) {
-        messageColor = _unreadReceivedMessageColor;
-      } else {
-        messageColor = _readReceivedMessageColor;
-      }
+      messageColor = _receivedMessageColor;
     }
 
     return Container(

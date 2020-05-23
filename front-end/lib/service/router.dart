@@ -20,6 +20,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case CHAT:
       return MaterialPageRoute(builder: (context) => Chats());
     case CHATSCREEN:
-      return MaterialPageRoute(builder: (context) => ChatScreen('Dummy'));
+      return MaterialPageRoute(builder: (context) => ChatScreen([]));
   }
 }

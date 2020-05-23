@@ -43,7 +43,6 @@ var _messageMapList = [
 class ChatScreen extends StatefulWidget {
 
   final String recipientName;
-
   const ChatScreen(this.recipientName);
 
   @override
@@ -102,15 +101,18 @@ class ConversationWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     
     return Flexible(
-      child: ListView.builder(
-        padding: EdgeInsets.all(10.0),
-        itemBuilder: (context, index) {
-          if (index < _messageMapList.length)
-              return MessageWidget(index);
-            else
-              return null;
-        },
-        controller: controller,
+      child: Container(
+        color: Color.fromRGBO(41, 41, 41, 1),
+        child: ListView.builder(
+          padding: EdgeInsets.all(10.0),
+          itemBuilder: (context, index) {
+            if (index < _messageMapList.length)
+                return MessageWidget(index);
+              else
+                return null;
+          },
+          controller: controller,
+        ),
       )
     );
   }
@@ -146,6 +148,8 @@ class InputWidget extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
+
+          // emoji button
           Material(
             color: Colors.white,
             child: new Container(
@@ -158,7 +162,7 @@ class InputWidget extends StatelessWidget {
             ),
           ),
 
-          // Text input
+          // text input
           Flexible(
             child: Container(
               child: TextField(
@@ -172,7 +176,7 @@ class InputWidget extends StatelessWidget {
             ),
           ),
 
-          // Send Message Button
+          // send message button
           Material(
             child: new Container(
               margin: new EdgeInsets.symmetric(horizontal: 8.0),

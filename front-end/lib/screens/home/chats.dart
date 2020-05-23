@@ -15,7 +15,7 @@ class Chats extends StatelessWidget {
   // colors
   final _titlebarColor = Color.fromRGBO(10, 10, 10, 1.0);
   final _iconColor = Colors.deepOrange;
-  final _unreadChatColor = Colors.deepOrange.withOpacity(0.2);
+  final _unreadChatColor = Colors.white;
   final _readChatColor = Color.fromRGBO(0, 0, 0, 0.0);
 
   // list of dummy chats
@@ -64,7 +64,9 @@ class Chats extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Conversations'),
+        title: Text(
+          'Conversations'
+        ),
         backgroundColor: _titlebarColor,
         actions: [
           IconButton(
@@ -83,20 +85,25 @@ class Chats extends StatelessWidget {
 
   // build the list of chats
   Widget _buildChatsList() {
-    return ListView.builder(
-      padding: const EdgeInsets.all(4),
-      itemBuilder: (context, i) {
-        // removed divided list code
-        // if (i.isOdd) return Divider();  // to put dividers inbetween chats
-        // final index = i ~/ 2;  // divide by 2, round down
+    return Container(
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(41, 41, 41, 1)
+      ),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(4),
+        itemBuilder: (context, i) {
+          // removed divided list code
+          // if (i.isOdd) return Divider();  // to put dividers inbetween chats
+          // final index = i ~/ 2;  // divide by 2, round down
 
-        // replaced with prettier colored box list code
-        final index = i;
-        if (index < _chatsArr.length)
-          return _buildRow(context, _chatsArr[index]);
-        else
-          return null;
-      });
+          // replaced with prettier colored box list code
+          final index = i;
+          if (index < _chatsArr.length)
+            return _buildRow(context, _chatsArr[index]);
+          else
+            return null;
+        }),
+    );
   }
 
   // build one chat row

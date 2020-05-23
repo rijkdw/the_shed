@@ -1,9 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:rw334/screens/home/feed.dart';
-import 'package:rw334/screens/home/profile.dart';
-import 'package:rw334/screens/home/search.dart';
+import 'feed.dart';
+import 'profile.dart';
+import 'search.dart';
 import 'like.dart';
+import 'chats.dart';
 
 class Home extends StatelessWidget {
 
@@ -58,13 +59,26 @@ class _UserHomePageState extends State<UserHomePage> {
             size: 30,
             color: Colors.black,
           ),
-          Icon(Icons.search, size: 30, color: Colors.black),
+          Icon(
+            Icons.search,
+            size: 30,
+            color: Colors.black
+          ),
           Icon(
             Icons.favorite_border,
             size: 30,
             color: Colors.black,
           ),
-          Icon(Icons.person, size: 30, color: Colors.black),
+          Icon(
+            Icons.person,
+            size: 30,
+            color: Colors.black
+          ),
+          Icon(
+            Icons.message,
+            size: 30,
+            color: Colors.black
+          )
         ],
         onTap: navigationTapped,
       ),
@@ -87,6 +101,10 @@ class _UserHomePageState extends State<UserHomePage> {
           Container(
             color: backColor,
             child: ProfilePage(),
+          ),
+          Container(
+            color: backColor,
+            child: Chats(),
           )
         ],
       ),

@@ -68,6 +68,16 @@ class _ChatScreenState extends State<ChatScreen> {
         // ), 
         title: Text(widget.recipientName),
         backgroundColor: _titlebarColor,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+            ),
+            onPressed: () {
+              print('Menu button');
+            },
+          )
+        ],
       ),
       body: Stack(
         children: <Widget>[
@@ -168,7 +178,9 @@ class InputWidget extends StatelessWidget {
               margin: new EdgeInsets.symmetric(horizontal: 8.0),
               child: new IconButton(
                 icon: new Icon(Icons.send),
-                onPressed: () => {},
+                onPressed: () {
+                  print('Send message');
+                },
                 color: _iconColor,
               ),
             ),
@@ -188,7 +200,7 @@ class MessageWidget extends StatelessWidget {
   final _messageTimeStyle = const TextStyle(fontSize: 13.0, color: Color.fromRGBO(120, 120, 120, 1.0));  
 
   // colors
-  static final int intensity = 200;
+  static final int intensity = 700;
   final _unreadReceivedMessageColor = Colors.deepOrange[intensity];
   final _readReceivedMessageColor = Colors.green[intensity];
   final _sentMessageColor = Colors.blue[intensity];

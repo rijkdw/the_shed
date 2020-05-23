@@ -1,26 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/service/constants.dart';
-
-var _dummyPosts = [
-  {
-    'title': 'How to grow better carrots?',
-    'categories': ['Gardening', 'Environmental', 'Sustainability'],
-    'username': 'Ronaldo',
-    'groupname': 'Ronaldo\'s Gardening Empire',
-  },
-  {
-    'title': 'How to ride bicycle?',
-    'categories': ['Sports', 'Lifestyle', 'Transportation'],
-    'username': 'Rijk',
-    'groupname': 'Being a Normal Person 101',
-  },
-  {
-    'title': 'How to overthrow a lawfully elected government?',
-    'categories': ['Politics', 'Military Tactics', 'Genocide'],
-    'username': 'Shmadolf Shmitler',
-    'groupname': 'Local Politics Group',
-  },
-];
+import 'package:rw334/models/post.dart';
+import 'global.dart';
+import 'postpage.dart';
 
 class FeedPage extends StatelessWidget {
   @override
@@ -50,15 +32,17 @@ class FeedPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: ListView.builder(
           padding: const EdgeInsets.all(4),      
-          itemCount: _dummyPosts.length,    
+          itemCount: dummyPosts.length,    
           itemBuilder: (context, i) {
             return Container(
               padding: const EdgeInsets.all(4),
-              child: PostCard(
-                title: _dummyPosts[i]['title'],
-                categories: _dummyPosts[i]['categories'],
-                username: _dummyPosts[i]['username'],
-                groupname: _dummyPosts[i]['groupname'],
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => PostPage(dummyPosts[i])));
+                },
+                child: PostCard(
+                  post: dummyPosts[i],
+                ),
               ),
             );
           }
@@ -70,37 +54,25 @@ class FeedPage extends StatelessWidget {
 
 class PostCard extends StatefulWidget {
   
-  String title;
-  String username;
-  String groupname;
-  var categories = <String>[];
+  Post post;
 
-  PostCard({String title, var categories, String username, String groupname}) {
-    this.title = title;
-    this.categories.addAll(categories);
-    this.username = username;
-    this.groupname = groupname;
-  }  
+  PostCard({Post post}) {
+    this.post = post;
+  }
 
   @override
-  _PostCardState createState() => _PostCardState(this.title, this.categories, this.username, this.groupname);
+  _PostCardState createState() => _PostCardState(this.post);
 }
 
 // state
 class _PostCardState extends State<PostCard> {
   
   // variables
-  String title;
-  String username;
-  String groupname;
-  var categories = <String>[];
+  Post post;
 
   // constructor
-  _PostCardState(String title, var categories, String username, String groupname) {
-    this.title = title;
-    this.categories.addAll(categories);
-    this.username = username;
-    this.groupname = groupname;
+  _PostCardState(Post post) {
+    this.post = post;
   }
 
   // class constants
@@ -122,78 +94,68 @@ class _PostCardState extends State<PostCard> {
     fontSize: 11,
   );
 
-  // pretty categories method
-  String prettyCategories() {
-    return this.categories.join('  |  ');
-  }
-
   // build method
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        print('Tap me harder daddy');
-      },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(20, 20, 20, 1.0),
-          borderRadius: BorderRadius.all(Radius.circular(4)),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(2,2),
-              blurRadius: 1,
-              color: Colors.black.withOpacity(0.3)
-            )
-          ]
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(20, 20, 20, 1.0),
+        borderRadius: BorderRadius.all(Radius.circular(4)),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(2,2),
+            blurRadius: 1,
+            color: Colors.black.withOpacity(0.3),
+          )
+        ]
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
 
-            // user in group
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: this.username,
-                    style: _styleHeaderEmphasis
-                  ),
-                  TextSpan(
-                    text: ' in ',
-                    style: _styleHeaderNormal
-                  ),
-                  TextSpan(
-                    text: this.groupname,
-                    style: _styleHeaderEmphasis
-                  ),
-                ],
-              ),
+          // user in group
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: this.post.getUserName(),
+                  style: _styleHeaderEmphasis
+                ),
+                TextSpan(
+                  text: ' in ',
+                  style: _styleHeaderNormal
+                ),
+                TextSpan(
+                  text: this.post.getGroupName(),
+                  style: _styleHeaderEmphasis
+                ),
+              ],
             ),
-            
-            // spacing
-            SizedBox(
-              height: 4,
-            ),
+          ),
+          
+          // spacing
+          SizedBox(
+            height: 4,
+          ),
 
-            // title
-            Text(
-              this.title,
-              style: _styleTitle,
-            ),
+          // title
+          Text(
+            this.post.text,
+            style: _styleTitle,
+          ),
 
-            // spacing
-            SizedBox(
-              height: 6,
-            ),
+          // spacing
+          SizedBox(
+            height: 6,
+          ),
 
-            // categories
-            Text(
-              this.prettyCategories(),
-              style: _styleFooter,
-            )
-          ],
-        ),
+          // categories
+          Text(
+            this.post.getPrettyCategories(),
+            style: _styleFooter,
+          )
+        ],
       ),
     );
   }

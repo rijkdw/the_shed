@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/service/constants.dart';
-import 'package:rw334/widgets/searchbar.dart';
 
 class SearchPage extends StatelessWidget {
   @override
@@ -55,7 +54,14 @@ class SearchBar extends StatelessWidget {
     return Container(
       // white rectangle
       decoration: BoxDecoration(
-        color: Colors.white
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 3),
+            blurRadius: 1,
+            color: Colors.black.withOpacity(0.4),
+          )
+        ]
       ),
       child: Container(
         // grey rounded

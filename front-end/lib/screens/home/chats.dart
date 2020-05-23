@@ -66,6 +66,16 @@ class Chats extends StatelessWidget {
       appBar: AppBar(
         title: Text('Conversations'),
         backgroundColor: _titlebarColor,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+            ),
+            onPressed: () {
+              print('Menu button');
+            },
+          )
+        ],
       ),
       body: _buildChatsList(),
     );

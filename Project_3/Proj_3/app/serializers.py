@@ -18,7 +18,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
-        ordering = ['created_on']
+        ordering = ['timestamp']
 
 
 class UserSerializer(serializers.ModelSerializer):

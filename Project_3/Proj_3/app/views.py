@@ -4,6 +4,7 @@ from rest_framework import permissions
 from .serializers import UserSerializer, GroupSerializer, PostSerializer
 from .models import Post
 from django.contrib.auth.models import User, Group
+from django.contrib.auth import login, authenticate
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -27,9 +28,8 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
 
-class UserCreate(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = permissions.AllowAny
+
+
+
 
 

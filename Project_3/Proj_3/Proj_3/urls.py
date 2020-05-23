@@ -26,8 +26,6 @@ router.register('posts', views.PostViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('admin', include('rest_framework.urls', namespace='rest_framework')),
-    path('account/register', views.UserCreate.as_view()),
+    path('api/auth', include('rest_framework.urls', namespace='rest_framework')),
     path('api/v1/', include(router.urls)),
-    path('api/auth/', include('djoser.urls.authtoken')),
 ]

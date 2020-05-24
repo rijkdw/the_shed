@@ -84,29 +84,14 @@ class ConversationList extends StatelessWidget {
   ConversationList(this.allMessagesList);
 
   Map mapSendersToMessages() {
-    print('All messages:');
-    for (Message msg in this.allMessagesList) {
-      print(msg.text);
-    }
     Map<int, List<Message>> map = {};
     for (int i = 0; i < allMessagesList.length; i++) {
       Message msg = allMessagesList[i];
       // if the sender id of message i is already listed, add it to that list
-      if (map.keys.contains(msg.senderId)) {
-        print('map already contains sender ID ' + msg.senderId.toString());
-      }
-      // else make a new list and add it
-      else {
-        print('map didn\'t contain sender ID ' + msg.senderId.toString());
+      if (!map.keys.contains(msg.senderId)) {
         map[msg.senderId] = [];
       }
       map[msg.senderId].add(msg);
-    }
-    for (int key in map.keys) {
-      print('Key ' + key.toString() + ':');
-      for (Message msg in map[key]) {
-        print('Msg \"' + msg.text + '\"');
-      }
     }
     return map;
   }
@@ -221,7 +206,7 @@ class Conversation extends StatelessWidget {
 
           // build time of message and new message notification
           Expanded(
-            flex: 20,
+            flex: 30,
             child: Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,

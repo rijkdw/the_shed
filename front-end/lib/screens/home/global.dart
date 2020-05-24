@@ -23,33 +23,33 @@ var dummyPosts = [
 
 var dummyMessages = [
   new Message(
-    epochTime: 1590265421, // 23 May 2020, 20:23:41
+    epochTime: (DateTime(2020, 5, 24, 12, 34).millisecondsSinceEpoch/1000).floor(),
     id: 0,
     senderId: 0,
     text: 'Hello world!',
   ),
   new Message(
-    epochTime: 1590265461, // 23 May 2020, 20:24:41
+    epochTime: (DateTime(2020, 5, 24, 12, 36).millisecondsSinceEpoch/1000).floor(),
     id: 1,
     senderId: 0,
     text: 'I\'m using a new app.  It\'s called \"The Shed\".',
   ),
   new Message(
-    epochTime: 1590237296, // 23 May 2020, 12:34:56
+    epochTime: (DateTime(2020, 5, 23, 12, 00).millisecondsSinceEpoch/1000).floor(),
     id: 3,
     senderId: 1,
-    text: 'Again, I\'m User#1.',
+    text: 'uwu',
   ),
   new Message(
-    epochTime: 1590177600, // 22 May 2020, 20:00:00
+    epochTime: (DateTime(2020, 5, 23, 13, 00).millisecondsSinceEpoch/1000).floor(),
     id: 2,
     senderId: 1,
-    text: 'I\'m User#1.',
+    text: 'owo',
   ),
   new Message(
-    epochTime: 1558644557, // sometime in 2019
+    epochTime: (DateTime(2019, 5, 24, 12, 34).millisecondsSinceEpoch/1000).floor(),
     id: 5,
     senderId: 2,
-    text: 'This message is from last year',
+    text: 'This message is from last year.',
   ),
 ];

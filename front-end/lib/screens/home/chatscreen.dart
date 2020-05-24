@@ -226,7 +226,7 @@ class MessageWidget extends StatelessWidget {
     
     // data to be displayed
     String text = this.message.text;
-    String time = this.message.getTimeStamp();
+    String time = this.message.getInChatTimeStamp();
     bool me = false;
 
     // some logic for choosing colors

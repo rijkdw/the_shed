@@ -24,7 +24,7 @@ var dummyPosts = [
     id: 3,
   ),
   new Post(
-    text: 'A very long post title.  '*100,
+    text: 'A very long post title.  '*20,
     categories: ['Cat 1', 'Cat 2', 'Cat 3'],
   ),
   new Post(
@@ -92,7 +92,7 @@ var dummyComments = [
   new Comment(
     epochTime: (DateTime(2020, 01, 01, 11, 00).millisecondsSinceEpoch/1000).floor(),
     postId: 1,
-    text: 'I\d recommend getting better seeds.',
+    text: 'I\'d recommend getting better seeds.',
     userId: 1,
   ),
 ];

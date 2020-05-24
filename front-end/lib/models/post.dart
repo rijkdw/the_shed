@@ -16,7 +16,7 @@ class Post {
     this.categories.addAll(categories);
   }
 
-  String getUserName() => 'USERNAME';
+  String getUserName() => 'USERNAME (ID=$userId)';
 
   String getCountryName() => 'COUNTRY';
 

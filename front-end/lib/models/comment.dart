@@ -57,8 +57,8 @@ class Comment {
   String getInPostTimeStamp() {
     if (this.isToday()) return getHHMM();
     else if (this.isYesterday()) return getHHMM() + ' yesterday';
-    else if (this.isThisYear()) return getHHMM() + '  ' + getDDMM();
-    else return getHHMM() + '  ' + getDDMMYY();
+    else if (this.isThisYear()) return getHHMM() + ' ' + getDDMM();
+    else return getHHMM() + ' ' + getDDMMYY();
   }
 
   String getUsername() => 'USERNAME';

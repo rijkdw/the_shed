@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rw334/service/constants.dart';
 
 class SearchPage extends StatelessWidget {
   @override
@@ -14,11 +13,11 @@ class SearchPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.near_me,
-              color: Colors.grey,
+              Icons.more_vert,
+              color: Colors.white,
             ),
             onPressed: () {
-              Navigator.pushNamed(context, CHAT, arguments: context);
+              print('SearchPage menu pressed');
             },
           ),
         ],
@@ -59,19 +58,21 @@ class SearchBar extends StatelessWidget {
           BoxShadow(
             offset: Offset(0, 3),
             blurRadius: 1,
-            color: Colors.black.withOpacity(0.4),
+            color: Colors.black.withOpacity(0.2),
           )
         ]
       ),
       child: Container(
-        // grey rounded
         padding: const EdgeInsets.all(6),
+
+        // grey rounded
         child: Container(
           padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
           decoration: BoxDecoration(
             color: Colors.black12,
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
+          
           // text
           child: TextField(
             style: _inputTextStyle,

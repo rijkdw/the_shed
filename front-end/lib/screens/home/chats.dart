@@ -3,74 +3,31 @@ import 'package:rw334/screens/home/chatscreen.dart';
 import 'global.dart';
 import 'package:rw334/models/message.dart';
 
-class Chats extends StatelessWidget {
+class ChatsPage extends StatelessWidget {
   
-  // class constants
-
-  // colors
-  final _titlebarColor = Color.fromRGBO(10, 10, 10, 1.0);
-
-  // list of dummy chats
-  // final _chatsArr = [
-  //   {
-  //     'name': 'Rijk',
-  //     'last_message': 'Hello World!',
-  //     'last_message_time': '21:09',
-  //     'unread': 3
-  //   },
-  //   {
-  //     'name': 'Ronaldo',
-  //     'last_message': 'Jissie Flutter is cool',
-  //     'last_message_time': '10:42',
-  //     'unread': 0
-  //   },
-  //   {
-  //     'name': 'Bill Gates',
-  //     'last_message': 'I\'d like to buy your app.',
-  //     'last_message_time': '13:14',
-  //     'unread': 1
-  //   },
-  //   {
-  //     'name': 'Big Data Dave',
-  //     'last_message': 'bitcoin ' * 100,
-  //     'last_message_time': '19:20',
-  //     'unread': 0
-  //   },
-  //   {
-  //     'name': 'Barack Obama',
-  //     'last_message': 'Nice app bro',
-  //     'last_message_time': '09:24',
-  //     'unread': 0
-  //   },
-  // ];
-
   @override
   Widget build(BuildContext context) {
-    // before rendering:
 
-    // sort the list of messages by time
-    // _chatsArr.sort((a, b) => b['last_message_time']
-    //   .toString()
-    //   .compareTo(a['last_message_time'].toString())
-    // );
-
+    // before rendering, sort the list of messages by time
     dummyMessages.sort((a, b) => b.epochTime.compareTo(a.epochTime));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Conversations'
+        backgroundColor: Colors.black,
+        title: Image.asset(
+          "assets/logo.png",
+          width: 120,
         ),
-        backgroundColor: _titlebarColor,
-        actions: [
+        actions: <Widget>[
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.more_vert,
+              color: Colors.white,
             ),
             onPressed: () {
-              print('Menu button');
+              print('ChatsPage menu pressed');
             },
-          )
+          ),
         ],
       ),
       body: ConversationList(dummyMessages),
@@ -80,7 +37,7 @@ class Chats extends StatelessWidget {
 
 class ConversationList extends StatelessWidget {
   
-  var allMessagesList;
+  final allMessagesList;
   ConversationList(this.allMessagesList);
 
   Map mapSendersToMessages() {
@@ -114,8 +71,6 @@ class ConversationList extends StatelessWidget {
             return InkWell(
               // tapping opens the chat
               onTap: () {
-                // final snackBar = SnackBar(content: Text('Chat \"' + username + '\" selected.'));
-                // Scaffold.of(context).showSnackBar(snackBar);
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatScreen(messagesList)));
               },
               // build the chat row
@@ -141,7 +96,6 @@ class Conversation extends StatelessWidget {
   final _timeStyle = const TextStyle(fontSize: 14.0, color: Colors.white);
 
   // colors
-  final _iconColor = Colors.deepOrange;
   final _chatColor = Colors.white.withOpacity(0.0); // to allow tapping anywhere on the chat name
 
   @override
@@ -167,7 +121,7 @@ class Conversation extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.face,
-                    color: _iconColor,
+                    color: Theme.of(context).accentColor,
                     size: 30,
                   )
                 ]
@@ -216,7 +170,7 @@ class Conversation extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 2),
                     child: Icon(
                       null, //Icons.notifications : null,
-                      color: _iconColor,
+                      color: Colors.white,
                       size: 20,
                     ),
                   ),

@@ -10,8 +10,11 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: UserHomePage(),
+    return MaterialApp(
+      theme: ThemeData(
+        accentColor: Color.fromRGBO(255, 153, 0, 1.0) // the color of the logo
+      ),
+      home: UserHomePage(),
     );
   }
 }
@@ -46,6 +49,7 @@ class _UserHomePageState extends State<UserHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
+        buttonBackgroundColor: Theme.of(context).accentColor,
         backgroundColor: backColor,
         color: Colors.white,
         //Color.fromRGBO(128, 128, 128, 1),
@@ -70,15 +74,15 @@ class _UserHomePageState extends State<UserHomePage> {
             color: Colors.black,
           ),
           Icon(
-            Icons.person,
+            Icons.message,
             size: 30,
             color: Colors.black
           ),
           Icon(
-            Icons.message,
+            Icons.person,
             size: 30,
             color: Colors.black
-          )
+          ),
         ],
         onTap: navigationTapped,
       ),
@@ -100,11 +104,11 @@ class _UserHomePageState extends State<UserHomePage> {
           ),
           Container(
             color: backColor,
-            child: ProfilePage(),
+            child: ChatsPage(),
           ),
           Container(
             color: backColor,
-            child: Chats(),
+            child: ProfilePage(),
           )
         ],
       ),

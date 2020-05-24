@@ -1,17 +1,13 @@
-class Message {
+class Comment {
 
   int id = 0;
-  String text = 'MESSAGE_TEXT';
-  int senderId = 0;
+  int userId = 0;
+  int postId = 0;
+  String text = 'COMMENT_TEXT';
   int epochTime = 0;
 
-  Message({int id, String text, int senderId, int epochTime}) {
-    this.id = id;
-    this.text = text;
-    this.senderId = senderId;
-    this.epochTime = epochTime;
-  }
-  
+  Comment({this.id, this.userId, this.postId, this.text, this.epochTime});
+
   bool isToday() {
     var nowDT = DateTime.now();
     int messageEpochMS = this.epochTime*1000;
@@ -36,22 +32,6 @@ class Message {
     return (nowDT.year == msgDT.year);
   }
 
-  String getListTimeStamp() {    
-    // if same day & month & year (i.e. if today) return HH:mm
-    if (this.isToday()) {
-      return getHHMM();
-    // if yesterday, say yesterday
-    } else if (this.isYesterday()) {
-      return 'Yesterday';
-    // if same year at least, return DD/MM
-    } else if (this.isThisYear()) {
-      return getDDMM();
-    // if past year, return DD/MM/YY
-    } else {
-      return getDDMMYY();
-    }
-  }
-
   DateTime getDateTime() => DateTime.fromMillisecondsSinceEpoch(this.epochTime*1000);
   
   String getMinute() => this.getDateTime().minute.toString().padLeft(2, '0');
@@ -74,21 +54,13 @@ class Message {
 
   String getDDMMYYYY() => this.getDay() + '/' + this.getMonth() + '/' + this.getYear(false);
 
-  String getInChatTimeStamp() {
-    int messageEpochMS = this.epochTime*1000;
-    var msgDT = DateTime.fromMillisecondsSinceEpoch(messageEpochMS);
-    
-    // if today
-    if (this.isToday()) {
-      return getHHMM();
-    // if yesterday
-    } else if (this.isYesterday()) {
-      return getHHMM() + ' yesterday';
-    } else {
-      return getHHMM() + '  ' + getDDMMYY();
-    }
+  String getInPostTimeStamp() {
+    if (this.isToday()) return getHHMM();
+    else if (this.isYesterday()) return getHHMM() + ' yesterday';
+    else if (this.isThisYear()) return getHHMM() + '  ' + getDDMM();
+    else return getHHMM() + '  ' + getDDMMYY();
   }
 
-  String getSenderName() => 'USERNAME (ID=$senderId)';
+  String getUsername() => 'USERNAME';
 
 }

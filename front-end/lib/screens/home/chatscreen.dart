@@ -54,9 +54,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   
   // constants
-  
-  // colors
-  final _titlebarColor = Color.fromRGBO(10, 10, 10, 1.0);
     
   @override
   Widget build(BuildContext context) {
@@ -70,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
         //   onPressed: () => Navigator.of(context).pop(),
         // ), 
         title: Text(widget.messageList[0].getSenderName()),
-        backgroundColor: _titlebarColor,
+        backgroundColor: Colors.black,
         actions: [
           IconButton(
             icon: Icon(
@@ -129,9 +126,6 @@ class InputWidget extends StatelessWidget {
 
   // constants
 
-  // colors
-  final _iconColor = Colors.deepOrange;
-
   // styles
   final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 15.0);
   final _inputHintStyle = TextStyle(color: Colors.grey);
@@ -151,30 +145,42 @@ class InputWidget extends StatelessWidget {
             width: 0.5
           )
         ),
-        color: Colors.white
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, -3),
+            blurRadius: 1,
+            color: Colors.black.withOpacity(0.2),
+          )
+        ]
       ),
       child: Row(
         children: <Widget>[
 
           // emoji button
-          Material(
-            color: Colors.white,
-            child: new Container(
-              margin: new EdgeInsets.symmetric(horizontal: 1.0),
-              child: new IconButton(
-                onPressed: () => print('Emoji pls'),
-                icon: new Icon(Icons.face),
-                color: _iconColor,
-              ),
+          new Container(
+            margin: new EdgeInsets.symmetric(horizontal: 1.0),
+            child: new IconButton(
+              onPressed: () => print('Emoji pls'),
+              icon: new Icon(Icons.face),
+              color: Theme.of(context).accentColor,
             ),
           ),
 
           // text input
           Flexible(
             child: Container(
+              padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
+              decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
               child: TextField(
                 style: _inputTextStyle,
                 controller: controller,
+                // expands: true,
+                minLines: 1,
+                maxLines: 5,
                 decoration: InputDecoration.collapsed(
                   hintText: 'Type a message...',
                   hintStyle: _inputHintStyle,
@@ -184,19 +190,17 @@ class InputWidget extends StatelessWidget {
           ),
 
           // send message button
-          Material(
-            child: new Container(
-              margin: new EdgeInsets.symmetric(horizontal: 8.0),
-              child: new IconButton(
-                icon: new Icon(Icons.send),
-                onPressed: () {
-                  print('Send message');
-                },
-                color: _iconColor,
-              ),
+          new Container(
+            margin: new EdgeInsets.symmetric(horizontal: 8.0),
+            child: new IconButton(
+              icon: new Icon(Icons.send),
+              onPressed: () {
+                print('Send message');
+              },
+              color: Theme.of(context).accentColor,
             ),
-            color: Colors.white,
           ),
+
         ],
       ),
     );
@@ -229,14 +233,6 @@ class MessageWidget extends StatelessWidget {
     String time = this.message.getInChatTimeStamp();
     bool me = false;
 
-    // some logic for choosing colors
-    Color messageColor;
-    if (me) {
-      messageColor = _sentMessageColor;
-    } else {
-      messageColor = _receivedMessageColor;
-    }
-
     return Container(
       padding: const EdgeInsets.all(4),
       child: Column(
@@ -259,7 +255,9 @@ class MessageWidget extends StatelessWidget {
                   color: Colors.black.withOpacity(0.3)
                 ),
               ],
-              color: messageColor
+              color: me
+              ? Colors.white
+              : Theme.of(context).accentColor
             ),
             padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
             child: Text(

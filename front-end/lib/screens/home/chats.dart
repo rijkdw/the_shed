@@ -93,7 +93,8 @@ class ConversationList extends StatelessWidget {
           } else {
             return null;
           }
-        }),
+        }
+      ),
     );
   }
 }

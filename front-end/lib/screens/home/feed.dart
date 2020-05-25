@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rw334/models/post.dart';
 import 'global.dart';
 import 'postpage.dart';
+import 'createpost.dart';
 
 class FeedPage extends StatelessWidget {
   
@@ -58,7 +59,7 @@ class NewPostButton extends StatelessWidget {
         size: 30,
       ),
       onPressed: () {
-        print('Make a new post.');
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => PostCreatorPage()));
       },
     );
   }
@@ -103,17 +104,12 @@ class SortingBar extends StatefulWidget {
 class _SortingBarState extends State<SortingBar> {
   
   String sortingKey = 'Time';
-  String sortingOrder = 'Asc';
-
-  
+  String sortingOrder = 'Asc'; 
 
   @override
   Widget build(BuildContext context) {
 
-    final TextStyle _style = TextStyle(
-      fontSize: 20,
-      color: Colors.black,
-    );
+    final TextStyle _style = TextStyle(fontSize: 20, color: Colors.black);
 
     return Container(
       padding: const EdgeInsets.all(8),

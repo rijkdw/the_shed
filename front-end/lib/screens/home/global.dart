@@ -63,18 +63,6 @@ var dummyMessages = [
     text: 'I\'m using a new app.  It\'s called \"The Shed\".',
   ),
   new Message(
-    epochTime: (DateTime(2020, 5, 23, 12, 00).millisecondsSinceEpoch/1000).floor(),
-    id: 3,
-    senderId: 3,
-    text: 'Hello there',
-  ),
-  new Message(
-    epochTime: (DateTime(2020, 5, 23, 12, 01).millisecondsSinceEpoch/1000).floor(),
-    id: 3,
-    senderId: 3,
-    text: 'General Kenobi!',
-  ),
-  new Message(
     epochTime: (DateTime(2020, 5, 23, 13, 00).millisecondsSinceEpoch/1000).floor(),
     id: 2,
     senderId: 1,
@@ -98,7 +86,7 @@ var dummyComments = [
   new Comment(
     epochTime: (DateTime(2020, 01, 01, 11, 00).millisecondsSinceEpoch/1000).floor(),
     postId: 1,
-    text: 'I\'d recommend getting better seeds and tools.  Hoes aren\'t cheap but you\'ve gotta invest!',
+    text: 'I\'d recommend getting better seeds and tools.  Hoes aren\'t cheap tho :(',
     userId: 1,
   ),
   new Comment(

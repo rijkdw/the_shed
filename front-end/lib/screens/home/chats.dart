@@ -77,6 +77,19 @@ class ConversationList extends StatelessWidget {
               // build the chat row
               child: Conversation(messagesList),
             );
+          // } else if (i == senderToMessagesMap.keys.length) {
+          //   return Container(
+          //     color: Colors.white70,
+          //     margin: const EdgeInsets.only(top: 8),
+          //     child: Text(
+          //       '- End of list -',
+          //       style: const TextStyle(
+          //         fontSize: 16,
+          //         color: Colors.grey,
+          //       ),
+          //       textAlign: TextAlign.center,
+          //     ),
+          //   );
           } else {
             return null;
           }
@@ -94,100 +107,77 @@ class Conversation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final debug = false;
+
     final _chatColor = Colors.white.withOpacity(0.0); // to allow tapping anywhere on the chat name
 
-    final _senderStyle = const TextStyle(fontSize: 24.0, color: Colors.white);
+    final _senderStyle = TextStyle(fontSize: 24.0, color: Theme.of(context).accentColor);
     final _textStyle = const TextStyle(fontSize: 18.0, color: Colors.white);
-    final _timeStyle = const TextStyle(fontSize: 18.0, color: Colors.white);
+    final _timeStyle = TextStyle(fontSize: 18.0, color: Theme.of(context).accentColor);
 
-    String username = messagesList[0].getSenderName();
-    String text = messagesList[0].text;
-    String timestamp = messagesList[0].getListTimeStamp();
     return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        color: _chatColor, 
-      ),
+      margin: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.all(4),
+      color: debug ? Colors.black : _chatColor,
       child: Row(
         children: [
-          // build profile picture
-          Expanded(
-            flex: 20,
-            child: Container(
-              alignment: Alignment(-0.65, 0.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.face,
-                    color: Theme.of(context).accentColor,
-                    size: 40,
-                  )
-                ]
-              ),
+          
+          // avatar
+          Container(
+            margin:  const EdgeInsets.only(right: 8),
+            color: debug ? Colors.blue : _chatColor,
+            child: Icon(
+              Icons.face,
+              color: Theme.of(context).accentColor,
+              size: 40,
             ),
           ),
 
-          // build name and message
+          // username  --->  time
+          // text
           Expanded(
-            flex: 80,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // build name
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Text(
-                      username,
-                      style: _senderStyle,
-                      textAlign: TextAlign.left
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 70,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        color: debug ? Colors.white : _chatColor,
+                        child: Text(
+                          messagesList[0].getSenderName(),
+                          style: _senderStyle,
+                        )
+                      ),
                     ),
-                  ),
-                  // build message
-                  Text(
-                    text,
-                    overflow: TextOverflow.ellipsis, // fade the text out if it's longer than the row allows
+                    Flexible(
+                      flex: 30,
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        color: debug ? Colors.red : _chatColor,
+                        child: Text(
+                          messagesList[0].getListTimeStamp(),
+                          style: _timeStyle,
+                        ),
+                      )
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 3),
+                  alignment: Alignment.centerLeft,
+                  color: debug ? Colors.purple : _chatColor,
+                  child: Text(
+                    messagesList[0].text,
                     maxLines: 1,
-                    softWrap: false,
-                    style: _textStyle, 
-                    textAlign: TextAlign.left
-                  )
-                ]
-              ),
-            ),
-          ),
-
-          // build time of message and new message notification
-          Expanded(
-            flex: 30,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  // build message notification
-                  Container(
-                    padding: const EdgeInsets.only(top: 2),
-                    child: Icon(
-                      null, //Icons.notifications : null,
-                      color: Colors.white,
-                      size: 20,
-                    ),
+                    overflow: TextOverflow.ellipsis,
+                    style: _textStyle,
                   ),
-                  // build time of message
-                  Container(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text(
-                      timestamp,
-                      style: _timeStyle,
-                      textAlign: TextAlign.left
-                    ),
-                  ),
-                ]
-              ),
-            ),
-          ),
+                ),
+              ],
+            )
+          )
         ],
       ),
     );

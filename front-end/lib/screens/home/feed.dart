@@ -148,7 +148,7 @@ class _SortingBarState extends State<SortingBar> {
               elevation: 8,
               isDense: true,
               style: _style,
-              items: <String>['Time', 'Location', 'User', 'Category']
+              items: <String>['Time', 'Location', 'User', 'Category', 'Likes']
                 .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -313,7 +313,7 @@ class _PostCardState extends State<PostCard> {
             height: 4,
           ),
 
-          // title
+          // text
           Text(
             widget.post.text,
             maxLines: widget.lineLimit,

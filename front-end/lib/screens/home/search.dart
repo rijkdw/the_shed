@@ -13,11 +13,12 @@ class SearchPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.more_vert,
+              Icons.refresh,
               color: Colors.white,
             ),
+            iconSize: 30,
             onPressed: () {
-              print('SearchPage menu pressed');
+              print('SearchPage refresh pressed');
             },
           ),
         ],
@@ -42,7 +43,7 @@ class SearchBar extends StatelessWidget {
   // constants
 
   // styles
-  final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 15.0);
+  final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 22.0);
   final _inputHintStyle = TextStyle(color: Colors.grey);
 
   final TextEditingController controller = new TextEditingController();

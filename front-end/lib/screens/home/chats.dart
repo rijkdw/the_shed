@@ -21,11 +21,12 @@ class ChatsPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.more_vert,
+              Icons.refresh,
               color: Colors.white,
             ),
+            iconSize: 30,
             onPressed: () {
-              print('ChatsPage menu pressed');
+              print('ChatsPage refresh pressed');
             },
           ),
         ],
@@ -88,18 +89,17 @@ class ConversationList extends StatelessWidget {
 class Conversation extends StatelessWidget {
 
   List<Message> messagesList;  
-  Conversation(this.messagesList);
-
-  // fonts
-  final _senderStyle = const TextStyle(fontSize: 18.0, color: Colors.white);
-  final _textStyle = const TextStyle(fontSize: 14.0, color: Colors.white);
-  final _timeStyle = const TextStyle(fontSize: 14.0, color: Colors.white);
-
-  // colors
-  final _chatColor = Colors.white.withOpacity(0.0); // to allow tapping anywhere on the chat name
+  Conversation(this.messagesList);  
 
   @override
   Widget build(BuildContext context) {
+
+    final _chatColor = Colors.white.withOpacity(0.0); // to allow tapping anywhere on the chat name
+
+    final _senderStyle = const TextStyle(fontSize: 24.0, color: Colors.white);
+    final _textStyle = const TextStyle(fontSize: 18.0, color: Colors.white);
+    final _timeStyle = const TextStyle(fontSize: 18.0, color: Colors.white);
+
     String username = messagesList[0].getSenderName();
     String text = messagesList[0].text;
     String timestamp = messagesList[0].getListTimeStamp();
@@ -115,14 +115,14 @@ class Conversation extends StatelessWidget {
           Expanded(
             flex: 20,
             child: Container(
-              alignment: Alignment(-0.5, 0.0),
+              alignment: Alignment(-0.65, 0.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.face,
                     color: Theme.of(context).accentColor,
-                    size: 30,
+                    size: 40,
                   )
                 ]
               ),
@@ -142,7 +142,8 @@ class Conversation extends StatelessWidget {
                     child: Text(
                       username,
                       style: _senderStyle,
-                      textAlign: TextAlign.left),
+                      textAlign: TextAlign.left
+                    ),
                   ),
                   // build message
                   Text(

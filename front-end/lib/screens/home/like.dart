@@ -23,11 +23,12 @@ class _LikePageState extends State<LikePage> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.more_vert,
+              Icons.refresh,
               color: Colors.white,
             ),
+            iconSize: 30,
             onPressed: () {
-              print('LikePage menu pressed');
+              print('LikePage refresh pressed');
             },
           ),
         ],
@@ -41,7 +42,7 @@ class _LikePageState extends State<LikePage> {
           scrollDirection: Axis.vertical,
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height/3.5,
+              height: MediaQuery.of(context).size.height/35,
             ),
             IconButton(
               iconSize: 100,
@@ -62,6 +63,30 @@ class _LikePageState extends State<LikePage> {
                   iconColor = newColor;
                 });
               },
+            ),
+            Text(
+              'This is size 24',
+              style: TextStyle(fontSize: 24),
+            ),
+            Text(
+              'This is size 20',
+              style: TextStyle(fontSize: 20),
+            ),
+            Text(
+              'This is size 18',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              'This is size 16',
+              style: TextStyle(fontSize: 16),
+            ),
+            Text(
+              'This is size 14',
+              style: TextStyle(fontSize: 14),
+            ),
+            Text(
+              'This is size 12',
+              style: TextStyle(fontSize: 12),
             ),
           ],
         ),

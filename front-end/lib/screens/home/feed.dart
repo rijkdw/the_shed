@@ -17,11 +17,12 @@ class FeedPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.more_vert,
+              Icons.refresh,
               color: Colors.white,
             ),
+            iconSize: 30,
             onPressed: () {
-              print('FeedPage menu pressed');
+              print('FeedPage refresh pressed');
             },
           ),
         ],
@@ -41,16 +42,24 @@ class FeedPage extends StatelessWidget {
           ]
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        mini: true,
-        child: Icon(
-          Icons.add,
-          size: 30,
-        ),
-        onPressed: () {
-          print('Make a new post.');
-        },
+      floatingActionButton: NewPostButton()
+    );
+  }
+}
+
+class NewPostButton extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      mini: true,
+      child: Icon(
+        Icons.add,
+        size: 30,
       ),
+      onPressed: () {
+        print('Make a new post.');
+      },
     );
   }
 }
@@ -96,16 +105,18 @@ class _SortingBarState extends State<SortingBar> {
   String sortingKey = 'Time';
   String sortingOrder = 'Asc';
 
-  final TextStyle _style = TextStyle(
-    fontSize: 14,
-    color: Colors.black,
-  );
+  
 
   @override
   Widget build(BuildContext context) {
 
+    final TextStyle _style = TextStyle(
+      fontSize: 20,
+      color: Colors.black,
+    );
+
     return Container(
-      padding: const EdgeInsets.all(6),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -197,28 +208,15 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   
   // variables
-  final categoriesAccented = false;
-
-  // class constants
-  TextStyle _styleHeaderEmphasis = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-    fontSize: 12,
-  );
-  TextStyle _styleHeaderNormal = TextStyle(
-    color: Colors.white70,
-    fontSize: 11,
-  );
-  TextStyle _styleTitle = TextStyle(
-    color: Colors.white,
-    fontSize: 16,
-  );
-  TextStyle _styleFooter = TextStyle(
-    color: Colors.white70,
-    fontSize: 11,
-  );
+  final categoriesAccented = false;  
 
   RichText getPrettyCategories() {
+
+    TextStyle _styleFooter = TextStyle(
+      color: Colors.white70,
+      fontSize: 20,
+    );
+
     List<TextSpan> returnList = [];
     int i = 0;
     for (String category in widget.post.categories) {
@@ -250,8 +248,27 @@ class _PostCardState extends State<PostCard> {
   // build method
   @override
   Widget build(BuildContext context) {
+
+    TextStyle _styleHeaderEmphasis = TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: 20,
+    );
+    TextStyle _styleHeaderNormal = TextStyle(
+      color: Colors.white70,
+      fontSize: 20,
+    );
+    TextStyle _styleTitle = TextStyle(
+      color: Colors.white,
+      fontSize: 30,
+    );
+    TextStyle _styleFooter = TextStyle(
+      color: Colors.white70,
+      fontSize: 20,
+    );
+
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Color.fromRGBO(30, 30, 30, 1.0),
         borderRadius: BorderRadius.all(Radius.circular(4)),

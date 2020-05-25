@@ -74,21 +74,22 @@ class Message {
 
   String getDDMMYYYY() => this.getDay() + '/' + this.getMonth() + '/' + this.getYear(false);
 
-  String getInChatTimeStamp() {
-    int messageEpochMS = this.epochTime*1000;
-    var msgDT = DateTime.fromMillisecondsSinceEpoch(messageEpochMS);
-    
+  String getInChatTimeStamp() {   
     // if today
     if (this.isToday()) {
       return getHHMM();
     // if yesterday
     } else if (this.isYesterday()) {
       return getHHMM() + ' yesterday';
+    // if this year
+    } else if (this.isThisYear()) {
+      return getHHMM() + '  ' + getDDMM();
+    // else
     } else {
-      return getHHMM() + '  ' + getDDMMYY();
+      return getHHMM() + '  ' + getDDMMYYYY();
     }
   }
 
-  String getSenderName() => 'USERNAME (ID=$senderId)';
+  String getSenderName() => 'USERNAME';
 
 }

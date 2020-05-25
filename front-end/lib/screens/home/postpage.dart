@@ -49,11 +49,12 @@ class PostPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.more_vert,
-              color: Colors.grey,
+              Icons.refresh,
+              color: Colors.white,
             ),
+            iconSize: 30,
             onPressed: () {
-              print('Menu button');
+              print('PostPage refresh button');
             },
           ),
         ],
@@ -76,41 +77,43 @@ class CommentCard extends StatelessWidget {
   Comment comment;
   CommentCard({this.comment});
 
-  // text styles
-  TextStyle _styleHeaderEmphasis = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-    fontSize: 12,
-  );
-  TextStyle _styleHeaderNormal = TextStyle(
-    color: Colors.white70,
-    fontSize: 11,
-  );
-  TextStyle _styleBody = TextStyle(
-    color: Colors.white,
-    fontSize: 16,
-  );
-
   @override
   Widget build(BuildContext context) {
+
+    // text styles
+    TextStyle _styleHeaderEmphasis = TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
+    );
+    TextStyle _styleHeaderNormal = TextStyle(
+      color: Colors.white70,
+      fontSize: 18,
+    );
+    TextStyle _styleBody = TextStyle(
+      color: Colors.white,
+      fontSize: 24,
+    );
+
     return Container(
       margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
       width: MediaQuery.of(context).size.width,
       
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+            padding: const EdgeInsets.fromLTRB(0, 4, 8, 0),
             // color: Colors.red,
             child: Icon(
               Icons.face,
               color: Theme.of(context).accentColor,
-              size: 32,
+              size: 64,
             ),
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.fromLTRB(6, 8, 4, 8),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Color.fromRGBO(30, 30, 30, 1.0),
                 borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -137,11 +140,11 @@ class CommentCard extends StatelessWidget {
                           )
                         ),
                         TextSpan(
-                          text: ' said ',
+                          text: ' at ',
                           style: _styleHeaderNormal
                         ),
                         TextSpan(
-                          text: '@' + comment.getInPostTimeStamp(),
+                          text: comment.getInPostTimeStamp(),
                           style: _styleHeaderEmphasis.copyWith(
                             color: Theme.of(context).accentColor,
                           )
@@ -152,7 +155,7 @@ class CommentCard extends StatelessWidget {
 
                   // spacing
                   SizedBox(
-                    height: 2,
+                    height: 4,
                   ),
 
                   // comment body

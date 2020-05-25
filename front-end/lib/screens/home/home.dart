@@ -60,27 +60,27 @@ class _UserHomePageState extends State<UserHomePage> {
         items: <Widget>[
           Icon(
             Icons.home,
-            size: 30,
+            size: 40,
             color: Colors.black,
           ),
           Icon(
             Icons.search,
-            size: 30,
+            size: 40,
             color: Colors.black
           ),
           Icon(
             Icons.favorite_border,
-            size: 30,
+            size: 40,
             color: Colors.black,
           ),
           Icon(
             Icons.message,
-            size: 30,
+            size: 40,
             color: Colors.black
           ),
           Icon(
             Icons.person,
-            size: 30,
+            size: 40,
             color: Colors.black
           ),
         ],

@@ -1,46 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/message.dart';
 
-// dummy messages
-// var _messageMapList = [
-//   {
-//     'me': true,
-//     'text': 'Hey there!',
-//     'time': '12:00',
-//     'unread': false
-//   },
-//   {
-//     'me': true,
-//     'text': 'Isn\'t this app awesome?',
-//     'time': '12:01',
-//     'unread': false
-//   },
-//   {
-//     'me': false,
-//     'text': 'It\'s pretty cool.',
-//     'time': '12:02',
-//     'unread': false
-//   },
-//   {
-//     'me': false,
-//     'text': 'Flutter is awesome.',
-//     'time': '12:05',
-//     'unread': true
-//   },
-//   {
-//     'me': false,
-//     'text': 'What the f*ck did you just f*cking say about me, you little bitch? I\'ll have you know I graduated top of my class in the Navy Seals, and I\'ve been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I\'m the top sniper in the entire US armed forces. You are nothing to me but just another target. I will wipe you the f*ck out with precision the likes of which has never been seen before on this Earth, mark my f*cking words. You think you can get away with saying that shit to me over the Internet? Think again, f*cker. As we speak I am contacting my secret network of spies across the USA and your IP is being traced right now so you better prepare for the storm, maggot. The storm that wipes out the pathetic little thing you call your life. You\'re f*cking dead, kid. I can be anywhere, anytime, and I can kill you in over seven hundred ways, and that\'s just with my bare hands. Not only am I extensively trained in unarmed combat, but I have access to the entire arsenal of the United States Marine Corps and I will use it to its full extent to wipe your miserable ass off the face of the continent, you little shit. If only you could have known what unholy retribution your little "clever" comment was about to bring down upon you, maybe you would have held your f*cking tongue. But you couldn\'t, you didn\'t, and now you\'re paying the price, you goddamn idiot. I will shit fury all over you and you will drown in it. You\'re f*cking dead, kiddo.',
-//     'time': '12:05',
-//     'unread': true
-//   },
-//   {
-//     'me': false,
-//     'text': 'Subscribe to PewDiePie.',
-//     'time': '12:05',
-//     'unread': true
-//   },
-// ];
-
 class ChatScreen extends StatefulWidget {
 
   final List<Message> messageList;
@@ -62,10 +22,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back),
-        //   onPressed: () => Navigator.of(context).pop(),
-        // ), 
         title: Text(widget.messageList[0].getSenderName()),
         backgroundColor: Colors.black,
         actions: [
@@ -124,20 +80,17 @@ class ConversationWidget extends StatelessWidget{
 
 class InputWidget extends StatelessWidget {
 
-  // constants
-
-  // styles
-  final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 15.0);
-  final _inputHintStyle = TextStyle(color: Colors.grey);
-
   final TextEditingController controller = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
+    final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 18.0);
+    final _inputHintStyle = TextStyle(color: Colors.grey);
+
     return Container(
       width: double.infinity,
-      height: 50.0,
+      height: 70.0,
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
@@ -162,7 +115,10 @@ class InputWidget extends StatelessWidget {
             margin: new EdgeInsets.symmetric(horizontal: 1.0),
             child: new IconButton(
               onPressed: () => print('Emoji pls'),
-              icon: new Icon(Icons.face),
+              icon: new Icon(
+                Icons.face
+              ),
+              iconSize: 30,
               color: Theme.of(context).accentColor,
             ),
           ),
@@ -170,7 +126,7 @@ class InputWidget extends StatelessWidget {
           // text input
           Flexible(
             child: Container(
-              padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
+              padding: const EdgeInsets.fromLTRB(20, 13, 10, 13),
               decoration: BoxDecoration(
                 color: Colors.black12,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -193,7 +149,10 @@ class InputWidget extends StatelessWidget {
           new Container(
             margin: new EdgeInsets.symmetric(horizontal: 8.0),
             child: new IconButton(
-              icon: new Icon(Icons.send),
+              icon: new Icon(
+                Icons.send
+              ),
+              iconSize: 30,
               onPressed: () {
                 print('Send message');
               },
@@ -209,24 +168,15 @@ class InputWidget extends StatelessWidget {
 
 
 class MessageWidget extends StatelessWidget {
-  
-  // fonts
-  final _messageStyle = const TextStyle(fontSize: 14.0);
-  final _messageTimeStyle = const TextStyle(fontSize: 13.0, color: Color.fromRGBO(120, 120, 120, 1.0));  
 
-  // colors
-  static final int intensity = 700;
-  final _receivedMessageColor = Colors.green[intensity];
-  final _sentMessageColor = Colors.blue[intensity];
-  
-  // Message
   final Message message;
-
-  // constructor
   MessageWidget(this.message);
 
   @override
   Widget build(BuildContext context) {
+
+    final _messageStyle = const TextStyle(fontSize: 22.0);
+    final _messageTimeStyle = const TextStyle(fontSize: 18.0, color: Color.fromRGBO(120, 120, 120, 1.0)); 
     
     // data to be displayed
     String text = this.message.text;

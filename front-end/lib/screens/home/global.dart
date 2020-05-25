@@ -65,20 +65,26 @@ var dummyMessages = [
   new Message(
     epochTime: (DateTime(2020, 5, 23, 12, 00).millisecondsSinceEpoch/1000).floor(),
     id: 3,
-    senderId: 1,
-    text: 'uwu',
+    senderId: 3,
+    text: 'Hello there',
+  ),
+  new Message(
+    epochTime: (DateTime(2020, 5, 23, 12, 01).millisecondsSinceEpoch/1000).floor(),
+    id: 3,
+    senderId: 3,
+    text: 'General Kenobi!',
   ),
   new Message(
     epochTime: (DateTime(2020, 5, 23, 13, 00).millisecondsSinceEpoch/1000).floor(),
     id: 2,
     senderId: 1,
-    text: 'owo',
+    text: 'Why did you leave me',
   ),
   new Message(
     epochTime: (DateTime(2019, 5, 24, 12, 34).millisecondsSinceEpoch/1000).floor(),
     id: 5,
     senderId: 2,
-    text: 'This message is from last year.',
+    text: '2019 message.',
   ),
 ];
 
@@ -92,7 +98,13 @@ var dummyComments = [
   new Comment(
     epochTime: (DateTime(2020, 01, 01, 11, 00).millisecondsSinceEpoch/1000).floor(),
     postId: 1,
-    text: 'I\'d recommend getting better seeds.',
+    text: 'I\'d recommend getting better seeds and tools.  Hoes aren\'t cheap but you\'ve gotta invest!',
+    userId: 1,
+  ),
+  new Comment(
+    epochTime: (DateTime(2020, 05, 05, 21, 30).millisecondsSinceEpoch/1000).floor(),
+    postId: 1,
+    text: 'Are they getting enough sunlight?',
     userId: 1,
   ),
 ];

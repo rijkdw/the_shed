@@ -1,50 +1,10 @@
 import 'package:flutter/material.dart';
-
-// dummy messages
-var _messageMapList = [
-  {
-    'me': true,
-    'text': 'Hey there!',
-    'time': '12:00',
-    'unread': false
-  },
-  {
-    'me': true,
-    'text': 'Isn\'t this app awesome?',
-    'time': '12:01',
-    'unread': false
-  },
-  {
-    'me': false,
-    'text': 'It\'s pretty cool.',
-    'time': '12:02',
-    'unread': false
-  },
-  {
-    'me': false,
-    'text': 'Flutter is awesome.',
-    'time': '12:05',
-    'unread': true
-  },
-  {
-    'me': false,
-    'text': 'What the f*ck did you just f*cking say about me, you little bitch? I\'ll have you know I graduated top of my class in the Navy Seals, and I\'ve been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I\'m the top sniper in the entire US armed forces. You are nothing to me but just another target. I will wipe you the f*ck out with precision the likes of which has never been seen before on this Earth, mark my f*cking words. You think you can get away with saying that shit to me over the Internet? Think again, f*cker. As we speak I am contacting my secret network of spies across the USA and your IP is being traced right now so you better prepare for the storm, maggot. The storm that wipes out the pathetic little thing you call your life. You\'re f*cking dead, kid. I can be anywhere, anytime, and I can kill you in over seven hundred ways, and that\'s just with my bare hands. Not only am I extensively trained in unarmed combat, but I have access to the entire arsenal of the United States Marine Corps and I will use it to its full extent to wipe your miserable ass off the face of the continent, you little shit. If only you could have known what unholy retribution your little "clever" comment was about to bring down upon you, maybe you would have held your f*cking tongue. But you couldn\'t, you didn\'t, and now you\'re paying the price, you goddamn idiot. I will shit fury all over you and you will drown in it. You\'re f*cking dead, kiddo.',
-    'time': '12:05',
-    'unread': true
-  },
-  {
-    'me': false,
-    'text': 'Subscribe to PewDiePie.',
-    'time': '12:05',
-    'unread': true
-  },
-];
+import 'package:rw334/models/message.dart';
 
 class ChatScreen extends StatefulWidget {
 
-  final String recipientName;
-
-  const ChatScreen(this.recipientName);
+  final List<Message> messageList;
+  const ChatScreen(this.messageList);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -54,26 +14,32 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   
   // constants
-  
-  // colors
-  final _titlebarColor = Color.fromRGBO(10, 10, 10, 1.0);
     
   @override
   Widget build(BuildContext context) {
+
+    widget.messageList.sort((a, b) => -b.epochTime.compareTo(a.epochTime));
+
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back),
-        //   onPressed: () => Navigator.of(context).pop(),
-        // ), 
-        title: Text(widget.recipientName),
-        backgroundColor: _titlebarColor,
+        title: Text(widget.messageList[0].getSenderName()),
+        backgroundColor: Colors.black,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+            ),
+            onPressed: () {
+              print('Menu button');
+            },
+          )
+        ],
       ),
       body: Stack(
         children: <Widget>[
           Column(
             children: <Widget>[
-              ConversationWidget(),
+              ConversationWidget(widget.messageList),
               InputWidget()
             ],
           )
@@ -86,21 +52,27 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class ConversationWidget extends StatelessWidget{
   
+  final List<Message> messageList;
+  ConversationWidget(this.messageList);
+
   final ScrollController controller = new ScrollController();
 
   @override
   Widget build(BuildContext context) {
     
     return Flexible(
-      child: ListView.builder(
-        padding: EdgeInsets.all(10.0),
-        itemBuilder: (context, index) {
-          if (index < _messageMapList.length)
-              return MessageWidget(index);
-            else
-              return null;
-        },
-        controller: controller,
+      child: Container(
+        color: Color.fromRGBO(41, 41, 41, 1),
+        child: ListView.builder(
+          padding: EdgeInsets.all(10.0),
+          itemBuilder: (context, index) {
+            if (index < this.messageList.length)
+                return MessageWidget(messageList[index]);
+              else
+                return null;
+          },
+          controller: controller,
+        ),
       )
     );
   }
@@ -108,23 +80,17 @@ class ConversationWidget extends StatelessWidget{
 
 class InputWidget extends StatelessWidget {
 
-  // constants
-
-  // colors
-  final _iconColor = Colors.deepOrange;
-
-  // styles
-  final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 15.0);
-  final _inputHintStyle = TextStyle(color: Colors.grey);
-
   final TextEditingController controller = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
+    final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 16.0);
+    final _inputHintStyle = TextStyle(color: Colors.grey);
+
     return Container(
       width: double.infinity,
-      height: 50.0,
+      height: 70.0,
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
@@ -132,28 +98,45 @@ class InputWidget extends StatelessWidget {
             width: 0.5
           )
         ),
-        color: Colors.white
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, -3),
+            blurRadius: 1,
+            color: Colors.black.withOpacity(0.2),
+          )
+        ]
       ),
       child: Row(
         children: <Widget>[
-          Material(
-            color: Colors.white,
-            child: new Container(
-              margin: new EdgeInsets.symmetric(horizontal: 1.0),
-              child: new IconButton(
-                onPressed: () => print('Emoji pls'),
-                icon: new Icon(Icons.face),
-                color: _iconColor,
+
+          // emoji button
+          new Container(
+            margin: new EdgeInsets.symmetric(horizontal: 1.0),
+            child: new IconButton(
+              onPressed: () => print('Emoji pls'),
+              icon: new Icon(
+                Icons.face
               ),
+              iconSize: 30,
+              color: Theme.of(context).accentColor,
             ),
           ),
 
-          // Text input
+          // text input
           Flexible(
             child: Container(
+              padding: const EdgeInsets.fromLTRB(10, 2, 2, 2),
+              decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
               child: TextField(
                 style: _inputTextStyle,
                 controller: controller,
+                // expands: true,
+                minLines: 1,
+                maxLines: 5,
                 decoration: InputDecoration.collapsed(
                   hintText: 'Type a message...',
                   hintStyle: _inputHintStyle,
@@ -162,18 +145,21 @@ class InputWidget extends StatelessWidget {
             ),
           ),
 
-          // Send Message Button
-          Material(
-            child: new Container(
-              margin: new EdgeInsets.symmetric(horizontal: 8.0),
-              child: new IconButton(
-                icon: new Icon(Icons.send),
-                onPressed: () => {},
-                color: _iconColor,
+          // send message button
+          new Container(
+            margin: new EdgeInsets.symmetric(horizontal: 8.0),
+            child: new IconButton(
+              icon: new Icon(
+                Icons.send
               ),
+              iconSize: 30,
+              onPressed: () {
+                print('Send message');
+              },
+              color: Theme.of(context).accentColor,
             ),
-            color: Colors.white,
           ),
+
         ],
       ),
     );
@@ -182,44 +168,20 @@ class InputWidget extends StatelessWidget {
 
 
 class MessageWidget extends StatelessWidget {
-  
-  // fonts
-  final _messageStyle = const TextStyle(fontSize: 14.0);
-  final _messageTimeStyle = const TextStyle(fontSize: 13.0, color: Color.fromRGBO(120, 120, 120, 1.0));  
 
-  // colors
-  static final int intensity = 200;
-  final _unreadReceivedMessageColor = Colors.deepOrange[intensity];
-  final _readReceivedMessageColor = Colors.green[intensity];
-  final _sentMessageColor = Colors.blue[intensity];
-  
-  // index of message
-  final int index;
-
-  // constructor
-  MessageWidget(this.index);
+  final Message message;
+  MessageWidget(this.message);
 
   @override
   Widget build(BuildContext context) {
+
+    final _messageStyle = const TextStyle(fontSize: 16.0);
+    final _messageTimeStyle = const TextStyle(fontSize: 14.0, color: Color.fromRGBO(120, 120, 120, 1.0)); 
     
     // data to be displayed
-    var messageMap = _messageMapList[index];
-    String text = messageMap['text'];
-    String time = messageMap['time'];
-    bool unread = messageMap['unread'];
-    bool me = messageMap['me'];
-
-    // some logic for choosing colors
-    Color messageColor;
-    if (me) {
-      messageColor = _sentMessageColor;
-    } else {
-      if (unread) {
-        messageColor = _unreadReceivedMessageColor;
-      } else {
-        messageColor = _readReceivedMessageColor;
-      }
-    }
+    String text = this.message.text;
+    String time = this.message.getInChatTimeStamp();
+    bool me = false;
 
     return Container(
       padding: const EdgeInsets.all(4),
@@ -243,7 +205,9 @@ class MessageWidget extends StatelessWidget {
                   color: Colors.black.withOpacity(0.3)
                 ),
               ],
-              color: messageColor
+              color: me
+              ? Colors.white
+              : Theme.of(context).accentColor
             ),
             padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
             child: Text(

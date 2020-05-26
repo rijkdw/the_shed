@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:rw334/service/constants.dart';
+import 'dart:math';
 
-class LikePage extends StatelessWidget {
+class LikePage extends StatefulWidget {
+  
+  @override
+  _LikePageState createState() => _LikePageState();
+}
+
+class _LikePageState extends State<LikePage> {
+
+  Color iconColor = Colors.grey;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,11 +23,12 @@ class LikePage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.near_me,
-              color: Colors.grey,
+              Icons.refresh,
+              color: Colors.white,
             ),
+            iconSize: 30,
             onPressed: () {
-              Navigator.pushNamed(context, CHAT, arguments: context);
+              print('LikePage refresh pressed');
             },
           ),
         ],
@@ -30,7 +40,31 @@ class LikePage extends StatelessWidget {
 
         child: ListView(
           scrollDirection: Axis.vertical,
-          children: [Text("THIS IS THE LIKE PAGE")],
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height/3.5,
+            ),
+            IconButton(
+              iconSize: 100,
+              splashColor: Colors.white,
+              // splashRadius: 10,
+              icon: Icon(
+                Icons.thumb_up,
+                color: iconColor,
+              ),
+              onPressed: () {
+                var colors = [Colors.red, Colors.blue, Colors.green, Colors.yellow];
+                setState(() {
+                  final random = new Random();
+                  Color newColor;
+                  do {
+                    newColor = colors[random.nextInt(colors.length)];
+                  } while (newColor == iconColor);
+                  iconColor = newColor;
+                });
+              },
+            ),
+          ],
         ),
       ),
     );

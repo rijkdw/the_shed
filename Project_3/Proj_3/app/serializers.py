@@ -22,7 +22,6 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    posts = PostSerializer(many=True, read_only=True)
 
     def create(self, validated_data):
         password = validated_data.pop('password')

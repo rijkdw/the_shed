@@ -147,7 +147,7 @@ class Conversation extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         color: debug ? Colors.white : _chatColor,
                         child: Text(
-                          messagesList[0].getSenderName(),
+                          messagesList[0].senderName,
                           style: _senderStyle,
                         )
                       ),

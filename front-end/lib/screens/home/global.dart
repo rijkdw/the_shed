@@ -12,6 +12,7 @@ var dummyPosts = [
     text: 'How to grow better carrots?',
     categories: ['Gardening', 'Environmental', 'Sustainability'],
     id: 1,
+    epochTime: (DateTime(2018, 01, 04, 20, 04).millisecondsSinceEpoch/1000).floor(),
   ),
   new Post(
     text: 'How to ride bicycle?',
@@ -102,7 +103,7 @@ var dummyMessages = [
 
 var dummyComments = [
   new Comment(
-    epochTime: (DateTime(2020, 01, 01, 10, 00).millisecondsSinceEpoch/1000).floor(),
+    epochTime: (DateTime(2019, 01, 01, 10, 00).millisecondsSinceEpoch/1000).floor(),
     postId: 1,
     text: 'Get better fertilizer bro.',
     userId: 0,
@@ -114,10 +115,15 @@ var dummyComments = [
     userId: 1,
   ),
   new Comment(
+    epochTime: (DateTime(2020, 05, 26, 15, 25).millisecondsSinceEpoch/1000).floor(),
+    postId: 1,
+    text: 'Carrots are lame.  Get potatoes!',
+    userId: 1,
+  ),
+  new Comment(
     epochTime: (DateTime(2020, 05, 05, 21, 30).millisecondsSinceEpoch/1000).floor(),
     postId: 1,
     text: 'Are they getting enough sunlight?',
     userId: 1,
   ),
-
 ];

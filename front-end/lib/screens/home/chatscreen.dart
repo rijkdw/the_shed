@@ -22,7 +22,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.messageList[0].getSenderName()),
+        title: Text(widget.messageList[0].senderName),
         backgroundColor: Colors.black,
         actions: [
           IconButton(

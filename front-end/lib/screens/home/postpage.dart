@@ -38,6 +38,10 @@ class PostPage extends StatelessWidget {
       returnList.add(SizedBox(
         height: 4,
       ));
+      returnList.add(MetadataWidget(post: this.post));
+      returnList.add(SizedBox(
+        height: 8,
+      ));
       returnList.addAll(getCommentCards());
       return returnList;    
     }
@@ -71,6 +75,46 @@ class PostPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+
+class MetadataWidget extends StatelessWidget {
+  
+  Post post;
+  MetadataWidget({this.post});
+
+  @override
+  Widget build(BuildContext context) {
+
+    TextStyle _styleEmphasis = TextStyle( color: Theme.of(context).accentColor, fontWeight: FontWeight.bold, fontSize: 14 );
+    TextStyle _styleNormal = TextStyle( color: Colors.white70, fontSize: 14, );
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Divider(
+          color: Colors.white,
+        ),
+        Container(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+          color: Color.fromRGBO(41, 41, 41, 1),
+          child: RichText(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            text: TextSpan(
+              // Posted <time> at <location>
+              children: [
+                TextSpan( text: 'Posted ', style: _styleNormal, ),
+                TextSpan( text: '${this.post.getHHMM()}, ${this.post.getDDMMYY()}', style: _styleEmphasis, ),
+                TextSpan( text: ' in ', style: _styleNormal ),
+                TextSpan( text: '${this.post.location}', style: _styleEmphasis ),
+              ]
+            ),
+          ),
+        ),
+      ]
     );
   }
 }
@@ -139,7 +183,7 @@ class CommentCard extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: comment.getUsername(),
+                          text: comment.username,
                           style: _styleHeaderEmphasis.copyWith(
                             color: Theme.of(context).accentColor,
                           )

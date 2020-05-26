@@ -112,12 +112,12 @@ class Conversation extends StatelessWidget {
 
     final _chatColor = Colors.white.withOpacity(0.0); // to allow tapping anywhere on the chat name
 
-    final _senderStyle = TextStyle(fontSize: 24.0, color: Theme.of(context).accentColor);
-    final _textStyle = const TextStyle(fontSize: 18.0, color: Colors.white);
-    final _timeStyle = TextStyle(fontSize: 18.0, color: Theme.of(context).accentColor);
+    final _senderStyle = TextStyle(fontSize: 16.0, color: Theme.of(context).accentColor);
+    final _textStyle = const TextStyle(fontSize: 14.0, color: Colors.white);
+    final _timeStyle = TextStyle(fontSize: 14.0, color: Theme.of(context).accentColor);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 4),
+      margin: const EdgeInsets.only(bottom: 4, top: 4),
       padding: const EdgeInsets.all(4),
       color: debug ? Colors.black : _chatColor,
       child: Row(

@@ -109,7 +109,7 @@ class _SortingBarState extends State<SortingBar> {
   @override
   Widget build(BuildContext context) {
 
-    final TextStyle _style = TextStyle(fontSize: 20, color: Colors.black);
+    final TextStyle _style = TextStyle(fontSize: 16, color: Colors.black);
 
     return Container(
       padding: const EdgeInsets.all(8),
@@ -210,7 +210,7 @@ class _PostCardState extends State<PostCard> {
 
     TextStyle _styleFooter = TextStyle(
       color: Colors.white70,
-      fontSize: 20,
+      fontSize: 16,
     );
 
     List<TextSpan> returnList = [];
@@ -248,19 +248,19 @@ class _PostCardState extends State<PostCard> {
     TextStyle _styleHeaderEmphasis = TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,
-      fontSize: 20,
+      fontSize: 16,
     );
     TextStyle _styleHeaderNormal = TextStyle(
       color: Colors.white70,
-      fontSize: 20,
+      fontSize: 14,
     );
     TextStyle _styleTitle = TextStyle(
       color: Colors.white,
-      fontSize: 30,
+      fontSize: 20,
     );
     TextStyle _styleFooter = TextStyle(
       color: Colors.white70,
-      fontSize: 20,
+      fontSize: 16,
     );
 
     return Container(

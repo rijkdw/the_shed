@@ -38,18 +38,15 @@ class SearchPage extends StatelessWidget {
   }
 }
 
-class SearchBar extends StatelessWidget {
-
-  // constants
-
-  // styles
-  final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 22.0);
-  final _inputHintStyle = TextStyle(color: Colors.grey);
+class SearchBar extends StatelessWidget { 
 
   final TextEditingController controller = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+
+    final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 16.0);
+    final _inputHintStyle = TextStyle(color: Colors.grey);    
 
     return Container(
       // white rectangle
@@ -64,11 +61,11 @@ class SearchBar extends StatelessWidget {
         ]
       ),
       child: Container(
-        padding: const EdgeInsets.all(6),
+        padding: const EdgeInsets.all(4),
 
         // grey rounded
         child: Container(
-          padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
+          padding: const EdgeInsets.only(left: 8),
           decoration: BoxDecoration(
             color: Colors.black12,
             borderRadius: BorderRadius.all(Radius.circular(20)),

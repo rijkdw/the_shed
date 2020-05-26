@@ -4,6 +4,8 @@ import 'package:rw334/models/comment.dart';
 import 'global.dart';
 import 'feed.dart';
 
+
+
 class PostPage extends StatelessWidget {
   
   final Post post;
@@ -13,7 +15,6 @@ class PostPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     List<CommentCard> getCommentCards() {
-      
       List<CommentCard> returnList = [];
       for (Comment comment in dummyComments) {
         if (comment.postId == this.post.id)
@@ -34,7 +35,9 @@ class PostPage extends StatelessWidget {
           ),
         ),
       ];
-      returnList.add(SizedBox(height: 6,));
+      returnList.add(SizedBox(
+        height: 4,
+      ));
       returnList.addAll(getCommentCards());
       return returnList;    
     }
@@ -72,6 +75,8 @@ class PostPage extends StatelessWidget {
   }
 }
 
+
+
 class CommentCard extends StatelessWidget {
   
   Comment comment;
@@ -84,15 +89,15 @@ class CommentCard extends StatelessWidget {
     TextStyle _styleHeaderEmphasis = TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,
-      fontSize: 18,
+      fontSize: 14,
     );
     TextStyle _styleHeaderNormal = TextStyle(
       color: Colors.white70,
-      fontSize: 18,
+      fontSize: 14,
     );
     TextStyle _styleBody = TextStyle(
       color: Colors.white,
-      fontSize: 24,
+      fontSize: 18,
     );
 
     return Container(
@@ -103,12 +108,12 @@ class CommentCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.fromLTRB(0, 4, 8, 0),
+            padding: const EdgeInsets.fromLTRB(0, 7, 8, 0),
             // color: Colors.red,
             child: Icon(
               Icons.face,
               color: Theme.of(context).accentColor,
-              size: 64,
+              size: 48,
             ),
           ),
           Expanded(

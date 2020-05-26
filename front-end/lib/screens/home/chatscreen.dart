@@ -85,7 +85,7 @@ class InputWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 18.0);
+    final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 16.0);
     final _inputHintStyle = TextStyle(color: Colors.grey);
 
     return Container(
@@ -126,7 +126,7 @@ class InputWidget extends StatelessWidget {
           // text input
           Flexible(
             child: Container(
-              padding: const EdgeInsets.fromLTRB(20, 13, 10, 13),
+              padding: const EdgeInsets.fromLTRB(10, 2, 2, 2),
               decoration: BoxDecoration(
                 color: Colors.black12,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -175,8 +175,8 @@ class MessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final _messageStyle = const TextStyle(fontSize: 22.0);
-    final _messageTimeStyle = const TextStyle(fontSize: 18.0, color: Color.fromRGBO(120, 120, 120, 1.0)); 
+    final _messageStyle = const TextStyle(fontSize: 16.0);
+    final _messageTimeStyle = const TextStyle(fontSize: 14.0, color: Color.fromRGBO(120, 120, 120, 1.0)); 
     
     // data to be displayed
     String text = this.message.text;

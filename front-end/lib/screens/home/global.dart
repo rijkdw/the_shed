@@ -60,19 +60,43 @@ var dummyMessages = [
     epochTime: (DateTime(2020, 5, 24, 12, 36).millisecondsSinceEpoch/1000).floor(),
     id: 1,
     senderId: 0,
-    text: 'I\'m using a new app.  It\'s called \"The Shed\".',
+    text: 'I\'m using a new app.  It\'s called \"The Shed\".  The logo looks a bit dodge tho.',
+  ),
+  new Message(
+    epochTime: (DateTime(2020, 5, 23, 13, 04).millisecondsSinceEpoch/1000).floor(),
+    id: 2,
+    senderId: 1,
+    text: 'Why did you leave me',
   ),
   new Message(
     epochTime: (DateTime(2020, 5, 23, 13, 00).millisecondsSinceEpoch/1000).floor(),
     id: 2,
     senderId: 1,
-    text: 'Why did you leave me',
+    text: 'Baby come back',
   ),
   new Message(
     epochTime: (DateTime(2019, 5, 24, 12, 34).millisecondsSinceEpoch/1000).floor(),
     id: 5,
     senderId: 2,
     text: '2019 message.',
+  ),
+  new Message(
+    epochTime: (DateTime(2018, 5, 24, 12, 32).millisecondsSinceEpoch/1000).floor(),
+    id: 5,
+    senderId: 2,
+    text: '2018 message.',
+  ),
+  new Message(
+    epochTime: (DateTime(2020, 5, 26, 12, 32).millisecondsSinceEpoch/1000).floor(),
+    id: 5,
+    senderId: 3,
+    text: 'This message is sent today.',
+  ),
+  new Message(
+    epochTime: (DateTime(2020, 5, 25, 12, 32).millisecondsSinceEpoch/1000).floor(),
+    id: 5,
+    senderId: 4,
+    text: 'This message is sent yesterday.',
   ),
 ];
 
@@ -95,4 +119,5 @@ var dummyComments = [
     text: 'Are they getting enough sunlight?',
     userId: 1,
   ),
+
 ];

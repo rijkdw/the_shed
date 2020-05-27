@@ -15,6 +15,16 @@ class Comment with Timeable {
     this.epochTime = epochTime ?? 0;
   }
 
+  factory Comment.fromJson(Map<String, dynamic> json) {
+    return Comment(
+      id: json['id'],
+      userId: json['userId'],
+      postId: json['postId'],
+      text: json['text'],
+      epochTime: json['epochtime'],
+    );
+  }
+
   String getInPostTimeStamp() {
     if (this.isToday()) return getHHMM();
     else if (this.isYesterday()) return getHHMM() + ' yesterday';

@@ -15,6 +15,16 @@ class Message with Timeable {
     this.epochTime = epochTime ?? 0;
   }  
 
+  factory Message.fromJson(Map<String, dynamic> json) {
+    return Message(
+      id: json['id'],
+      text: json['text'],
+      senderId: json['senderId'],
+      receiverId: json['receiverId'],
+      epochTime: json['epochTime'],
+    );
+  }
+
   String getListTimeStamp() {    
     // if same day & month & year (i.e. if today) return HH:mm
     if (this.isToday()) {

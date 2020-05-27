@@ -21,6 +21,19 @@ class Post with Timeable {
     this.epochTime = epochTime ?? 0;
   }
 
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      id: json['id'],
+      text: json['text'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      userId: json['userId'],
+      groupId: json['groupId'],
+      categories: json['categories'],
+      epochTime: json['epochTime'],
+    );
+  }
+
   String get username => 'USERNAME';
 
   String get location => 'Stellenbosch, ZA';

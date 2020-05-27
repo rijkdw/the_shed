@@ -5,16 +5,29 @@ import 'profile.dart';
 import 'search.dart';
 import 'like.dart';
 import 'chats.dart';
+import 'package:provider/provider.dart';
+import 'package:rw334/models/user.dart';
 
 class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        accentColor: Color.fromRGBO(255, 153, 0, 1.0) // the color of the logo
+    return ChangeNotifierProvider(
+      create: (context) => User(
+        email: 'ronaldo@rw334.com',
+        follow: 420,
+        post: 69,
+        name: 'Hue G. Dick',
+        picture: 'assets/user1.jpeg',
+        username: 'MikeHunt69',
       ),
-      home: UserHomePage(),
+      child: MaterialApp(
+        theme: ThemeData(
+          accentColor: Color.fromRGBO(255, 153, 0, 1.0), // the color of the logo
+          unselectedWidgetColor: Color.fromRGBO(255, 153, 0, 1.0) // the color of the logo
+        ),
+        home: UserHomePage(),
+      ),
     );
   }
 }

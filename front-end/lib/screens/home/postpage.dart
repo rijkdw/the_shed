@@ -5,7 +5,6 @@ import 'global.dart';
 import 'feed.dart';
 
 
-
 class PostPage extends StatelessWidget {
   
   final Post post;

@@ -1,22 +1,24 @@
-class User {
+import 'package:flutter/foundation.dart';
+
+class User extends ChangeNotifier {
   String email;
   String username;
   String picture;
   String name;
-  int posts;
-  int follow;
-  bool login;
+  int posts;  // number of posts
+  int follow; // number of followers
+  bool login; // logged in?
   String password;
   //final Map followers;
   //final Map following;
 
-  User(String email, String username, String name, String picture, int post, int follow) {
-    this.email = email;
-    this.username = username;
-    this.picture = picture;
-    this.name = name;
-    this.posts = post;
-    this.follow = follow;
+  User({String email, String username, String name, String picture, int post, int follow}) {
+    this.email = email ?? 'example@example.com';
+    this.username = username ?? 'username';
+    this.picture = picture ?? 'assets/user1.jpeg';
+    this.name = name ?? 'name';
+    this.posts = post ?? 0;
+    this.follow = follow ?? 0;
     this.login = true;
     this.password = 'ScrrtScrrt';
     //this.followers,
@@ -56,6 +58,7 @@ class User {
   String logout () {
     this.login = false;
     print("user loged out, take me to sign up page. ples pappy");
+    notifyListeners();
     return null;
   }
 
@@ -68,6 +71,7 @@ class User {
     *   fine = true;
     */
     fine = true;
+    notifyListeners();
     return fine;
   }
 

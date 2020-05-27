@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'global.dart' as usr;
+import 'package:provider/provider.dart';
+import 'package:rw334/models/user.dart';
 
 class Edit extends StatelessWidget {
   @override
@@ -15,58 +16,63 @@ class Edit extends StatelessWidget {
 }
 
 class EditBody extends StatelessWidget {
-  final oneController = TextEditingController();
-  final twoController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: "Username",
-            ),
-            controller: oneController,
+
+    return Consumer<User>(
+      builder: (context, user, child) {
+        return Container(
+          child: Column(
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Username",
+                ),
+                controller: usernameController,
+              ),
+
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Password',
+                ),
+                controller: passwordController,
+              ),
+              RaisedButton(
+                child: Text("Save"),
+                onPressed: () {
+                  String username;
+                  String password;
+                  // final user = usr.dummy; // not necessary since we now get user from the Consumer above
+
+                  if (usernameController.text != '') {
+                    username = usernameController.text;
+                  } else {
+                    username = user.username;
+                  }
+                  if (passwordController.text != '') {
+                    password = passwordController.text;
+                  } else {
+                    password = user.password;
+                  }
+                  bool fine = false;
+
+                  fine = user.update(username, password);
+
+                  if (fine) {
+                    Navigator.of(context).pop(true);
+                  }
+                },
+              ),
+            ],
           ),
-
-          TextField(
-            obscureText: true,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Password',
-            ),
-            controller: twoController,
-          ),
-          RaisedButton(
-            child: Text("Save"),
-            onPressed: () {
-              String username;
-              String password;
-              final user = usr.dummy;
-
-              if (oneController.text != '') {
-                username = oneController.text;
-              } else {
-                username = user.username;
-              }
-              if (twoController.text != '') {
-                password = twoController.text;
-              } else {
-                password = user.password;
-              }
-              bool fine = false;
-
-              fine = user.update(username, password);
-
-              if (fine) {
-                Navigator.of(context).pop(true);
-              }
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

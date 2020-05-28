@@ -9,13 +9,16 @@ import 'package:provider/provider.dart';
 import 'package:rw334/models/user.dart';
 
 class Home extends StatelessWidget {
-  const Home(User usr, {this.onSignedOut});
+  const Home({this.onSignedOut});
   final VoidCallback onSignedOut;
-
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
+      create: (context) => User(
+        picture: 'assets/user1.jpeg',
+      username: 'MikeHunt69',
+    ),
       child: MaterialApp(
         theme: ThemeData(
             accentColor: Color.fromRGBO(255, 153, 0, 1.0),

@@ -5,6 +5,8 @@ import 'package:rw334/screens/wrapper.dart';
 
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({this.onSignedIn});
+  final VoidCallback onSignedIn;
 
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -91,8 +93,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               onPressed: () {
                 //printData();
-                User usr = createUserObject();
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(usr)));
+                widget.onSignedIn();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => Home()),
+                        (Route<dynamic> route) => false);
               },
             )
           ],

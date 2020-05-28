@@ -27,16 +27,6 @@ class FeedPage extends StatelessWidget {
               print('FeedPage refresh pressed');
             },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.bug_report,
-              color: Colors.white,
-            ),
-            iconSize: 30,
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen()));
-            },
-          ),
         ],
       ),
       body: RefreshIndicator(

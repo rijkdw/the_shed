@@ -32,10 +32,10 @@ class _RootPageState extends State<RootPage> {
           onSignedIn: _signedIn,
         );
 
-      //case AuthStatus.signedIn:
-      //  return new Home(
-      //    onSignedOut: _signedOut,
-      //  );
+      case AuthStatus.signedIn:
+        return new Home(
+          onSignedOut: _signedOut,
+        );
     }
     return null;
   }

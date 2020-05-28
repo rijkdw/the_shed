@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/post.dart';
-import 'package:rw334/screens/home/signup.dart';
+import 'file:///C:/Users/Ronaldo/Desktop/app/lib/screens/authenticate/signup.dart';
 import 'global.dart';
 import 'postpage.dart';
 import 'createpost.dart';

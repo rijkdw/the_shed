@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // import 'package:rw334/service/constants.dart';
 import 'package:rw334/models/user.dart';
-import 'package:rw334/screens/home/login.dart';
+import 'file:///C:/Users/Ronaldo/Desktop/app/lib/screens/authenticate/login.dart';
 import 'edit.dart';
 import 'settings.dart';
 

@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:rw334/models/user.dart';
+import 'package:rw334/screens/home/home.dart';
+import 'package:rw334/screens/wrapper.dart';
+
 
 class SignUpScreen extends StatefulWidget {
-  
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  
   SignUpField emailField = SignUpField(hintText: 'email');
   SignUpField usernameField = SignUpField(hintText: 'username');
   SignUpField nameField = SignUpField(hintText: 'real name');
-  SignUpField passwordField = SignUpField(hintText: 'password', obscureText: true,);
-  SignUpField confirmPasswordField = SignUpField(hintText: 'confirm password', obscureText: true,);
+  SignUpField passwordField = SignUpField(
+    hintText: 'password',
+    obscureText: true,
+  );
+  SignUpField confirmPasswordField = SignUpField(
+    hintText: 'confirm password',
+    obscureText: true,
+  );
 
   void printData() {
     print('USER SIGNING UP:');
@@ -39,70 +46,64 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isValidData() {
     if (!doPasswordsMatch()) return false;
     // TODO:  check if valid email (regex?)
+    return true;
   }
 
-  bool doPasswordsMatch() => passwordField.value==confirmPasswordField.value;
+  bool doPasswordsMatch() => passwordField.value == confirmPasswordField.value;
 
   @override
   Widget build(BuildContext context) {
-    
-    return Consumer<User>(
-      builder: (context, user, child) {
-
-        return Material(
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            color: Colors.black,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  'assets/logo.png',
-                  scale: 1.5,
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                // username textbox  
-                emailField,
-                nameField,
-                usernameField,
-                passwordField,
-                confirmPasswordField,
-                SizedBox(
-                  height: 24,
-                ),
-                // Login button
-                RaisedButton(
-                  color: Theme.of(context).accentColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(3.0),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      'SIGN UP',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    printData();
-                  },
-                )
-              ],
+    return Material(
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        color: Colors.black,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              'assets/logo.png',
+              scale: 1.5,
             ),
-          ),
-        );
-      },
+            SizedBox(
+              height: 24,
+            ),
+            // username textbox
+            emailField,
+            nameField,
+            usernameField,
+            passwordField,
+            confirmPasswordField,
+            SizedBox(
+              height: 24,
+            ),
+            // Login button
+            RaisedButton(
+              color: Theme.of(context).accentColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(3.0),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  'SIGN UP',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+              ),
+              onPressed: () {
+                //printData();
+                User usr = createUserObject();
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(usr)));
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 }
 
+// ignore: must_be_immutable
 class SignUpField extends StatelessWidget {
-
   String _hintText;
   bool _obscureText;
 
@@ -113,7 +114,8 @@ class SignUpField extends StatelessWidget {
 
   TextEditingController _controller = TextEditingController();
 
-  String get value => _controller.text;  
+  String get value => _controller.text;
+
   String toDebugString() => '$_hintText:  \"${_controller.value.text}\"';
 
   @override

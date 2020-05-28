@@ -17,7 +17,7 @@ class PostCreatorPage extends StatelessWidget {
         child: Column(
           children: [
             PostFieldWidget(
-              hintText: '// body',
+              hintText: 'body',
               labelText: 'Post body',
             ),
             GroupSelector(),
@@ -27,8 +27,6 @@ class PostCreatorPage extends StatelessWidget {
     );
   }
 }
-
-
 
 class GroupSelector extends StatefulWidget {
 

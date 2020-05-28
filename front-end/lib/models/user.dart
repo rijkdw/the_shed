@@ -9,10 +9,11 @@ class User extends ChangeNotifier {
   int follow; // number of followers
   bool login; // logged in?
   String password;
+  int id;
   //final Map followers;
   //final Map following;
 
-  User({String email, String username, String name, String picture, int post, int follow, String password}) {
+  User({int id, String email, String username, String name, String picture, int post, int follow, String password}) {
     this.email = email ?? 'example@example.com';
     this.username = username ?? 'username';
     this.picture = picture ?? 'assets/user1.jpeg';
@@ -21,6 +22,7 @@ class User extends ChangeNotifier {
     this.follow = follow ?? 0;
     this.login = true;
     this.password = password ?? '1234';
+    this.id = id ?? 0;
     //this.followers,
     //this.following
   }

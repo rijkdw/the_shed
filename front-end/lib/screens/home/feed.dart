@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/post.dart';
+import 'package:rw334/screens/home/signup.dart';
 import 'global.dart';
 import 'postpage.dart';
 import 'createpost.dart';
@@ -26,21 +27,34 @@ class FeedPage extends StatelessWidget {
               print('FeedPage refresh pressed');
             },
           ),
+          IconButton(
+            icon: const Icon(
+              Icons.bug_report,
+              color: Colors.white,
+            ),
+            iconSize: 30,
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen()));
+            },
+          ),
         ],
       ),
-      body: Container(
-        color: Color.fromRGBO(41, 41, 41, 1),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                SortingBar(),
-                FeedWidget(),
-              ],          
-            ),
-          ]
+      body: RefreshIndicator(
+        onRefresh: () => Future.delayed(Duration(seconds: 2)),
+        child: Container(
+          color: Color.fromRGBO(41, 41, 41, 1),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  SortingBar(),
+                  FeedWidget(),
+                ],          
+              ),
+            ]
+          ),
         ),
       ),
       floatingActionButton: NewPostButton()
@@ -185,11 +199,12 @@ class _SortingBarState extends State<SortingBar> {
             child: Container(
               alignment: Alignment.centerRight,
               width: 40,
-              child: RaisedButton(
-                color: Colors.white,
-                onPressed: () => print('uwu'),
+              child: OutlineButton(
+                splashColor: Theme.of(context).accentColor,
+                // TODO make it sort
+                onPressed: () => print('Sorting button pushed'),
                 child: Text(
-                  'Go'
+                  'Go',
                 )
               ),
             ),

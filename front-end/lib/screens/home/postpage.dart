@@ -95,6 +95,8 @@ class MetadataWidget extends StatelessWidget {
       children: [
         Divider(
           color: Colors.white,
+          endIndent: 4,
+          indent: 4,
         ),
         Container(
           padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),

@@ -12,7 +12,7 @@ class User extends ChangeNotifier {
   //final Map followers;
   //final Map following;
 
-  User({String email, String username, String name, String picture, int post, int follow}) {
+  User({String email, String username, String name, String picture, int post, int follow, String password}) {
     this.email = email ?? 'example@example.com';
     this.username = username ?? 'username';
     this.picture = picture ?? 'assets/user1.jpeg';
@@ -20,7 +20,7 @@ class User extends ChangeNotifier {
     this.posts = post ?? 0;
     this.follow = follow ?? 0;
     this.login = true;
-    this.password = 'ScrrtScrrt';
+    this.password = password ?? '1234';
     //this.followers,
     //this.following
   }
@@ -47,6 +47,8 @@ class User extends ChangeNotifier {
     return follow;
   }
 
+  @override
+  String toString() => 'User:  email=\"$email\", username=\"$username\", name=\"$name\", password=\"$password\"';
 
   String getPost() {
     int post = this.posts;

@@ -2,21 +2,26 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:rw334/models/user.dart';
-import 'package:rw334/screens/home/home.dart';
-import 'package:rw334/screens/wrapper.dart';
-import 'package:http/http.dart';
-import 'dart:async';
+
+import 'package:rw334/service/httpService.dart';
+
+import '../demo.dart';
+
+
+
 
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({this.onSignedIn});
   final VoidCallback onSignedIn;
 
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  User _user;
   SignUpField emailField = SignUpField(hintText: 'email');
   SignUpField usernameField = SignUpField(hintText: 'username');
   SignUpField nameField = SignUpField(hintText: 'real name');
@@ -24,10 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     hintText: 'password',
     obscureText: true,
   );
-  SignUpField confirmPasswordField = SignUpField(
-    hintText: 'confirm password',
-    obscureText: true,
-  );
+
 
   void printData() {
     print('USER SIGNING UP:');
@@ -35,8 +37,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     print(nameField.toDebugString());
     print(usernameField.toDebugString());
     print(passwordField.toDebugString());
-    print(confirmPasswordField.toDebugString());
-    print('Password match? ${doPasswordsMatch()}');
+
+
     print(createUserObject().toString());
   }
 
@@ -49,13 +51,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  bool isValidData() {
-    if (!doPasswordsMatch()) return false;
-    // TODO:  check if valid email (regex?)
-    return true;
-  }
 
-  bool doPasswordsMatch() => passwordField.value == confirmPasswordField.value;
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +75,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             nameField,
             usernameField,
             passwordField,
-            confirmPasswordField,
+
             SizedBox(
               height: 24,
             ),
@@ -95,11 +92,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ),
-              onPressed: () {
+              onPressed: ()async{
                 //printData();
-                widget.onSignedIn();
+                createUserObject();
+                final User user = await signedUp(usernameField.value, passwordField.value);
+
+                setState(() {
+                  _user = user;
+                });
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(builder: (context) => Demo()),
                         (Route<dynamic> route) => false);
               },
             )

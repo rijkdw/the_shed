@@ -27,6 +27,19 @@ class User extends ChangeNotifier {
     //this.following
   }
 
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    username: json["username"],
+    password: json["password"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "username": username,
+    "password": password,
+  };
+
+
+
   String getEmail() {
     return this.email;
   }

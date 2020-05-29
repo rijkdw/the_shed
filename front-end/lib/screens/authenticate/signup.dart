@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/home/home.dart';
 import 'package:rw334/screens/wrapper.dart';
+import 'package:http/http.dart';
+import 'dart:async';
 
 
 class SignUpScreen extends StatefulWidget {

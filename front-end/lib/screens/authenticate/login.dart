@@ -111,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onChanged: (bool newValue) {
                       setState(() {
                         _rememberMe = newValue;
+                        widget.onSignedIn();
                       });
                     },
                     value: _rememberMe,

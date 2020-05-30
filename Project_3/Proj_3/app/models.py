@@ -4,6 +4,10 @@ from django.contrib.auth.models import User, Group
 from django.template.defaultfilters import slugify
 
 
+#class Tag(models.Model):
+#    name = models.CharField(max_length=100, unique=True)
+
+
 class Post(models.Model):
     text = models.CharField(max_length=200)
     group = models.ForeignKey('auth.Group', on_delete=models.CASCADE, null=True)  # Field name made lowercase.
@@ -12,6 +16,7 @@ class Post(models.Model):
     longitude = models.FloatField()
     timestamp = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     slug = models.SlugField(unique=True, max_length=255)
+    #tags = models.ManyToManyField(Tag, related_name='posts', blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -35,6 +40,7 @@ class Comments(models.Model):
     timestamp = models.DateTimeField(null=True, auto_now_add=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
 
 

@@ -31,6 +31,7 @@ class User extends ChangeNotifier {
   factory User.fromJson(Map<String, dynamic> json) => User(
     username: json["username"],
     password: json["password"],
+    email: json["email"],
   );
 
   Map<String, dynamic> toJson() => {

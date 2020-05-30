@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/authenticate/signup.dart';
+import 'package:rw334/service/httpService.dart';
+
+import '../demo.dart';
 
 
 class EmailFieldValidator {
@@ -133,11 +137,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
+                String username = usernameController.value.text;
+                String psw = passwordController.value.text;
+                final User user = await logedIn(username, psw);
 
-                print(
-                    'I want to login as \"${usernameController.value.text}\" with password \"${passwordController.value.text}\".');
-              },
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => Demo()),
+                        (Route<dynamic> route) => false);
+                },
             ),
             RaisedButton(
               color: Theme.of(context).primaryColor,

@@ -1,15 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:rw334/models/user.dart';
-
 import 'package:rw334/service/httpService.dart';
-
 import '../demo.dart';
-
-
-
-
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({this.onSignedIn});
@@ -95,7 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onPressed: ()async{
                 //printData();
                 createUserObject();
-                final User user = await signedUp(usernameField.value, passwordField.value);
+                final User user = await signedUp(usernameField.value, emailField.value, passwordField.value);
 
                 setState(() {
                   _user = user;

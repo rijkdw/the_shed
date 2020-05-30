@@ -2,7 +2,7 @@
 from rest_framework import serializers
 
 from django.contrib.auth.models import User, Group
-from app.models import Post
+from app.models import Post, Comments
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
@@ -32,7 +32,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'id')
+        fields = ['username', 'password', 'id']
         extra_kwargs = {'password': {'write_only': True}}
 
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comments
+        fields = '__all__'
 

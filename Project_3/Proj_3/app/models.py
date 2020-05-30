@@ -3,9 +3,6 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from django.template.defaultfilters import slugify
 
-Group.add_to_class('description', models.CharField(max_length=180, null=True, blank=True))
-Group.add_to_class('date_created', models.DateTimeField(null=True, auto_now_add=True))
-
 
 class Post(models.Model):
     text = models.CharField(max_length=200)
@@ -27,6 +24,17 @@ class Post(models.Model):
         def __unicode__(self):
             return self.title
 
+
+Group.add_to_class('description', models.CharField(max_length=180, null=True, blank=True))
+Group.add_to_class('date_created', models.DateTimeField(null=True, auto_now_add=True))
+Group.add_to_class('tag', models.CharField(max_length=180, null=True, blank=True))
+
+
+class Comments(models.Model):
+    text = models.CharField(max_length=200)
+    timestamp = models.DateTimeField(null=True, auto_now_add=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 

@@ -26,8 +26,10 @@ SECRET_KEY = 'mzjs(at*nl!wn@%#$kfx&56*3ne52vnwmp2^82@70ji_xgykl)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['theshedapi.herokuapp.com']
+ALLOWED_HOSTS = ['theshedapi.herokuapp.com', '127.0.0.1']
 
+from django.db.backends.mysql.base import DatabaseWrapper
+DatabaseWrapper.data_types['DateTimeField'] = 'datetime'
 
 # Application definition
 
@@ -39,9 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django.contrib.sites',
     'app',
     'djoser',
     'rest_framework.authtoken',
+    'django_filters',
     'whitenoise.runserver_nostatic',
 ]
 
@@ -86,6 +90,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 
@@ -106,6 +112,9 @@ DATABASES = {
     }
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+SITE_ID = 1
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

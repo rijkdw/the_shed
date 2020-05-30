@@ -5,7 +5,7 @@ import 'postpage.dart';
 import 'createpost.dart';
 
 class FeedPage extends StatelessWidget {
-  
+  //http request-get
   @override
   Widget build(BuildContext context) {
     return Scaffold(

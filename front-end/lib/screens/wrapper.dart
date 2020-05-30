@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rw334/models/user.dart';
-import 'package:rw334/screens/authenticate/signup.dart';
 import 'authenticate/login.dart';
 import 'home/home.dart';
 
@@ -13,7 +11,6 @@ enum AuthStatus { notSignedIn, signedIn }
 
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.notSignedIn;
-
 
   void _signedIn() {
     setState(() {
@@ -33,10 +30,10 @@ class _RootPageState extends State<RootPage> {
       case AuthStatus.notSignedIn:
         return new LoginScreen();
 
-      case AuthStatus.signedIn:
-        return new Home(
-          onSignedOut: _signedOut,
-        );
+      //case AuthStatus.signedIn:
+       // return new Home(
+          //onSignedOut: _signedOut,
+       // );
     }
     return null;
   }

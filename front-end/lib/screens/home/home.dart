@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:rw334/models/user.dart';
 
 class Home extends StatelessWidget {
-  const Home({this.onSignedOut});
+  const Home(String token, {this.onSignedOut});
   final VoidCallback onSignedOut;
 
   @override

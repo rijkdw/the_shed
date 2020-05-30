@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/authenticate/signup.dart';
+import 'package:rw334/screens/home/home.dart';
 import 'package:rw334/service/httpService.dart';
 
 import '../demo.dart';
@@ -140,10 +141,12 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () async {
                 String username = usernameController.value.text;
                 String psw = passwordController.value.text;
-                final User user = await logedIn(username, psw);
+                String token = await logedIn(username, psw);
+
+                getAllPosts();
 
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => Demo()),
+                    MaterialPageRoute(builder: (context) => Home(token)),
                         (Route<dynamic> route) => false);
                 },
             ),

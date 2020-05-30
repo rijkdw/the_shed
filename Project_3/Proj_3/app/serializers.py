@@ -14,6 +14,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.CurrentUserDefault()
+    id = serializers.IntegerField(source='pk')
 
     class Meta:
         model = Post
@@ -24,15 +25,18 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
+        groups_data = validated_data.pop('groups')
         password = validated_data.pop('password')
         user = User(**validated_data)
         user.set_password(password)
+        for group_data in groups_data:
+            user.groups.add(group_data)
         user.save()
         return user
 
     class Meta:
         model = User
-        fields = ['username', 'password', 'id']
+        fields = ['username', 'password', 'id', 'groups']
         extra_kwargs = {'password': {'write_only': True}}
 
 

@@ -4,95 +4,103 @@ import 'package:rw334/models/post.dart';
 import 'package:rw334/models/comment.dart';
 import 'package:rw334/models/message.dart';
 
-final User dummy =
-new User("group9@rw334.com", "MikeHunt69", "Hue G. Dick", "assets/user1.jpeg", 420, 666);
+final User dummyUser = User(
+  //"group9@rw334.com", "MikeHunt69", "Hue G. Dick", "assets/user1.jpeg", 420, 666);
+  email: 'group9@rw334.com',
+  username: 'MikeHunt69',
+  name: 'Hue G. Dick',
+  picture: 'assets/user1.jpeg',
+  follow: 666,
+  post: 420,
+);
 
 var dummyPosts = [
-  new Post(
+  Post(
     text: 'How to grow better carrots?',
     categories: ['Gardening', 'Environmental', 'Sustainability'],
     id: 1,
+    epochTime: (DateTime(2018, 01, 04, 20, 04).millisecondsSinceEpoch/1000).floor(),
   ),
-  new Post(
+  Post(
     text: 'How to ride bicycle?',
     categories: ['Sports', 'Lifestyle', 'Transportation'],
     id: 2,
   ),
-  new Post(
+  Post(
     text: 'How to overthrow a lawfully elected government?',
     categories: ['Politics', 'Military Tactics', 'Genocide'],
     id: 3,
   ),
-  new Post(
+  Post(
     text: 'A very long post title.  '*20,
     categories: ['Cat 1', 'Cat 2', 'Cat 3'],
   ),
-  new Post(
+  Post(
     text: 'Title',
     categories: ['Categoryyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy 1', 'Cat 2', 'Cat 3'],
   ),
-  new Post(
+  Post(
     text: 'TestTitle',
     categories: ['Cat 1', 'Cat 2', 'Cat 3'],
   ),
-  new Post(
+  Post(
     text: 'TestTitle',
     categories: ['Cat 1', 'Cat 2', 'Cat 3'],
   ),
-  new Post(
+  Post(
     text: 'TestTitle',
     categories: ['Cat 1', 'Cat 2', 'Cat 3'],
   ),
-  new Post(
+  Post(
     text: 'TestTitle',
     categories: ['Cat 1', 'Cat 2', 'Cat 3'],
   ),
 ];
 
 var dummyMessages = [
-  new Message(
+  Message(
     epochTime: (DateTime(2020, 5, 24, 12, 34).millisecondsSinceEpoch/1000).floor(),
     id: 0,
     senderId: 0,
     text: 'Hello world!',
   ),
-  new Message(
+  Message(
     epochTime: (DateTime(2020, 5, 24, 12, 36).millisecondsSinceEpoch/1000).floor(),
     id: 1,
     senderId: 0,
     text: 'I\'m using a new app.  It\'s called \"The Shed\".  The logo looks a bit dodge tho.',
   ),
-  new Message(
+  Message(
     epochTime: (DateTime(2020, 5, 23, 13, 04).millisecondsSinceEpoch/1000).floor(),
     id: 2,
     senderId: 1,
     text: 'Why did you leave me',
   ),
-  new Message(
+  Message(
     epochTime: (DateTime(2020, 5, 23, 13, 00).millisecondsSinceEpoch/1000).floor(),
     id: 2,
     senderId: 1,
     text: 'Baby come back',
   ),
-  new Message(
+  Message(
     epochTime: (DateTime(2019, 5, 24, 12, 34).millisecondsSinceEpoch/1000).floor(),
     id: 5,
     senderId: 2,
     text: '2019 message.',
   ),
-  new Message(
+  Message(
     epochTime: (DateTime(2018, 5, 24, 12, 32).millisecondsSinceEpoch/1000).floor(),
     id: 5,
     senderId: 2,
     text: '2018 message.',
   ),
-  new Message(
+  Message(
     epochTime: (DateTime(2020, 5, 26, 12, 32).millisecondsSinceEpoch/1000).floor(),
     id: 5,
     senderId: 3,
     text: 'This message is sent today.',
   ),
-  new Message(
+  Message(
     epochTime: (DateTime(2020, 5, 25, 12, 32).millisecondsSinceEpoch/1000).floor(),
     id: 5,
     senderId: 4,
@@ -101,23 +109,28 @@ var dummyMessages = [
 ];
 
 var dummyComments = [
-  new Comment(
-    epochTime: (DateTime(2020, 01, 01, 10, 00).millisecondsSinceEpoch/1000).floor(),
+  Comment(
+    epochTime: (DateTime(2019, 01, 01, 10, 00).millisecondsSinceEpoch/1000).floor(),
     postId: 1,
     text: 'Get better fertilizer bro.',
     userId: 0,
   ),
-  new Comment(
+  Comment(
     epochTime: (DateTime(2020, 01, 01, 11, 00).millisecondsSinceEpoch/1000).floor(),
     postId: 1,
     text: 'I\'d recommend getting better seeds and tools.  Hoes aren\'t cheap tho :(',
     userId: 1,
   ),
-  new Comment(
+  Comment(
+    epochTime: (DateTime(2020, 05, 26, 15, 25).millisecondsSinceEpoch/1000).floor(),
+    postId: 1,
+    text: 'Carrots are lame.  Get potatoes!',
+    userId: 1,
+  ),
+  Comment(
     epochTime: (DateTime(2020, 05, 05, 21, 30).millisecondsSinceEpoch/1000).floor(),
     postId: 1,
     text: 'Are they getting enough sunlight?',
     userId: 1,
   ),
-
 ];

@@ -1,27 +1,44 @@
-class User {
+import 'package:flutter/foundation.dart';
+
+class User extends ChangeNotifier {
   String email;
   String username;
   String picture;
   String name;
-  int posts;
-  int follow;
-  bool login;
+  int posts;  // number of posts
+  int follow; // number of followers
+  bool login; // logged in?
   String password;
+  int id;
   //final Map followers;
   //final Map following;
 
-  User(String email, String username, String name, String picture, int post, int follow) {
-    this.email = email;
-    this.username = username;
-    this.picture = picture;
-    this.name = name;
-    this.posts = post;
-    this.follow = follow;
+  User({int id, String email, String username, String name, String picture, int post, int follow, String password}) {
+    this.email = email ?? 'example@example.com';
+    this.username = username ?? 'username';
+    this.picture = picture ?? 'assets/user1.jpeg';
+    this.name = name ?? 'name';
+    this.posts = post ?? 0;
+    this.follow = follow ?? 0;
     this.login = true;
-    this.password = 'ScrrtScrrt';
+    this.password = password ?? '1234';
+    this.id = id ?? 0;
     //this.followers,
     //this.following
   }
+
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    username: json["username"],
+    password: json["password"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "username": username,
+    "password": password,
+  };
+
+
 
   String getEmail() {
     return this.email;
@@ -45,6 +62,8 @@ class User {
     return follow;
   }
 
+  @override
+  String toString() => 'User:  email=\"$email\", username=\"$username\", name=\"$name\", password=\"$password\"';
 
   String getPost() {
     int post = this.posts;
@@ -56,6 +75,7 @@ class User {
   String logout () {
     this.login = false;
     print("user loged out, take me to sign up page. ples pappy");
+    notifyListeners();
     return null;
   }
 
@@ -68,6 +88,7 @@ class User {
     *   fine = true;
     */
     fine = true;
+    notifyListeners();
     return fine;
   }
 

@@ -1,58 +1,29 @@
-class Comment {
+import 'timeable.dart';
 
-  int id = 0;
-  int userId = 0;
-  int postId = 0;
-  String text = 'COMMENT_TEXT';
-  int epochTime = 0;
+class Comment with Timeable {
 
-  Comment({this.id, this.userId, this.postId, this.text, this.epochTime});
+  int id;
+  int userId;
+  int postId;
+  String text;
 
-  bool isToday() {
-    var nowDT = DateTime.now();
-    int messageEpochMS = this.epochTime*1000;
-    var msgDT = DateTime.fromMillisecondsSinceEpoch(messageEpochMS);
-
-    return ((msgDT.day == nowDT.day) && (msgDT.month == nowDT.month) && (msgDT.year == nowDT.year));
+  Comment({int id, int userId, int postId, String text, int epochTime}) {
+    this.id = id ?? 0;
+    this.userId = userId ?? 0;
+    this.postId = postId ?? 0;
+    this.text = text ?? 'TEXT';
+    this.epochTime = epochTime ?? 0;
   }
 
-  bool isYesterday() {
-    var nowDT = DateTime.now();
-    int messageEpochMS = this.epochTime*1000;
-    var msgDT = DateTime.fromMillisecondsSinceEpoch(messageEpochMS);
-
-    return ((msgDT.day == nowDT.day-1) && (msgDT.month == nowDT.month) && (msgDT.year == nowDT.year));
+  factory Comment.fromJson(Map<String, dynamic> json) {
+    return Comment(
+      id: json['id'],
+      userId: json['userId'],
+      postId: json['postId'],
+      text: json['text'],
+      epochTime: json['epochtime'],
+    );
   }
-  
-  bool isThisYear() {
-    var nowDT = DateTime.now();
-    int messageEpochMS = this.epochTime*1000;
-    var msgDT = DateTime.fromMillisecondsSinceEpoch(messageEpochMS);
-
-    return (nowDT.year == msgDT.year);
-  }
-
-  DateTime getDateTime() => DateTime.fromMillisecondsSinceEpoch(this.epochTime*1000);
-  
-  String getMinute() => this.getDateTime().minute.toString().padLeft(2, '0');
-
-  String getHour() => this.getDateTime().hour.toString().padLeft(2, '0');
-
-  String getDay() => this.getDateTime().day.toString().padLeft(2, '0');
-
-  String getMonth() => this.getDateTime().month.toString().padLeft(2, '0');
-
-  String getYear(bool short) => short
-    ? this.getDateTime().year.toString().substring(2, 4)
-    : this.getDateTime().year.toString();
-
-  String getHHMM() => this.getHour() + ':' + this.getMinute();
-
-  String getDDMM() => this.getDay() + '/' + this.getMonth();
-
-  String getDDMMYY() => this.getDay() + '/' + this.getMonth() + '/' + this.getYear(true);
-
-  String getDDMMYYYY() => this.getDay() + '/' + this.getMonth() + '/' + this.getYear(false);
 
   String getInPostTimeStamp() {
     if (this.isToday()) return getHHMM();
@@ -61,6 +32,6 @@ class Comment {
     else return getHHMM() + ' ' + getDDMMYY();
   }
 
-  String getUsername() => 'USERNAME';
+  String get username => 'USERNAME';
 
 }

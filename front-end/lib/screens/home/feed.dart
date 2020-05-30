@@ -28,19 +28,22 @@ class FeedPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        color: Color.fromRGBO(41, 41, 41, 1),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                SortingBar(),
-                FeedWidget(),
-              ],          
-            ),
-          ]
+      body: RefreshIndicator(
+        onRefresh: () => Future.delayed(Duration(seconds: 2)),
+        child: Container(
+          color: Color.fromRGBO(41, 41, 41, 1),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  SortingBar(),
+                  FeedWidget(),
+                ],          
+              ),
+            ]
+          ),
         ),
       ),
       floatingActionButton: NewPostButton()
@@ -112,7 +115,7 @@ class _SortingBarState extends State<SortingBar> {
     final TextStyle _style = TextStyle(fontSize: 16, color: Colors.black);
 
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -127,12 +130,9 @@ class _SortingBarState extends State<SortingBar> {
         children: [
           
           // the label
-          Container(
-            margin: const EdgeInsets.only(left: 12),
-            child: Text(
-              'Sort by...',
-              style: _style,
-            ),
+          Text(
+            'Sort by...',
+            style: _style,
           ),
 
           // sort by time, group, user, etc
@@ -154,6 +154,7 @@ class _SortingBarState extends State<SortingBar> {
               ).toList(),
               onChanged: (String newValue) {
                 print('\"$newValue\" has been selected as sorting key');
+                setState(() { sortingKey = newValue; });                
               },
             ),
           ),
@@ -177,14 +178,33 @@ class _SortingBarState extends State<SortingBar> {
               ).toList(),
               onChanged: (String newValue) {
                 print('\"$newValue\" has been selected as sorting order');
+                setState(() { sortingOrder = newValue; });                
               },
             ),
           ),
+
+          // confirm
+          Expanded(
+            child: Container(
+              alignment: Alignment.centerRight,
+              width: 40,
+              child: OutlineButton(
+                splashColor: Theme.of(context).accentColor,
+                // TODO make it sort
+                onPressed: () => print('Sorting button pushed'),
+                child: Text(
+                  'Go',
+                )
+              ),
+            ),
+          )
         ],
       )
     );
   }
 }
+
+
 
 class PostCard extends StatefulWidget {
   
@@ -285,20 +305,16 @@ class _PostCardState extends State<PostCard> {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: widget.post.getUserName(),
-                  style: _styleHeaderEmphasis.copyWith(
-                    color: Theme.of(context).accentColor,
-                  )
+                  text: widget.post.username,
+                  style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
                 ),
                 TextSpan(
                   text: ' in ',
                   style: _styleHeaderNormal
                 ),
                 TextSpan(
-                  text: widget.post.getGroupName(),
-                  style: _styleHeaderEmphasis.copyWith(
-                    color: Theme.of(context).accentColor,
-                  )
+                  text: widget.post.groupname,
+                  style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
                 ),
               ],
             ),
@@ -328,7 +344,7 @@ class _PostCardState extends State<PostCard> {
 
           // plain white categories
           : Text(
-            widget.post.getPrettyCategories(),
+            widget.post.prettyCategories,
             style: _styleFooter,
           )
         ],

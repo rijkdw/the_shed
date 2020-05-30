@@ -1,39 +1,28 @@
-class Message {
+import 'timeable.dart';
 
-  int id = 0;
-  String text = 'MESSAGE_TEXT';
-  int senderId = 0;
-  int epochTime = 0;
+class Message with Timeable {
 
-  Message({int id, String text, int senderId, int epochTime}) {
-    this.id = id;
-    this.text = text;
-    this.senderId = senderId;
-    this.epochTime = epochTime;
-  }
-  
-  bool isToday() {
-    var nowDT = DateTime.now();
-    int messageEpochMS = this.epochTime*1000;
-    var msgDT = DateTime.fromMillisecondsSinceEpoch(messageEpochMS);
+  int id;
+  String text;
+  int senderId;
+  int receiverId;
 
-    return ((msgDT.day == nowDT.day) && (msgDT.month == nowDT.month) && (msgDT.year == nowDT.year));
-  }
+  Message({int id, String text, int senderId, int receiverId, int epochTime}) {
+    this.id = id ?? 0;
+    this.text = text ?? 'TEXT';
+    this.senderId = senderId ?? 0;
+    this.receiverId = receiverId ?? 0;
+    this.epochTime = epochTime ?? 0;
+  }  
 
-  bool isYesterday() {
-    var nowDT = DateTime.now();
-    int messageEpochMS = this.epochTime*1000;
-    var msgDT = DateTime.fromMillisecondsSinceEpoch(messageEpochMS);
-
-    return ((msgDT.day == nowDT.day-1) && (msgDT.month == nowDT.month) && (msgDT.year == nowDT.year));
-  }
-  
-  bool isThisYear() {
-    var nowDT = DateTime.now();
-    int messageEpochMS = this.epochTime*1000;
-    var msgDT = DateTime.fromMillisecondsSinceEpoch(messageEpochMS);
-
-    return (nowDT.year == msgDT.year);
+  factory Message.fromJson(Map<String, dynamic> json) {
+    return Message(
+      id: json['id'],
+      text: json['text'],
+      senderId: json['senderId'],
+      receiverId: json['receiverId'],
+      epochTime: json['epochTime'],
+    );
   }
 
   String getListTimeStamp() {    
@@ -52,28 +41,6 @@ class Message {
     }
   }
 
-  DateTime getDateTime() => DateTime.fromMillisecondsSinceEpoch(this.epochTime*1000);
-  
-  String getMinute() => this.getDateTime().minute.toString().padLeft(2, '0');
-
-  String getHour() => this.getDateTime().hour.toString().padLeft(2, '0');
-
-  String getDay() => this.getDateTime().day.toString().padLeft(2, '0');
-
-  String getMonth() => this.getDateTime().month.toString().padLeft(2, '0');
-
-  String getYear(bool short) => short
-    ? this.getDateTime().year.toString().substring(2, 4)
-    : this.getDateTime().year.toString();
-
-  String getHHMM() => this.getHour() + ':' + this.getMinute();
-
-  String getDDMM() => this.getDay() + '/' + this.getMonth();
-
-  String getDDMMYY() => this.getDay() + '/' + this.getMonth() + '/' + this.getYear(true);
-
-  String getDDMMYYYY() => this.getDay() + '/' + this.getMonth() + '/' + this.getYear(false);
-
   String getInChatTimeStamp() {   
     // if today
     if (this.isToday()) {
@@ -90,6 +57,6 @@ class Message {
     }
   }
 
-  String getSenderName() => 'USERNAME';
+  String get senderName => 'USERNAME';
 
 }

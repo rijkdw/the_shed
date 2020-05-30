@@ -5,16 +5,29 @@ import 'profile.dart';
 import 'search.dart';
 import 'like.dart';
 import 'chats.dart';
+import 'package:provider/provider.dart';
+import 'package:rw334/models/user.dart';
 
 class Home extends StatelessWidget {
+  const Home({this.onSignedOut});
+  final VoidCallback onSignedOut;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        accentColor: Color.fromRGBO(255, 153, 0, 1.0) // the color of the logo
+    return ChangeNotifierProvider(
+      create: (context) => User(
+        picture: 'assets/user1.jpeg',
+      username: 'MikeHunt69',
+    ),
+      child: MaterialApp(
+        theme: ThemeData(
+            accentColor: Color.fromRGBO(255, 153, 0, 1.0),
+            // the color of the logo
+            unselectedWidgetColor:
+                Color.fromRGBO(255, 153, 0, 1.0) // the color of the logo
+            ),
+        home: UserHomePage(),
       ),
-      home: UserHomePage(),
     );
   }
 }
@@ -63,26 +76,14 @@ class _UserHomePageState extends State<UserHomePage> {
             size: 30,
             color: Colors.black,
           ),
-          Icon(
-            Icons.search,
-            size: 30,
-            color: Colors.black
-          ),
+          Icon(Icons.search, size: 30, color: Colors.black),
           Icon(
             Icons.favorite_border,
             size: 30,
             color: Colors.black,
           ),
-          Icon(
-            Icons.message,
-            size: 30,
-            color: Colors.black
-          ),
-          Icon(
-            Icons.person,
-            size: 30,
-            color: Colors.black
-          ),
+          Icon(Icons.message, size: 30, color: Colors.black),
+          Icon(Icons.person, size: 30, color: Colors.black),
         ],
         onTap: navigationTapped,
       ),

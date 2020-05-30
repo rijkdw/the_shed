@@ -1,27 +1,45 @@
-class Post {
+import 'timeable.dart';
 
-  int id = 0;
-  String text = 'TEXT';
-  int countryId = 0;
-  int userId = 0;
-  int groupId = 0;
+class Post with Timeable {
+
+  int id;
+  String text;
+  double latitude;
+  double longitude;
+  int userId;
+  int groupId;
   var categories = <String>[];
 
-  Post({int id, String text, int countryId, int userId, int groupId, var categories}) {
-    this.id = id;
-    this.text = text;
-    this.countryId = countryId;
-    this.userId = userId;
-    this.groupId = groupId;
+  Post({int id, String text, int epochTime, double latitude, double longitude, int userId, int groupId, var categories}) {
+    this.id = id ?? 0;
+    this.text = text ?? 'TEXT';
+    this.latitude = latitude ?? 0;
+    this.longitude = longitude ?? 0;
+    this.userId = userId ?? 0;
+    this.groupId = groupId ?? 0;
     this.categories.addAll(categories);
+    this.epochTime = epochTime ?? 0;
   }
 
-  String getUserName() => 'USERNAME';
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      id: json['id'],
+      text: json['text'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      userId: json['userId'],
+      groupId: json['groupId'],
+      categories: json['categories'],
+      epochTime: json['epochTime'],
+    );
+  }
 
-  String getCountryName() => 'COUNTRY';
+  String get username => 'USERNAME';
 
-  String getGroupName() => 'GROUPNAME';
+  String get location => 'Stellenbosch, ZA';
 
-  String getPrettyCategories() => this.categories.join('  |  ');
+  String get groupname => 'GROUPNAME';
+
+  String get prettyCategories => this.categories.join('  |  ');
 
 }

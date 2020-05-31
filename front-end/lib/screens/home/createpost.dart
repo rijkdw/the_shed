@@ -11,6 +11,8 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
   String _selectedGroup = 'Ronaldo\'s Greenhouse';
   String get selectedGroup => _selectedGroup;
 
+  TextEditingController textController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
 
@@ -18,6 +20,8 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
     final _labelStyle = TextStyle(color: Colors.white, fontSize: 18);
     final _metadataFieldStyle = TextStyle(color: Theme.of(context).accentColor, fontSize: 18, fontWeight: FontWeight.bold);
     final _metadataValueStyle = TextStyle(color: Colors.white, fontSize: 18);
+    final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 20.0);
+    final _inputHintStyle = TextStyle(color: Colors.grey, fontSize: 20.0);
 
     return Scaffold(
       appBar: AppBar(
@@ -34,9 +38,25 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
           children: [
             
             // post body
-            PostFieldWidget(
-              hintText: 'body',
-              labelText: 'Post body',
+            Container(
+              padding: const EdgeInsets.fromLTRB(4, 0, 4, 2),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              child: TextField(
+                maxLength: 200,
+                maxLengthEnforced: true,
+                // expands: true,
+                minLines: 1,
+                maxLines: 10,
+                style: _inputTextStyle,
+                controller: textController,
+                decoration: InputDecoration.collapsed(
+                  hintText: 'Body',
+                  hintStyle: _inputHintStyle,
+                ),
+              ),
             ),
             
             BigSpacer(),        
@@ -157,49 +177,5 @@ class SmallSpacer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(height: 4);
-  }
-}
-
-class PostFieldWidget extends StatefulWidget {
-
-  final labelText;
-  final hintText;
-
-  PostFieldWidget({this.labelText, this.hintText});
-
-  @override
-  _PostFieldWidgetState createState() => _PostFieldWidgetState();
-}
-
-class _PostFieldWidgetState extends State<PostFieldWidget> {
-
-  final TextEditingController textController = new TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    final _labelStyle = TextStyle(color: Colors.white, fontSize: 18);
-    final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 20.0);
-    final _inputHintStyle = TextStyle(color: Colors.grey, fontSize: 20.0);
-
-    return Container(
-      padding: const EdgeInsets.fromLTRB(4, 0, 4, 2),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: TextField(
-        maxLength: 200,
-        maxLengthEnforced: true,
-        // expands: true,
-        minLines: 1,
-        maxLines: 10,
-        style: _inputTextStyle,
-        controller: textController,
-        decoration: InputDecoration.collapsed(
-          hintText: widget.hintText,
-          hintStyle: _inputHintStyle,
-        ),
-      ),
-    );
   }
 }

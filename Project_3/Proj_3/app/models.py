@@ -11,11 +11,11 @@ class Post(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     timestamp = models.DateTimeField(blank=True, null=True, auto_now_add=True)
-    slug = models.SlugField(unique=True, max_length=255)
+    #slug = models.SlugField(unique=True, max_length=255)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
+        #if not self.slug:
+         #   self.slug = slugify(self.title)
         super(Post, self).save(*args, **kwargs)
 
     class Meta:

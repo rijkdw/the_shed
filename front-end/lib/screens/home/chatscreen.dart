@@ -20,6 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Message> _messageList;
   int _otherUserID;
   final TextEditingController _inputController = new TextEditingController();
+  final ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() { 
@@ -52,8 +53,12 @@ class _ChatScreenState extends State<ChatScreen> {
       Firestore.instance.collection('messages').add(message.toMap());
     }
 
-    void _sendMessage() {
-      _pushMessageToFirestore(_generateMessage());
+    void _sendMessageSequence() {
+      if (this._inputController.value.text.trimLeft().trimRight().length > 0) {
+        _pushMessageToFirestore(_generateMessage());
+        this._inputController.clear();
+        this._scrollController.jumpTo(this._scrollController.position.maxScrollExtent);
+      }      
     }
 
     final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 16.0);
@@ -107,6 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: ListView.builder(
                         padding: EdgeInsets.all(10.0),
                         itemCount: messagesInThisChat.length,
+                        controller: this._scrollController,
                         itemBuilder: (context, index) {
                           return MessageWidget(messagesInThisChat[index]);
                         },
@@ -183,7 +189,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         iconSize: 30,
                         onPressed: () {
-                          _sendMessage();
+                          _sendMessageSequence();
                         },
                         color: Theme.of(context).accentColor,
                       ),

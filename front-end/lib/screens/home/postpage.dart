@@ -4,7 +4,6 @@ import 'package:rw334/models/comment.dart';
 import 'global.dart';
 import 'feed.dart';
 
-
 class PostPage extends StatelessWidget {
   
   final Post post;

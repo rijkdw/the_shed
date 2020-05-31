@@ -10,6 +10,8 @@ class ChatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    int userID = Provider.of<User>(context).id;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -30,6 +32,9 @@ class ChatsPage extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: null,
+      ),
       body: StreamBuilder(
         stream: Firestore.instance.collection('messages').snapshots(),
         builder: (context, snapshot) {
@@ -45,8 +50,10 @@ class ChatsPage extends StatelessWidget {
           }
           List<Message> allMessagesList = [];
           for (int i = 0; i < snapshot.data.documents.length; i++) {
-            Message msg = Message.fromDocumentSnapshot(snapshot.data.documents[i]);
-            allMessagesList.add(msg);
+            Message msg = Message.fromDocumentSnapshot(snapshot.data.documents[i]);List<int> allowedIDs = [msg.senderId, msg.receiverId];
+            if ([msg.senderId, msg.receiverId].contains(userID)) {
+              allMessagesList.add(msg);
+            }
           }
           allMessagesList.sort((a, b) => b.epochTime.compareTo(a.epochTime));
           return ConversationList(

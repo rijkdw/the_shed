@@ -56,7 +56,7 @@ class NewPostButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      mini: true,
+      // mini: true,
       child: Icon(
         Icons.add,
         size: 30,
@@ -204,8 +204,6 @@ class _SortingBarState extends State<SortingBar> {
   }
 }
 
-
-
 class PostCard extends StatefulWidget {
   
   Post post;
@@ -265,23 +263,10 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
 
-    TextStyle _styleHeaderEmphasis = TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-    TextStyle _styleHeaderNormal = TextStyle(
-      color: Colors.white70,
-      fontSize: 14,
-    );
-    TextStyle _styleTitle = TextStyle(
-      color: Colors.white,
-      fontSize: 20,
-    );
-    TextStyle _styleFooter = TextStyle(
-      color: Colors.white70,
-      fontSize: 16,
-    );
+    TextStyle _styleHeaderEmphasis = TextStyle( color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, );
+    TextStyle _styleHeaderNormal = TextStyle( color: Colors.white70, fontSize: 14, );
+    TextStyle _styleTitle = TextStyle( color: Colors.white, fontSize: 20, );
+    TextStyle _styleFooter = TextStyle( color: Colors.white70, fontSize: 16, );
 
     return Container(
       padding: const EdgeInsets.all(10),

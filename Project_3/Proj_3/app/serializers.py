@@ -5,6 +5,17 @@ from django.contrib.auth.models import User, Group
 from app.models import Post, Comments
 
 
+class CurrentUserDefault(object):
+    def set_context(self, serializer_field):
+        self.user_id = serializer_field.context['request'].user.id
+
+    def __call__(self):
+        return self.user_id
+
+    def __repr__(self):
+        return '%s()' % self.__class__.__name__
+
+
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
@@ -13,12 +24,14 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
-    owner = serializers.CurrentUserDefault()
+    owner_id = serializers.IntegerField(default=CurrentUserDefault())
+    owner = serializers.CharField(source='owner.username', read_only=True)
 
     class Meta:
         model = Post
         fields = "__all__"
-        extra_fields = ['id']
+        extra_fields = ['id', 'owner_id']
+        read_only_fields = ['slug']
         ordering = ['timestamp']
 
     def get_field_names(self, declared_fields, info):
@@ -28,6 +41,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             return expanded_fields + self.Meta.extra_fields
         else:
             return expanded_fields
+
 
 class UserSerializer(serializers.ModelSerializer):
 

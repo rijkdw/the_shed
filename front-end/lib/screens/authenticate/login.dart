@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onChanged: (bool newValue) {
                       setState(() {
                         _rememberMe = newValue;
-                        widget.onSignedIn();
+                        // widget.onSignedIn();
                       });
                     },
                     value: _rememberMe,
@@ -165,6 +165,24 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen()));
+              },
+            ),
+            // for rijk to access the app
+            RaisedButton(
+              color: Theme.of(context).primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(3.0),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  'Rijk\'s backdoor',
+                  style:
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home('yeet')));
               },
             )
           ],

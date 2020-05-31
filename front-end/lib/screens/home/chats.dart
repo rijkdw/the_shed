@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/home/chatscreen.dart';
-import 'global.dart';
 import 'package:rw334/models/message.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatsPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-
-    // before rendering, sort the list of messages by time
-    dummyMessages.sort((a, b) => b.epochTime.compareTo(a.epochTime));
 
     return Scaffold(
       appBar: AppBar(
@@ -31,25 +30,55 @@ class ChatsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ConversationList(dummyMessages),
+      body: StreamBuilder(
+        stream: Firestore.instance.collection('messages').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(41, 41, 41, 1)
+              ),
+              child: Center(
+                child: Text('Loading...'),
+              ),
+            );
+          }
+          List<Message> allMessagesList = [];
+          for (int i = 0; i < snapshot.data.documents.length; i++) {
+            Message msg = Message.fromDocumentSnapshot(snapshot.data.documents[i]);
+            allMessagesList.add(msg);
+          }
+          allMessagesList.sort((a, b) => b.epochTime.compareTo(a.epochTime));
+          return ConversationList(
+            allMessagesList: allMessagesList,
+          );
+        }   
+      ),
     );
   }
 }
 
 class ConversationList extends StatelessWidget {
   
-  final allMessagesList;
-  ConversationList(this.allMessagesList);
+  List<Message> allMessagesList = [];
+  ConversationList({@required this.allMessagesList});
 
-  Map mapSendersToMessages() {
+  int getOtherUserID(BuildContext context, Message msg) {
+    List<int> idsInvolved = [msg.senderId, msg.receiverId];
+    idsInvolved.remove(Provider.of<User>(context).id);
+    return idsInvolved[0];
+  }
+
+  Map mapOtherUserToMessages(BuildContext context) {
     Map<int, List<Message>> map = {};
     for (int i = 0; i < allMessagesList.length; i++) {
       Message msg = allMessagesList[i];
+      int otherId = getOtherUserID(context, msg);
       // if the sender id of message i is already listed, add it to that list
-      if (!map.keys.contains(msg.senderId)) {
-        map[msg.senderId] = [];
+      if (!map.keys.contains(otherId)) {
+        map[otherId] = [];
       }
-      map[msg.senderId].add(msg);
+      map[otherId].add(msg);
     }
     return map;
   }
@@ -57,7 +86,7 @@ class ConversationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    var senderToMessagesMap = mapSendersToMessages();
+    var otherUserToMessagesMap = mapOtherUserToMessages(context);
 
     return Container(
       decoration: BoxDecoration(
@@ -66,30 +95,24 @@ class ConversationList extends StatelessWidget {
       child: ListView.builder(
         padding: const EdgeInsets.all(4),
         itemBuilder: (context, i) {
-          if (i < senderToMessagesMap.keys.length) {
-            int key = senderToMessagesMap.keys.toList()[i];
-            var messagesList = senderToMessagesMap[key];
+          if (i < otherUserToMessagesMap.keys.length) {
+            int key = otherUserToMessagesMap.keys.toList()[i];
+            var messagesList = otherUserToMessagesMap[key];
             return InkWell(
               // tapping opens the chat
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatScreen(messagesList)));
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                    messagesList: messagesList,
+                    otherUserID: key,
+                  ),
+                ));
               },
               // build the chat row
-              child: Conversation(messagesList),
+              child: Conversation(
+                lastMessage: messagesList[0],
+              ),
             );
-          // } else if (i == senderToMessagesMap.keys.length) {
-          //   return Container(
-          //     color: Colors.white70,
-          //     margin: const EdgeInsets.only(top: 8),
-          //     child: Text(
-          //       '- End of list -',
-          //       style: const TextStyle(
-          //         fontSize: 16,
-          //         color: Colors.grey,
-          //       ),
-          //       textAlign: TextAlign.center,
-          //     ),
-          //   );
           } else {
             return null;
           }
@@ -102,8 +125,8 @@ class ConversationList extends StatelessWidget {
 // displays the last message's text, time, and sender
 class Conversation extends StatelessWidget {
 
-  List<Message> messagesList;  
-  Conversation(this.messagesList);  
+  final Message lastMessage;  
+  Conversation({@required this.lastMessage});
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +170,7 @@ class Conversation extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         color: debug ? Colors.white : _chatColor,
                         child: Text(
-                          messagesList[0].senderName,
+                          lastMessage.senderName,
                           style: _senderStyle,
                         )
                       ),
@@ -158,7 +181,7 @@ class Conversation extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         color: debug ? Colors.red : _chatColor,
                         child: Text(
-                          messagesList[0].getListTimeStamp(),
+                          lastMessage.getListTimeStamp(),
                           style: _timeStyle,
                         ),
                       )
@@ -170,7 +193,7 @@ class Conversation extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   color: debug ? Colors.purple : _chatColor,
                   child: Text(
-                    messagesList[0].text,
+                    lastMessage.text,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: _textStyle,

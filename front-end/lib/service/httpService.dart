@@ -69,8 +69,6 @@ Future<String> logedIn(String usr, String psw) async {
   }
 }
 
-
-
 // Todo: return posts that belong to the group the current user is following
 List userFeed() {
   List res;
@@ -85,7 +83,7 @@ List userFeed() {
 List userPosts() {
   List res;
 
-  for (int i = 0; i < allPosts.lenght; i++) {
+  for (int i = 0; i < allPosts.length; i++) {
     //if user is in a group
     if (owner == allPosts[i]["owner"]) res.add(allPosts[i]);
   }

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'timeable.dart';
 
 class Message with Timeable {
@@ -23,6 +25,24 @@ class Message with Timeable {
       receiverId: json['receiverId'],
       epochTime: json['epochTime'],
     );
+  }
+
+  factory Message.fromDocumentSnapshot(DocumentSnapshot snapshot) {
+    return Message(
+      text: snapshot['text'],
+      senderId: snapshot['sender_id'],
+      receiverId: snapshot['recip_id'],
+      epochTime: snapshot['time'].seconds,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'text': this.text,
+      'sender_id': this.senderId,
+      'recip_id': this.receiverId,
+      'time': Timestamp(this.epochTime,0)
+    };
   }
 
   String getListTimeStamp() {    
@@ -58,5 +78,7 @@ class Message with Timeable {
   }
 
   String get senderName => 'USERNAME';
+
+  String toString() => 'Message: text=${this.text}, sender=${this.senderId}, recip=${this.receiverId}, time=??';
 
 }

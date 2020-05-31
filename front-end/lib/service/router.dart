@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/screens/home/chats.dart';
-import 'package:rw334/screens/home/chatscreen.dart';
 import 'package:rw334/screens/home/edit.dart';
 import 'package:rw334/screens/home/home.dart';
 import 'package:rw334/screens/home/settings.dart';
@@ -19,7 +18,5 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => Edit());
     case CHAT:
       return MaterialPageRoute(builder: (context) => ChatsPage());
-    case CHATSCREEN:
-      return MaterialPageRoute(builder: (context) => ChatScreen([]));
   }
 }

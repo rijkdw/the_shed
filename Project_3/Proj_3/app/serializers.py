@@ -9,7 +9,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Group
-        fields = ['name', 'id', 'description', 'date_created']
+        fields = ['name', 'id', 'description', 'date_created', 'tag']
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rw334/models/user.dart';
@@ -19,21 +20,21 @@ class ChatsPage extends StatelessWidget {
           "assets/logo.png",
           width: 120,
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ),
-            iconSize: 30,
-            onPressed: () {
-              print('ChatsPage refresh pressed');
-            },
-          ),
-        ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        // mini: true,
+        child: Icon(
+          Icons.add,
+          size: 30,
+        ),
+        onPressed: () {
+          showDialog(
+            child: SearchDialog(
+              userID: Provider.of<User>(context, listen: false).id,
+            ),
+            context: context,
+          );
+        },
       ),
       body: StreamBuilder(
         stream: Firestore.instance.collection('messages').snapshots(),
@@ -60,6 +61,121 @@ class ChatsPage extends StatelessWidget {
             allMessagesList: allMessagesList,
           );
         }   
+      ),
+    );
+  }
+}
+
+class SearchDialog extends StatefulWidget {
+
+  final int userID;
+  SearchDialog({@required this.userID});
+
+  @override
+  _SearchDialogState createState() => _SearchDialogState();
+}
+
+class _SearchDialogState extends State<SearchDialog> {
+
+  final TextEditingController _newUserController = TextEditingController();
+
+  List<User> _searchResults = [];
+
+  List<User> searchForUsers() {
+    List<User> dummyUsers = [
+      User(username: 'Rijk', id: 1),
+      User(username: 'Ronaldo', id: 2),
+      User(username: 'Jeff', id: 3),
+      User(username: 'Steve', id: 4),
+      User(username: 'Mike', id: 5),
+      User(username: 'Harvey', id: 6),
+    ];
+    int numToDisplay = (new Random()).nextInt(3)+2;
+    List<User> returnUsers = [];
+    for (int i = 0; i < numToDisplay; i++) {
+      int nextIndex = (new Random()).nextInt(dummyUsers.length-1);
+      returnUsers.add(dummyUsers[nextIndex]);
+    }
+    return returnUsers;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Dialog(
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  flex: 80,
+                  child: TextField(
+                    decoration: InputDecoration.collapsed(
+                      hintText: 'Search for a user',
+                    ),
+                    controller: _newUserController,
+                  ),
+                ),
+                Flexible(
+                  flex: 20,
+                  child: Container(
+                    child: RaisedButton(
+                      color: Color.fromRGBO(255, 153, 0, 1.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.0),
+                      ),
+                      child: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          this._searchResults = searchForUsers();
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Divider(),
+          Container(
+            padding: const EdgeInsets.all(4),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: this._searchResults.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        child: Icon(
+                          Icons.face,
+                          color: Color.fromRGBO(255, 153, 0, 1.0),
+                        ),
+                      ),
+                      Text(
+                        '${this._searchResults[index].username} (${this._searchResults[index].id})',
+                      ),
+                    ]
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ChatScreen(
+                        thisUserID: widget.userID,
+                        otherUserID: this._searchResults[index].id,
+                      ),
+                    ));
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -110,7 +226,6 @@ class ConversationList extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => ChatScreen(
-                    messagesList: messagesList,
                     otherUserID: key,
                   ),
                 ));

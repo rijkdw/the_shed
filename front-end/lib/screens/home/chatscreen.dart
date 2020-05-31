@@ -6,9 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
 
-  final List<Message> messagesList;
   final int otherUserID;
-  const ChatScreen({@required this.messagesList, @required this.otherUserID});
+  final int thisUserID;
+  const ChatScreen({@required this.otherUserID, this.thisUserID});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -16,8 +16,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-    
-  List<Message> _messageList;
+
   int _otherUserID;
   final TextEditingController _inputController = new TextEditingController();
   final ScrollController _scrollController = new ScrollController();
@@ -25,19 +24,24 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() { 
     super.initState();
-    this._messageList = widget.messagesList;
     this._otherUserID = widget.otherUserID;
-  } 
-
-  void sortMessages() => this._messageList.sort((a, b) => -b.epochTime.compareTo(a.epochTime));
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    int currentUserID = Provider.of<User>(context).id;
+    int currentUserID;
+    if (widget.thisUserID != null) {
+      currentUserID = widget.thisUserID;
+      print('it wasnt null!');
+    } else {
+      print('it was null!');
+      currentUserID = Provider.of<User>(context).id;
+    }
+    String otherUsername = 'OTHER USER';
 
     int getOtherPersonId() {
-      List<int> idsInvolved = [_messageList[0].senderId, _messageList[0].receiverId];
+      List<int> idsInvolved = [currentUserID, this._otherUserID];//[_messageList[0].senderId, _messageList[0].receiverId];
       idsInvolved.remove(currentUserID);
       return idsInvolved[0];
     }
@@ -66,24 +70,15 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(this._messageList[0].senderName),
+        title: Text(
+          otherUsername
+        ),
         backgroundColor: Colors.black,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.more_vert,
-            ),
-            onPressed: () {
-              print('Menu button');
-            },
-          )
-        ],
       ),
       body: Stack(
         children: <Widget>[
           Column(
             children: <Widget>[
-
               StreamBuilder(
                 stream: Firestore.instance.collection('messages').snapshots(),
                 builder: (context, snapshot) {
@@ -114,7 +109,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         itemCount: messagesInThisChat.length,
                         controller: this._scrollController,
                         itemBuilder: (context, index) {
-                          return MessageWidget(messagesInThisChat[index]);
+                          return MessageWidget(
+                            message: messagesInThisChat[index],
+                            me: currentUserID == messagesInThisChat[index].senderId,
+                          );
                         },
                       ),
                     )
@@ -154,7 +152,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           Icons.face
                         ),
                         iconSize: 30,
-                        color: Theme.of(context).accentColor,
+                        color: Color.fromRGBO(255, 153, 0, 1.0),
                       ),
                     ),
 
@@ -191,7 +189,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         onPressed: () {
                           _sendMessageSequence();
                         },
-                        color: Theme.of(context).accentColor,
+                        color: Color.fromRGBO(255, 153, 0, 1.0),
                       ),
                     ),
                   ],
@@ -209,7 +207,8 @@ class _ChatScreenState extends State<ChatScreen> {
 class MessageWidget extends StatelessWidget {
 
   final Message message;
-  MessageWidget(this.message);
+  final bool me;
+  MessageWidget({@required this.message, @required this.me});
 
   @override
   Widget build(BuildContext context) {
@@ -221,53 +220,49 @@ class MessageWidget extends StatelessWidget {
     String text = this.message.text;
     String time = this.message.getInChatTimeStamp();
 
-    return Consumer<User>(
-      builder: (context, user, child) {
-        return Container(
-          padding: const EdgeInsets.all(4),
-          child: Column(
-            crossAxisAlignment: user.id == message.senderId
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
-            children: <Widget>[
-              
-              // the message text
-              Container(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width*0.7
+    return Container(
+      padding: const EdgeInsets.all(4),
+      child: Column(
+        crossAxisAlignment: me
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
+        children: <Widget>[
+          
+          // the message text
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width*0.7
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(1, 1),
+                  blurRadius: 4,
+                  color: Colors.black.withOpacity(0.3)
                 ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(1, 1),
-                      blurRadius: 4,
-                      color: Colors.black.withOpacity(0.3)
-                    ),
-                  ],
-                  color: user.id == message.senderId
-                  ? Colors.white
-                  : Theme.of(context).accentColor
-                ),
-                padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                child: Text(
-                  text,
-                  style: _messageStyle,
-                ),
-              ),
-              
-              // the message time
-              Container(
-                padding: const EdgeInsets.only(top: 3, bottom: 4, left: 8, right: 8),
-                child: Text(
-                  time,
-                  style: _messageTimeStyle,
-                ),
-              )
-            ],
+              ],
+              color: me
+              ? Colors.white
+              : Color.fromRGBO(255, 153, 0, 1.0)
+            ),
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+            child: Text(
+              text,
+              style: _messageStyle,
+            ),
           ),
-        );
-      },
-    );    
+          
+          // the message time
+          Container(
+            padding: const EdgeInsets.only(top: 3, bottom: 4, left: 8, right: 8),
+            child: Text(
+              time,
+              style: _messageTimeStyle,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

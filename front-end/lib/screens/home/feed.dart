@@ -46,24 +46,16 @@ class FeedPage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: NewPostButton()
-    );
-  }
-}
-
-class NewPostButton extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      // mini: true,
-      child: Icon(
-        Icons.add,
-        size: 30,
+      floatingActionButton: FloatingActionButton(
+        // mini: true,
+        child: Icon(
+          Icons.add,
+          size: 30,
+        ),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => PostCreatorPage()));
+        },
       ),
-      onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => PostCreatorPage()));
-      },
     );
   }
 }

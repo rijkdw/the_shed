@@ -143,7 +143,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 String psw = passwordController.value.text;
                 String token = await loggedIn(username, psw);
                 //getAllPosts();
-		            makePost("");
 
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => Home(token)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rw334/service/httpService.dart';
 
 class PostCreatorPage extends StatefulWidget {
   
@@ -154,8 +155,9 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 ),
-                onPressed: () {
-
+                onPressed: () async{
+                  String txt = textController.text;
+                  makePost(txt, 21);
                 },
               ),
             ),

@@ -27,7 +27,7 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('timestamp','latitude','longitude','owner','group')
+    filter_fields = ('timestamp', 'latitude', 'longitude', 'owner', 'group')
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

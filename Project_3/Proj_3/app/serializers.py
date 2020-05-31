@@ -62,6 +62,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    owner = serializers.CurrentUserDefault()
+
     class Meta:
         model = Comments
         fields = '__all__'

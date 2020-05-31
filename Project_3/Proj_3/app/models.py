@@ -15,7 +15,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            slug_id = random.randint(0,100000000000)
+            slug_id = random.randint(0, 100000000000)
             self.slug = slugify(slug_id)
         super(Post, self).save(*args, **kwargs)
 

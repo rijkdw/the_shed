@@ -24,14 +24,14 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
-    owner_id = serializers.IntegerField(default=CurrentUserDefault())
+    owner_id = serializers.IntegerField(default=CurrentUserDefault(), read_only=True)
     owner = serializers.CharField(source='owner.username', read_only=True)
 
     class Meta:
         model = Post
         fields = "__all__"
-        extra_fields = ['id', 'owner_id']
-        read_only_fields = ['slug']
+        extra_fields = ['id']
+        read_only_fields = ['slug', 'owner_id']
         ordering = ['timestamp']
 
     def get_field_names(self, declared_fields, info):

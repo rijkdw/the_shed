@@ -27,12 +27,13 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     owner_id = serializers.IntegerField(default=CurrentUserDefault(), read_only=True)
     owner = serializers.CharField(source='owner.username', read_only=True)
     group_id = serializers.IntegerField(read_only=True)
+    group_name = serializers.CharField(source='group.name', read_only=True)
 
     class Meta:
         model = Post
         fields = "__all__"
         extra_fields = ['id']
-        read_only_fields = ['slug', 'owner_id', 'group_id']
+        read_only_fields = ['slug', 'owner_id', 'group_id', 'group_name']
         ordering = ['timestamp']
 
     def get_field_names(self, declared_fields, info):
@@ -49,16 +50,18 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         groups_data = validated_data.pop('groups')
         password = validated_data.pop('password')
+        #email = validated_data.pop('email')
         user = User(**validated_data)
         user.set_password(password)
+        user.save()
         for group_data in groups_data:
             user.groups.add(group_data)
-        user.save()
+
         return user
 
     class Meta:
         model = User
-        fields = ['username', 'password', 'id', 'groups']
+        fields = ['username', 'password', 'id', 'groups', 'email']
         extra_kwargs = {'password': {'write_only': True}}
 
 

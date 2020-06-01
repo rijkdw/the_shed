@@ -9,7 +9,7 @@ class PostPage extends StatelessWidget {
   final Post post;
   Future<List<Comment>> _commentsFuture;
   PostPage({@required this.post}) {
-    this._commentsFuture = null; //getCommentsOnPost(post.id);
+    this._commentsFuture = getCommentsOnPost(post.id);
   }
 
   final TextEditingController _commentController = TextEditingController();
@@ -93,7 +93,7 @@ class PostPage extends StatelessWidget {
                     return Expanded(
                       child: Center(
                         child: Text(
-                          'No comments...',
+                          'No comments.',
                           style: TextStyle( fontSize: 20, color: Colors.white ),
                         ),
                       ),
@@ -109,6 +109,8 @@ class PostPage extends StatelessWidget {
                     }
                   );
                 }
+
+                return Text('???');
               },
             ),
 

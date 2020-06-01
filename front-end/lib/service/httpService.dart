@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:rw334/models/comment.dart';
 import 'package:rw334/models/user.dart';
 import 'package:location/location.dart';
 import 'package:rw334/models/post.dart';
@@ -189,6 +190,34 @@ Future<List<Post>> getAllUserPosts() async {
   return results;
 }
 
+Future<List<Comment>> getCommentsOnPost(int postID) async {
+  List<Comment> results = [];
+  String url = 'https://theshedapi.herokuapp.com/api/v1/Comments/?post=${postID.toString()}';
+  print('Looking at $url for our comments');
+  var response = await get(url, headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': "Token " + token
+  });
+  if (response.statusCode != 200) {
+    print('Not 200 code');
+    return [];
+  }
+  print('results received');
+  var data = json.decode(response.body);
+  for (int i = 0; i < data.length; i++) {
+    results.add(Comment(
+      id: data[i]['id'],
+      text: data[i]['text'],
+      epochTime: convertTime(data[i]['timestamp']),
+      postId: postID,
+      userId: data[i]['owner'],
+      username: 'UNDEFINED_USERNAME'
+    ));
+  }
+  results.sort((a, b) => -b.epochTime.compareTo(a.epochTime));
+  return results;
+}
+
 // returns all the posts the current user is interested in
 Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   var data;
@@ -237,6 +266,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
           username: data[j]['owner'],
           locationname: 'Stellenbosch',
           groupname: data[j]['group_name'],
+          id: data[j]['id'],
         ),
       );
     }

@@ -142,11 +142,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               onPressed: () async {
+                FocusScope.of(context).unfocus(); // to remove the keyboard
                 String username = usernameController.value.text;
                 String psw = passwordController.value.text;
+                globalUsername = username;
                 String token = await loggedIn(username, psw);
                 //getAllPosts();
-
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => Home()),
                         (Route<dynamic> route) => false);

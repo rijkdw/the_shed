@@ -44,7 +44,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle _style = TextStyle(fontSize: 16, color: Colors.black);
     return Consumer<User>(builder: (context, user, child) {
       return Column(
         children: <Widget>[
@@ -191,10 +190,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   ),
                 );
               } else {
-                return Center(
-                  child: Text(
-                    'Waiting for posts.',
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                return Expanded(
+                  child: Center(
+                    child: Text(
+                      'Waiting for posts.',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
                   ),
                 );
               }

@@ -1,6 +1,30 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
+
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+
+  List<String> results = [];
+
+  void search(String query) {
+    print('Received query \"$query\"');
+    List<String> dummyList = [ 'Steve', 'Rijk', 'Ronaldo' ];
+    int numToDisplay = (new Random()).nextInt(3)+2;
+    List<String> returnUsers = [];
+    for (int i = 0; i < numToDisplay; i++) {
+      int nextIndex = (new Random()).nextInt(dummyList.length-1);
+      returnUsers.add(dummyList[nextIndex]);
+    }
+    setState(() {
+      results = returnUsers;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,27 +34,22 @@ class SearchPage extends StatelessWidget {
           "assets/logo.png",
           width: 120,
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ),
-            iconSize: 30,
-            onPressed: () {
-              print('SearchPage refresh pressed');
-            },
-          ),
-        ],
       ),
       body: Container(
         color: Color.fromRGBO(41, 41, 41, 1),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: ListView(
-          scrollDirection: Axis.vertical,
+        child: Column(
           children:[
-            SearchBar(),
+            SearchBar(
+              searchCallback: search,
+            ),
+            Container(
+              padding: const EdgeInsets.all(4),
+              child: SearchResultsList(
+                results: results
+              ),
+            )
           ],
         ),
       ),
@@ -38,7 +57,40 @@ class SearchPage extends StatelessWidget {
   }
 }
 
+class SearchResultsList extends StatelessWidget {
+
+  final List<String> results;
+  SearchResultsList({@required this.results});
+
+  @override
+  Widget build(BuildContext context) {
+    if (results.length == 0) {
+      return Expanded(
+        child: Center(
+          child: Text(
+            'Searching for...',
+            style: TextStyle( color: Colors.white, fontSize: 20, ),
+          ),
+        ),
+      );
+    }
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: results.length,
+      itemBuilder: (context, index) {
+        return Text(
+          results[index],
+          style: TextStyle( color: Colors.white, fontSize: 18, ),
+        );
+      }
+    );
+  }
+}
+
 class SearchBar extends StatelessWidget { 
+
+  final Function(String) searchCallback;
+  SearchBar({@required this.searchCallback});
 
   final TextEditingController controller = new TextEditingController();
 
@@ -79,6 +131,7 @@ class SearchBar extends StatelessWidget {
               hintText: 'Search...',
               hintStyle: _inputHintStyle,
             ),
+            // onChanged: searchCallback(controller.text),
           ),
         ),
       ),

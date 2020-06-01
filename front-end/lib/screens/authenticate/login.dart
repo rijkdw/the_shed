@@ -4,8 +4,6 @@ import 'package:rw334/screens/authenticate/signup.dart';
 import 'package:rw334/screens/home/home.dart';
 import 'package:rw334/service/httpService.dart';
 
-import '../demo.dart';
-
 
 class EmailFieldValidator {
   static String validate(String value) {
@@ -47,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Material(
       child: Container(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -96,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 24,
             ),
+            // Remember me
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -131,11 +131,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(3.0),
               ),
               child: Container(
+                width: 90,
                 padding: const EdgeInsets.all(8),
-                child: Text(
-                  'LOGIN',
-                  style:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                child: Center(
+                  child: Text(
+                    'LOGIN',
+                    style:
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
                 ),
               ),
               onPressed: () async {
@@ -145,45 +148,49 @@ class _LoginScreenState extends State<LoginScreen> {
                 //getAllPosts();
 
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => Home(token)),
+                    MaterialPageRoute(builder: (context) => Home()),
                         (Route<dynamic> route) => false);
                 },
             ),
+            // sign up button
             RaisedButton(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).accentColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(3.0),
               ),
               child: Container(
+                width: 90,
                 padding: const EdgeInsets.all(8),
-                child: Text(
-                  'SIGN UP',
-                  style:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                child: Center(
+                  child: Text(
+                    'SIGN UP',
+                    style:
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
                 ),
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen()));
               },
             ),
-            // for rijk to access the app
-            RaisedButton(
-              color: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(3.0),
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  'Rijk\'s backdoor',
-                  style:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home('yeet')));
-              },
-            )
+            // // for rijk to access the app
+            // RaisedButton(
+            //   color: Color.fromRGBO(255, 153, 0, 1.0),
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(3.0),
+            //   ),
+            //   child: Container(
+            //     padding: const EdgeInsets.all(8),
+            //     child: Text(
+            //       'Rijk\'s backdoor',
+            //       style:
+            //       TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            //     ),
+            //   ),
+            //   onPressed: () {
+            //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home('yeet')));
+            //   },
+            // )
           ],
         ),
       ),

@@ -9,6 +9,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        accentColor: Color.fromRGBO(255, 153, 0, 1.0),
+      ),
       home: RootPage(),
       onGenerateRoute: router.generateRoute,
       initialRoute: HOME,

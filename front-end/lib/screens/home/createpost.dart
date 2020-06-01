@@ -127,7 +127,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                 TableRow(
                   children: [
                     Text( 'TIME', style: _metadataFieldStyle ),
-                    Text( '12:00', style: _metadataValueStyle ),
+                    Text( '${DateTime.now().hour.toString().padLeft(2)}:${DateTime.now().minute.toString().padLeft(2)}', style: _metadataValueStyle ),
                   ]
                 ),
                 TableRow(

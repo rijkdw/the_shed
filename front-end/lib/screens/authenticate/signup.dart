@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/user.dart';
+import 'package:rw334/screens/home/home.dart';
 import 'package:rw334/service/httpService.dart';
-import '../demo.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({this.onSignedIn});
@@ -93,7 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _user = user;
                 });
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => Demo()),
+                    MaterialPageRoute(builder: (context) => Home()),
                         (Route<dynamic> route) => false);
               },
             )

@@ -12,19 +12,20 @@ List allPosts;
 String owner;
 int userId;
 
-Future getAllPosts() async {
-  var data;
-  String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
-  final response = await get(url, headers: <String, String>{
-    'Content-Type': 'application/json; charset=UTF-8',
-    'Authorization': "Token " + token
-  });
-  if (response.statusCode == 200) {
-    data = json.decode(response.body);
-  }
-  print(response.statusCode);
-  return data;
-}
+// unused for now
+// Future getAllPosts() async {
+//   var data;
+//   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
+//   final response = await get(url, headers: <String, String>{
+//     'Content-Type': 'application/json; charset=UTF-8',
+//     'Authorization': "Token " + token
+//   });
+//   if (response.statusCode == 200) {
+//     data = json.decode(response.body);
+//   }
+//   print(response.statusCode);
+//   return data;
+// }
 
 Future signedUp(String username, String email, String psw) async {
   final String url = "https://theshedapi.herokuapp.com/api/registration/";
@@ -45,7 +46,8 @@ Future signedUp(String username, String email, String psw) async {
     return null;
   }
 }
-//returns userID
+
+//returns userID of user with this username
 Future userID(String user) async {
   String url = "https://theshedapi.herokuapp.com/api/v1/Users/?username=";
   url = url + user;
@@ -63,6 +65,7 @@ Future userID(String user) async {
   id = list[0]["id"];
   return id;
 }
+
 //returns user auth-token
 Future loggedIn(String usr, String psw) async {
   String apiURL = "https://theshedapi.herokuapp.com/api-token-auth/";
@@ -83,19 +86,21 @@ Future loggedIn(String usr, String psw) async {
   }
 }
 
+
 Future<void> makeUser() async {
   getAllUserPosts();
   getUserFeed();
   await new Future.delayed(const Duration(seconds : 6));
-  allUserPosts = createPosts(allPosts);
-  allUserFeed = createPosts(allFeed);
+  // allUserPosts = createPosts(allPosts);
+  // allUserFeed = createPosts(allFeed);
   // print List<Post>
   // print("Posts made by user: ");
-  print(allUserPosts);
+  // print(allUserPosts);
   // print("Posts user follow: ");
-  print(allUserFeed);
+  // print(allUserFeed);
 
 }
+
 //makes a post by post request
 Future makePost(String txt, int grp) async {
   Location location = new Location();
@@ -132,6 +137,7 @@ Future makePost(String txt, int grp) async {
           {"text": txt, "latitude": lat, "longitude": long, "group": group}));
   print(response.statusCode);
 }
+
 //returns all posts made by the Current user
 Future getAllUserPosts() async {
   List temp;
@@ -149,11 +155,11 @@ Future getAllUserPosts() async {
   //print(allPosts);
 }
 // returns all the posts the current user is interested in
-Future getUserFeed() async {
+Future<List<Post>> getUserFeed() async {
   var data;
   var groups;
   int temp;
-  var result = [];
+  List<Post> results = [];
 
   String url =
       "https://theshedapi.herokuapp.com/api/v1/Users/?id=" + "$userId";
@@ -180,10 +186,18 @@ Future getUserFeed() async {
     data = json.decode(response.body);
 
     for (int j = 0; j < data.length; j++) {
-      result.add(data[j]);
+      // evaluating data[j]
+      results.add(Post(
+        longitude: data[j]['longitude'],
+        latitude: data[j]['latitude'],
+        text: data[j]['text'],
+        epochTime: convertTime(data[j]['timestamp']),
+        categories: ['Cat 1', 'Cat 2', 'Cat 3'],
+      ));
     }
   }
-  allFeed = result;
+  allFeed = results;
+  return results;
   //print(allFeed);
 }
 
@@ -210,7 +224,6 @@ List createPosts(var all) {
   }
   return posts;
 }
-
 
 int convertTime (String time) {
   var parsedDate = DateTime.parse(time);

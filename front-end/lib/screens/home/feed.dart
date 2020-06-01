@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/post.dart';
+import 'package:rw334/service/httpService.dart';
 import 'global.dart';
 import 'postpage.dart';
 import 'createpost.dart';
 
 class FeedPage extends StatelessWidget {
-  //http request-get
+  Future<List<Post>> _feedFuture = getUserFeed();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,23 +30,41 @@ class FeedPage extends StatelessWidget {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () => Future.delayed(Duration(seconds: 2)),
-        child: Container(
-          color: Color.fromRGBO(41, 41, 41, 1),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Stack(
-            children: [
-              Column(
+      body: FutureBuilder<List<Post>>(
+        future: _feedFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Container(
+              color: Color.fromRGBO(41, 41, 41, 1),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Stack(
                 children: [
-                  SortingBar(),
-                  FeedWidget(),
-                ],          
+                  Column(
+                    children: [
+                      SortingBar(),
+                      FeedWidget(
+                        posts: snapshot.data,
+                      ),
+                    ],          
+                  ),
+                ]
               ),
-            ]
-          ),
-        ),
+            );
+          } else {
+            return Container(
+              color: Color.fromRGBO(41, 41, 41, 1),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Center(
+                child: Text(
+                  'Waiting for posts.',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ),
+            );
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         // mini: true,
@@ -62,22 +82,25 @@ class FeedPage extends StatelessWidget {
 
 class FeedWidget extends StatelessWidget {
 
+  final List<Post> posts;
+  const FeedWidget({@required this.posts});
+
   @override
   Widget build(BuildContext context) {
     return Flexible(
       child: Container(
         child: ListView.builder(
           padding: const EdgeInsets.all(4),      
-          itemCount: dummyPosts.length,    
+          itemCount: posts.length,    
           itemBuilder: (context, i) {
             return Container(
               padding: const EdgeInsets.all(4),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => PostPage(dummyPosts[i])));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => PostPage(posts[i])));
                 },
                 child: PostCard(
-                  post: dummyPosts[i],
+                  post: posts[i],
                   lineLimit: 3,
                 ),
               ),

@@ -33,9 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
     int currentUserID;
     if (widget.thisUserID != null) {
       currentUserID = widget.thisUserID;
-      print('it wasnt null!');
     } else {
-      print('it was null!');
       currentUserID = Provider.of<User>(context).id;
     }
     String otherUsername = 'OTHER USER';
@@ -47,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }
 
     Message _generateMessage() => Message(
-      text: this._inputController.value.text,
+      text: this._inputController.value.text.trimRight().trimLeft(),
       senderId: currentUserID,
       receiverId: getOtherPersonId(),
       epochTime: (DateTime.now().millisecondsSinceEpoch/1000).floor()

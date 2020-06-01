@@ -7,10 +7,22 @@ import 'feed.dart';
 class PostPage extends StatelessWidget {
   
   final Post post;
-  const PostPage(this.post);
+  PostPage(this.post);
+
+  final TextEditingController _commentController = TextEditingController();
+
+  void _postCommentSequence() {
+      if (this._commentController.value.text.trimLeft().trimRight().length > 0) {
+        // make and push the comment
+        this._commentController.clear();
+      }      
+    }
 
   @override
   Widget build(BuildContext context) {
+
+    final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 16.0);
+    final _inputHintStyle = TextStyle(color: Colors.grey);
 
     List<CommentCard> getCommentCards() {
       List<CommentCard> returnList = [];
@@ -20,28 +32,6 @@ class PostPage extends StatelessWidget {
       }
       returnList.sort((a, b) => -b.comment.epochTime.compareTo(a.comment.epochTime));      
       return returnList;
-    }
-
-    List<Widget> getColumnChildren() {
-      List<Widget> returnList = [
-        Container(
-          padding: const EdgeInsets.all(8),
-          width: MediaQuery.of(context).size.width,
-          child: PostCard(
-            post: this.post,
-            lineLimit: 100,
-          ),
-        ),
-      ];
-      returnList.add(SizedBox(
-        height: 4,
-      ));
-      returnList.add(MetadataWidget(post: this.post));
-      returnList.add(SizedBox(
-        height: 8,
-      ));
-      returnList.addAll(getCommentCards());
-      return returnList;    
     }
 
     return Scaffold(
@@ -64,23 +54,119 @@ class PostPage extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          color: Color.fromRGBO(41, 41, 41, 1),
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: getColumnChildren(),
-          ),
+      body: Container(
+        color: Color.fromRGBO(41, 41, 41, 1),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: <Widget>[
+            ListView(
+              shrinkWrap: true,
+              children: [
+                // post card with metadata widget below it
+                ...[
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    width: MediaQuery.of(context).size.width,
+                    child: PostCard(
+                      post: this.post,
+                      lineLimit: 100,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  MetadataWidget(
+                    post: this.post
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                ],
+                // then all the comments
+                ...getCommentCards(),
+                
+              ],
+            ),
+
+            // then the input widget for commenting
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: double.infinity,
+                  height: 70.0,
+                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Colors.grey,
+                        width: 0.5
+                      )
+                    ),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0, -3),
+                        blurRadius: 1,
+                        color: Colors.black.withOpacity(0.2),
+                      )
+                    ]
+                  ),
+                  child: Row(
+                    children: <Widget>[
+
+                      // text input
+                      Flexible(
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(10, 2, 2, 2),
+                          decoration: BoxDecoration(
+                            color: Colors.black12,
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                          ),
+                          child: TextField(
+                            style: _inputTextStyle,
+                            controller: _commentController,
+                            // expands: true,
+                            minLines: 1,
+                            maxLines: 5,
+                            decoration: InputDecoration.collapsed(
+                              hintText: 'Type a message...',
+                              hintStyle: _inputHintStyle,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // send message button
+                      Container(
+                        margin: new EdgeInsets.symmetric(horizontal: 8.0),
+                        child: new IconButton(
+                          icon: new Icon(
+                            Icons.send
+                          ),
+                          iconSize: 30,
+                          onPressed: () {
+                            _postCommentSequence();
+                          },
+                          color: Color.fromRGBO(255, 153, 0, 1.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-
 class MetadataWidget extends StatelessWidget {
   
-  Post post;
+  final Post post;
   MetadataWidget({this.post});
 
   @override

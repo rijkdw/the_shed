@@ -305,22 +305,22 @@ class _PostCardState extends State<PostCard> {
                   text: widget.post.groupname,
                   style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
                 ),
-                TextSpan(
-                  text: ' at ',
-                  style: _styleHeaderNormal
-                ),
-                TextSpan(
-                  text: widget.post.getInFeedTimestamp(),
-                  style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
-                ),
-                TextSpan(
-                  text: ' near ',
-                  style: _styleHeaderNormal
-                ),
-                TextSpan(
-                  text: widget.post.locationname,
-                  style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
-                ),
+                // TextSpan(
+                //   text: ' at ',
+                //   style: _styleHeaderNormal
+                // ),
+                // TextSpan(
+                //   text: widget.post.getInFeedTimestamp(),
+                //   style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
+                // ),
+                // TextSpan(
+                //   text: ' near ',
+                //   style: _styleHeaderNormal
+                // ),
+                // TextSpan(
+                //   text: widget.post.locationname,
+                //   style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
+                // ),
               ],
             ),
           ),

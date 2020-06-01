@@ -78,6 +78,8 @@ class _ChatScreenState extends State<ChatScreen> {
         children: <Widget>[
           Column(
             children: <Widget>[
+
+              // the messages
               StreamBuilder(
                 stream: Firestore.instance.collection('messages').snapshots(),
                 builder: (context, snapshot) {
@@ -119,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 }
               ),
 
-              // input widget
+              // the input widget
               Container(
                 width: double.infinity,
                 height: 70.0,

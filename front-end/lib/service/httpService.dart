@@ -5,27 +5,28 @@ import 'package:location/location.dart';
 import 'package:rw334/models/post.dart';
 
 var token;
-List<dynamic> allUserJson;
-List<Post> allUserPosts;
-var allPosts;
+List<dynamic> allUserPosts;
+List<dynamic> allUserFeed;
+List allFeed;
+List allPosts;
 String owner;
 int userId;
 
-Future<List> getAllPosts() async {
+Future getAllPosts() async {
+  var data;
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
   final response = await get(url, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': "Token " + token
   });
   if (response.statusCode == 200) {
-    allPosts = json.decode(response.body);
-    //print(allPosts);
+    data = json.decode(response.body);
   }
   print(response.statusCode);
-  return null;
+  return data;
 }
 
-Future<User> signedUp(String username, String email, String psw) async {
+Future signedUp(String username, String email, String psw) async {
   final String url = "https://theshedapi.herokuapp.com/api/registration/";
 
   final response = await post(url, headers: <String, String>{
@@ -44,8 +45,8 @@ Future<User> signedUp(String username, String email, String psw) async {
     return null;
   }
 }
-
-Future<int> userID(String user) async {
+//returns userID
+Future userID(String user) async {
   String url = "https://theshedapi.herokuapp.com/api/v1/Users/?username=";
   url = url + user;
   List<dynamic> list;
@@ -62,8 +63,8 @@ Future<int> userID(String user) async {
   id = list[0]["id"];
   return id;
 }
-
-Future<String> loggedIn(String usr, String psw) async {
+//returns user auth-token
+Future loggedIn(String usr, String psw) async {
   String apiURL = "https://theshedapi.herokuapp.com/api-token-auth/";
 
   Response response =
@@ -73,10 +74,8 @@ Future<String> loggedIn(String usr, String psw) async {
     token = token["token"];
 
     userId = await userID(usr);
-    //print(userId);
-    getAllUserPosts();
-    //buildUser();
-
+    print(userId);
+    makeUser();
     return null;
   } else {
     print(response.statusCode);
@@ -84,6 +83,20 @@ Future<String> loggedIn(String usr, String psw) async {
   }
 }
 
+Future<void> makeUser() async {
+  getAllUserPosts();
+  getUserFeed();
+  await new Future.delayed(const Duration(seconds : 6));
+  allUserPosts = createPosts(allPosts);
+  allUserFeed = createPosts(allFeed);
+  // print List<Post>
+  // print("Posts made by user: ");
+  print(allUserPosts);
+  // print("Posts user follow: ");
+  print(allUserFeed);
+
+}
+//makes a post by post request
 Future makePost(String txt, int grp) async {
   Location location = new Location();
 
@@ -109,7 +122,7 @@ Future makePost(String txt, int grp) async {
   group = group + "$grp" + '/';
 
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
-  print(token);
+
   final response = await post(url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -119,9 +132,9 @@ Future makePost(String txt, int grp) async {
           {"text": txt, "latitude": lat, "longitude": long, "group": group}));
   print(response.statusCode);
 }
-
-Future<List> getAllUserPosts() async {
-  print(userId);
+//returns all posts made by the Current user
+Future getAllUserPosts() async {
+  List temp;
   String url =
       "https://theshedapi.herokuapp.com/api/v1/posts/?owner=" + "$userId";
   final response = await get(url, headers: <String, String>{
@@ -129,23 +142,21 @@ Future<List> getAllUserPosts() async {
     'Authorization': "Token " + token
   });
   if (response.statusCode == 200) {
-    allUserJson = json.decode(response.body);
-    //allUserPosts = createPosts(allUserJson);
-    print(allUserPosts);
+    temp = json.decode(response.body);
   }
-  print(response.statusCode);
-  return null;
-}
 
-Future<List> getUserFeed() async {
-  List<dynamic> data;
-  List groups;
-  String groupUrl;
-  String temp;
-  List<dynamic> result;
+  allPosts = temp;
+  //print(allPosts);
+}
+// returns all the posts the current user is interested in
+Future getUserFeed() async {
+  var data;
+  var groups;
+  int temp;
+  var result = [];
 
   String url =
-      "https://theshedapi.herokuapp.com/api/v1/posts/?owner=" + "$userId";
+      "https://theshedapi.herokuapp.com/api/v1/Users/?id=" + "$userId";
   var response = await get(url, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': "Token " + token
@@ -155,10 +166,11 @@ Future<List> getUserFeed() async {
     groups = data[0]["groups"];
   }
 
-  url = "https://theshedapi.herokuapp.com/api/v1/posts/?group=";
   for (int i = 0; i < groups.length; i++) {
-    temp = groups[i] as String;
-    url = url + temp;
+    url = "https://theshedapi.herokuapp.com/api/v1/posts/?group=";
+    temp = groups[i];
+    url = url + "$temp";
+    //print(url);
 
     response = await get(url, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -166,31 +178,43 @@ Future<List> getUserFeed() async {
     });
 
     data = json.decode(response.body);
+
     for (int j = 0; j < data.length; j++) {
       result.add(data[j]);
     }
   }
-
-  print(response.statusCode);
-  return result;
+  allFeed = result;
+  //print(allFeed);
 }
 
-List<Post> createPosts(List<dynamic> all) {
-  Post post = new Post();
+//takes in a list of data
+//returns a list of type <Post>
+List createPosts(var all) {
+  Post post;
   double long;
   double lat;
   String text;
   var time;
-  List<Post> posts;
+  List posts = [];
 
   for (int i = 0; i < all.length; i++) {
+    print("succ");
     long = all[i]["longitude"];
     lat = all[i]["latitude"];
     text = all[i]["text"];
     time = all[i]["timestamp"];
-    post = Post(text: text, epochTime: time, userId: userId);
+    time = convertTime(time);
+    post = new Post(text: text, epochTime: time, latitude:lat, longitude:long, categories: ['Gardening', 'Environmental', 'Sustainability']);
 
     posts.add(post);
   }
   return posts;
+}
+
+
+int convertTime (String time) {
+  var parsedDate = DateTime.parse(time);
+  int epoch = parsedDate.toUtc().millisecondsSinceEpoch;
+  return epoch;
+
 }

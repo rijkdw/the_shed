@@ -7,10 +7,12 @@ class Post with Timeable {
   double latitude;
   double longitude;
   int userId;
+  String username; // for display purposes only
   int groupId;
+  String groupname; // for display purposes only
   var categories = <String>[];
 
-  Post({int id, String text, int epochTime, double latitude, double longitude, int userId, int groupId, var categories}) {
+  Post({int id, String text, int epochTime, double latitude, double longitude, int userId, String username, int groupId, String groupname, var categories}) {
     this.id = id ?? 0;
     this.text = text ?? 'TEXT';
     this.latitude = latitude ?? 0;
@@ -19,6 +21,8 @@ class Post with Timeable {
     this.groupId = groupId ?? 0;
     this.categories.addAll(categories);
     this.epochTime = epochTime ?? 0;
+    this.groupname = groupname ?? 'GROUP_NAME';
+    this.username = username ?? 'USER_NAME';
   }
 
   factory Post.fromJson(Map<String, dynamic> json) {
@@ -34,12 +38,24 @@ class Post with Timeable {
     );
   }
 
-  String get username => 'USERNAME';
-
   String get location => 'Stellenbosch, ZA';
 
-  String get groupname => 'GROUPNAME';
-
   String get prettyCategories => this.categories.join('  |  ');
+
+  String getInFeedTimestamp() {
+    // if today
+    if (this.isToday()) {
+      return getHHMM();
+    // if yesterday
+    } else if (this.isYesterday()) {
+      return getHHMM() + ' yesterday';
+    // if this year
+    } else if (this.isThisYear()) {
+      return getHHMM() + ' ' + getDDMM();
+    // else
+    } else {
+      return getHHMM() + ' ' + getDDMMYYYY();
+    }
+  }
 
 }

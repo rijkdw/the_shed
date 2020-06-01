@@ -66,6 +66,26 @@ Future userID(String user) async {
   return id;
 }
 
+Future<String> getUsernameFromID(int id) async {
+
+  String url = "https://theshedapi.herokuapp.com/api/v1/Users/?id=";
+  url = url + '${id.toString()}';
+  List<dynamic> list;
+  
+  final response = await get(url, headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': "Token " + token
+  });
+
+  if (response.statusCode == 200) {
+    list = json.decode(response.body);
+    return list[0]['username'];
+  } else {
+    return 'USERNAME';
+  }
+
+}
+
 //returns user auth-token
 Future loggedIn(String usr, String psw) async {
   String apiURL = "https://theshedapi.herokuapp.com/api-token-auth/";
@@ -154,6 +174,8 @@ Future getAllUserPosts() async {
   allPosts = temp;
   //print(allPosts);
 }
+
+
 // returns all the posts the current user is interested in
 Future<List<Post>> getUserFeed() async {
   var data;
@@ -187,12 +209,16 @@ Future<List<Post>> getUserFeed() async {
 
     for (int j = 0; j < data.length; j++) {
       // evaluating data[j]
+
+      // String username = await getUsernameFromID(data[j]['owner_id']);
+
       results.add(Post(
         longitude: data[j]['longitude'],
         latitude: data[j]['latitude'],
         text: data[j]['text'],
         epochTime: convertTime(data[j]['timestamp']),
         categories: ['Cat 1', 'Cat 2', 'Cat 3'],
+        username: data[j]['owner'],
       ));
     }
   }
@@ -227,7 +253,6 @@ List createPosts(var all) {
 
 int convertTime (String time) {
   var parsedDate = DateTime.parse(time);
-  int epoch = parsedDate.toUtc().millisecondsSinceEpoch;
+  int epoch = (parsedDate.toUtc().millisecondsSinceEpoch/1000).round();
   return epoch;
-
 }

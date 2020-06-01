@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/post.dart';
 import 'package:rw334/service/httpService.dart';
-import 'global.dart';
 import 'postpage.dart';
 import 'createpost.dart';
 
 class FeedPage extends StatelessWidget {
-  Future<List<Post>> _feedFuture = getUserFeed();
 
   @override
   Widget build(BuildContext context) {
@@ -17,54 +15,12 @@ class FeedPage extends StatelessWidget {
           "assets/logo.png",
           width: 120,
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ),
-            iconSize: 30,
-            onPressed: () {
-              print('FeedPage refresh pressed');
-            },
-          ),
-        ],
       ),
-      body: FutureBuilder<List<Post>>(
-        future: _feedFuture,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Container(
-              color: Color.fromRGBO(41, 41, 41, 1),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      SortingBar(),
-                      FeedWidget(
-                        posts: snapshot.data,
-                      ),
-                    ],          
-                  ),
-                ]
-              ),
-            );
-          } else {
-            return Container(
-              color: Color.fromRGBO(41, 41, 41, 1),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: Text(
-                  'Waiting for posts.',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-              ),
-            );
-          }
-        },
+      body: Container(
+        color: Color.fromRGBO(41, 41, 41, 1),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: FeedWidget(),
       ),
       floatingActionButton: FloatingActionButton(
         // mini: true,
@@ -80,154 +36,175 @@ class FeedPage extends StatelessWidget {
   }
 }
 
-class FeedWidget extends StatelessWidget {
-
-  final List<Post> posts;
-  const FeedWidget({@required this.posts});
+class FeedWidget extends StatefulWidget {
 
   @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(4),      
-          itemCount: posts.length,    
-          itemBuilder: (context, i) {
-            return Container(
-              padding: const EdgeInsets.all(4),
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => PostPage(posts[i])));
-                },
-                child: PostCard(
-                  post: posts[i],
-                  lineLimit: 3,
-                ),
-              ),
-            );
-          }
-        ),
-      ),
-    );
-  }
+  _FeedWidgetState createState() => _FeedWidgetState();
 }
 
-
-class SortingBar extends StatefulWidget {
-
-  @override
-  _SortingBarState createState() => _SortingBarState();
-}
-
-class _SortingBarState extends State<SortingBar> {
+class _FeedWidgetState extends State<FeedWidget> {
   
   String sortingKey = 'Time';
-  String sortingOrder = 'Asc'; 
+  String sortingOrder = 'Asc';
+
+  Future<List<Post>> _feedFuture = getUserFeed();
+
+  void sort() {
+    print('Sorting in FeedWidget by $sortingKey, $sortingOrder');
+    this._feedFuture = getUserFeed();
+  }
 
   @override
   Widget build(BuildContext context) {
 
     final TextStyle _style = TextStyle(fontSize: 16, color: Colors.black);
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 3),
-            blurRadius: 1,
-            color: Colors.black.withOpacity(0.2),
-          )
-        ]
-      ),
-      child: Row(
-        children: [
-          
-          // the label
-          Text(
-            'Sort by...',
-            style: _style,
-          ),
-
-          // sort by time, group, user, etc
-          Container(
-            margin: const EdgeInsets.only(left: 12),
-            child: DropdownButton<String>(
-              value: sortingKey,
-              icon: null,
-              elevation: 8,
-              isDense: true,
-              style: _style,
-              items: <String>['Time', 'Location', 'User', 'Category', 'Likes']
-                .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }
-              ).toList(),
-              onChanged: (String newValue) {
-                print('\"$newValue\" has been selected as sorting key');
-                setState(() { sortingKey = newValue; });                
-              },
-            ),
-          ),
-
-          // sort ascending or descending
-          Container(
-            margin: const EdgeInsets.only(left: 12),
-            child: DropdownButton<String>(
-              value: sortingOrder,
-              icon: null,
-              elevation: 8,
-              isDense: true,
-              style: _style,
-              items: <String>['Asc', 'Desc']
-                .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }
-              ).toList(),
-              onChanged: (String newValue) {
-                print('\"$newValue\" has been selected as sorting order');
-                setState(() { sortingOrder = newValue; });                
-              },
-            ),
-          ),
-
-          // confirm
-          Expanded(
-            child: Container(
-              alignment: Alignment.centerRight,
-              width: 40,
-              child: OutlineButton(
-                splashColor: Theme.of(context).accentColor,
-                // TODO make it sort
-                onPressed: () => print('Sorting button pushed'),
-                child: Text(
-                  'Go',
-                )
+    return Stack(
+      children: [
+        Column(
+          children: <Widget>[
+            // the sorting bar
+            Container(
+              padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0, 3),
+                    blurRadius: 1,
+                    color: Colors.black.withOpacity(0.2),
+                  )
+                ]
               ),
+              child: Row(
+                children: [
+                  
+                  // the label
+                  Text(
+                    'Sort by...',
+                    style: _style,
+                  ),
+
+                  // sort by time, group, user, etc
+                  Container(
+                    margin: const EdgeInsets.only(left: 12),
+                    child: DropdownButton<String>(
+                      value: sortingKey,
+                      icon: null,
+                      elevation: 8,
+                      isDense: true,
+                      style: _style,
+                      items: <String>['Time', 'Location', 'User', 'Category', 'Likes']
+                        .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }
+                      ).toList(),
+                      onChanged: (String newValue) {
+                        print('\"$newValue\" has been selected as sorting key');
+                        setState(() { sortingKey = newValue; });                
+                      },
+                    ),
+                  ),
+
+                  // sort ascending or descending
+                  Container(
+                    margin: const EdgeInsets.only(left: 12),
+                    child: DropdownButton<String>(
+                      value: sortingOrder,
+                      icon: null,
+                      elevation: 8,
+                      isDense: true,
+                      style: _style,
+                      items: <String>['Asc', 'Desc']
+                        .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }
+                      ).toList(),
+                      onChanged: (String newValue) {
+                        print('\"$newValue\" has been selected as sorting order');
+                        setState(() { sortingOrder = newValue; });                
+                      },
+                    ),
+                  ),
+
+                  // confirm
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      width: 40,
+                      child: OutlineButton(
+                        splashColor: Theme.of(context).accentColor,
+                        onPressed: () => sort(),
+                        child: Text(
+                          'Go',
+                        )
+                      ),
+                    ),
+                  )
+                ],
+              )
             ),
-          )
-        ],
-      )
+            FutureBuilder<List<Post>>(
+              future: _feedFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Post> posts = snapshot.data;
+                  return Flexible(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(4),      
+                        itemCount: posts.length,    
+                        itemBuilder: (context, i) {
+                          return Container(
+                            padding: const EdgeInsets.all(4),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PostPage(posts[i])));
+                              },
+                              child: PostCard(
+                                post: posts[i],
+                                lineLimit: 3,
+                              ),
+                            ),
+                          );
+                        }
+                      ),
+                    ),
+                  );
+                } else {
+                  return Expanded(
+                    child: Center(
+                      child: Text(
+                        'Waiting for posts.',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
 
+
 class PostCard extends StatefulWidget {
   
-  Post post;
-  int lineLimit;
+  final Post post;
+  final int lineLimit;
 
-  PostCard({Post post, int lineLimit}) {
-    this.post = post;
-    this.lineLimit = lineLimit;
-  }
+  PostCard({@required this.post, @required this.lineLimit});
 
   @override
   _PostCardState createState() => _PostCardState();
@@ -314,6 +291,22 @@ class _PostCardState extends State<PostCard> {
                 ),
                 TextSpan(
                   text: widget.post.groupname,
+                  style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
+                ),
+                TextSpan(
+                  text: ' at ',
+                  style: _styleHeaderNormal
+                ),
+                TextSpan(
+                  text: widget.post.getInFeedTimestamp(),
+                  style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
+                ),
+                TextSpan(
+                  text: ' near ',
+                  style: _styleHeaderNormal
+                ),
+                TextSpan(
+                  text: widget.post.location,
                   style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
                 ),
               ],

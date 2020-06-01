@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/post.dart';
 import 'package:rw334/models/comment.dart';
-import 'global.dart';
+import 'package:rw334/service/httpService.dart';
 import 'feed.dart';
 
 class PostPage extends StatelessWidget {
   
   final Post post;
-  PostPage(this.post);
+  Future<List<Comment>> _commentsFuture;
+  PostPage({@required this.post}) {
+    this._commentsFuture = null; //getCommentsOnPost(post.id);
+  }
 
   final TextEditingController _commentController = TextEditingController();
 
@@ -23,16 +26,6 @@ class PostPage extends StatelessWidget {
 
     final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 16.0);
     final _inputHintStyle = TextStyle(color: Colors.grey);
-
-    List<CommentCard> getCommentCards() {
-      List<CommentCard> returnList = [];
-      for (Comment comment in dummyComments) {
-        if (comment.postId == this.post.id)
-          returnList.add( CommentCard(comment: comment) );
-      }
-      returnList.sort((a, b) => -b.comment.epochTime.compareTo(a.comment.epochTime));      
-      return returnList;
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -60,33 +53,63 @@ class PostPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: <Widget>[
-            ListView(
-              shrinkWrap: true,
-              children: [
-                // post card with metadata widget below it
-                ...[
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    width: MediaQuery.of(context).size.width,
-                    child: PostCard(
-                      post: this.post,
-                      lineLimit: 100,
+
+            // post card with metadata widget below it
+            Container(
+              padding: const EdgeInsets.all(8),
+              width: MediaQuery.of(context).size.width,
+              child: PostCard(
+                post: this.post,
+                lineLimit: 100,
+              ),
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            MetadataWidget(
+              post: this.post
+            ),
+            SizedBox(
+              height: 8,
+            ),
+
+            // then all the comments
+            FutureBuilder<List<Comment>>(
+              future: _commentsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done)
+                  return Expanded(
+                    child: Center(
+                      child: Text(
+                        'Waiting for comments...',
+                        style: TextStyle( fontSize: 20, color: Colors.white ),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  MetadataWidget(
-                    post: this.post
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                ],
-                // then all the comments
-                ...getCommentCards(),
+                  );
                 
-              ],
+                if (snapshot.hasData) {
+                  List<Comment> comments = snapshot.data;
+                  if (comments.length == 0) {
+                    return Expanded(
+                      child: Center(
+                        child: Text(
+                          'No comments...',
+                          style: TextStyle( fontSize: 20, color: Colors.white ),
+                        ),
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: comments.length,
+                    itemBuilder: (context, index) {
+                      return CommentCard(
+                        comment: comments[index],
+                      );
+                    }
+                  );
+                }
+              },
             ),
 
             // then the input widget for commenting

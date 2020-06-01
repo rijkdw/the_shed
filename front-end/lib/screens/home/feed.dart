@@ -184,7 +184,13 @@ class _FeedWidgetState extends State<FeedWidget> {
                             padding: const EdgeInsets.all(4),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PostPage(posts[i])));
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => PostPage(
+                                      post: posts[i]
+                                    )
+                                  )
+                                );
                               },
                               child: PostCard(
                                 post: posts[i],

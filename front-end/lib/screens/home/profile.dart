@@ -1,128 +1,79 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rw334/models/post.dart';
 import 'package:rw334/models/user.dart';
 import 'package:provider/provider.dart';
+import 'package:rw334/screens/home/postpage.dart';
+import 'package:rw334/service/httpService.dart';
 import 'drawer.dart';
+import 'feed.dart';
 
 class ProfilePage extends StatelessWidget {
 //http request-get
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<User>(
-      builder: (context, user, child) {
-        return Scaffold(
-          appBar: new AppBar(
-            backgroundColor: Colors.deepOrange,
-            title: Text(
-              user.getUsername()
-            ),
+    return Scaffold(
+      appBar: new AppBar(
+        backgroundColor: Colors.black,
+        title: Text(
+          "Welcome",
+          style: TextStyle(
+            color: Colors.white,
           ),
-          endDrawer: SettingsDrawer(),
-          body: Container(
-            color: Color.fromRGBO(41, 41, 41, 1),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              children: [
-                //TODO: profile card
-                Container(
-                  padding: EdgeInsets.all(8),
-                  color: Colors.black,
-                  height: 125,
-                  child: Row(
-                    children: [
+        ),
+      ),
+      endDrawer: SettingsDrawer(),
+      body: Container(
+        color: Color.fromRGBO(41, 41, 41, 1),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: ProfileWidget(),
+      ),
+    );
+  }
+}
 
-                      // profile picture and display name
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            Column(
-                              children: <Widget>[
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(user.getPicture()),
-                                    radius: 40,
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(top: 5, left: 2),
-                                  child: Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Text(
-                                      user.getName(),
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                        letterSpacing: 0.7,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      
-                      // posts
+class ProfileWidget extends StatefulWidget {
+  @override
+  _ProfileWidgetState createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+  Future<dynamic> _feedFuture = getAllUserPosts();
+
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle _style = TextStyle(fontSize: 16, color: Colors.black);
+    return Consumer<User>(builder: (context, user, child) {
+      return Column(
+        children: <Widget>[
+          //TODO: profile card
+          Container(
+            padding: EdgeInsets.all(8),
+            color: Colors.black45,
+            height: 125,
+            child: Row(
+              children: [
+                // profile picture and display name
+                Container(
+                  child: Row(
+                    children: <Widget>[
                       Column(
                         children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(left: 35, top: 28),
-                            child: Align(
-                              //alignment: Alignment.topRight,
-                              child: Text(
-                                user.getPost(),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  letterSpacing: 0.7,
-                                ),
-                              ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: CircleAvatar(
+                              backgroundImage: AssetImage(user.getPicture()),
+                              radius: 40,
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(left: 35),
+                            padding: EdgeInsets.only(top: 5, left: 2),
                             child: Align(
-                              //alignment: Alignment.topRight,
+                              alignment: Alignment.bottomLeft,
                               child: Text(
-                                "POSTS ",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                  letterSpacing: 0.7,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      
-                      // followers
-                      Column(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(left: 25, top: 28),
-                            child: Align(
-                              //alignment: Alignment.topRight,
-                              child: Text(
-                                user.getFollowing(),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  letterSpacing: 0.7,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 25),
-                            child: Align(
-                              //alignment: Alignment.topRight,
-                              child: Text(
-                                "FOLLOWING ",
+                                user.getName(),
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.white,
@@ -136,11 +87,116 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
+                // posts
+                Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 35, top: 28),
+                      child: Align(
+                        //alignment: Alignment.topRight,
+                        child: Text(
+                          user.getPost(),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            letterSpacing: 0.7,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 35),
+                      child: Align(
+                        //alignment: Alignment.topRight,
+                        child: Text(
+                          "POSTS ",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            letterSpacing: 0.7,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // followers
+                Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 25, top: 28),
+                      child: Align(
+                        //alignment: Alignment.topRight,
+                        child: Text(
+                          user.getFollowing(),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            letterSpacing: 0.7,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 25),
+                      child: Align(
+                        //alignment: Alignment.topRight,
+                        child: Text(
+                          "FOLLOWING ",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            letterSpacing: 0.7,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-        );
-      }
-    );
+          FutureBuilder<List<Post>>(
+            future: _feedFuture,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Post> posts = snapshot.data;
+                return Flexible(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                        padding: const EdgeInsets.all(4),
+                        itemCount: posts.length,
+                        itemBuilder: (context, i) {
+                          return Container(
+                            padding: const EdgeInsets.all(4),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => PostPage(posts[i])));
+                              },
+                              child: PostCard(
+                                post: posts[i],
+                                lineLimit: 3,
+                              ),
+                            ),
+                          );
+                        }),
+                  ),
+                );
+              } else {
+                return Center(
+                  child: Text(
+                    'Waiting for posts.',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      );
+    });
   }
 }

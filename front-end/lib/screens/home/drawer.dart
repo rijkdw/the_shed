@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:rw334/service/constants.dart';
 import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/authenticate/login.dart';
 import 'edit.dart';
-import 'settings.dart';
 
 class SettingsDrawer extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Consumer<User>(
@@ -19,7 +16,7 @@ class SettingsDrawer extends StatelessWidget {
                 height: 90,
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.all(20),
-                color: Colors.deepOrange,
+                color: Colors.black,
                 child: Center(
                   child: Text(
                     "Options",
@@ -32,7 +29,7 @@ class SettingsDrawer extends StatelessWidget {
               ),
               Container(
                 height: MediaQuery.of(context).size.height - 150,
-                color: Colors.white,
+                color: Color.fromRGBO(41, 41, 41, 1),
                 child: Column(
                   children: [
                     ListTile(
@@ -41,28 +38,13 @@ class SettingsDrawer extends StatelessWidget {
                         "Profile",
                         style: TextStyle(
                           fontSize: 18,
+                          color: Colors.white,
                         ),
                       ),
                       onTap: () {
                         // Navigator.pushNamed(context, EDIT, arguments: context); // this stopped working when implementing the Provider architecture :(
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Edit()
-                        ));
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.settings),
-                      title: Text(
-                        "Settings",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-                        // Navigator.pushNamed(context, SETTINGS, arguments: context); // this stopped working when implementing the Provider architecture :(
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Settings()
-                        ));
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Edit()));
                       },
                     ),
                     ListTile(
@@ -71,13 +53,15 @@ class SettingsDrawer extends StatelessWidget {
                         "Logout",
                         style: TextStyle(
                           fontSize: 18,
+                          color: Colors.white,
                         ),
                       ),
                       onTap: () {
                         user.logout();
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => LoginScreen()
-                        ));
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                            (Route<dynamic> route) => false);
                       },
                     ),
                   ],
@@ -87,6 +71,6 @@ class SettingsDrawer extends StatelessWidget {
           ),
         );
       },
-    );    
+    );
   }
 }

@@ -159,8 +159,9 @@ Future makePost(String txt, int grp) async {
 }
 
 //returns all posts made by the Current user
-Future getAllUserPosts() async {
-  List temp;
+Future <List<Post>> getAllUserPosts() async {
+  List data;
+  List<Post> results = [];
   String url =
       "https://theshedapi.herokuapp.com/api/v1/posts/?owner=" + "$userId";
   final response = await get(url, headers: <String, String>{
@@ -168,11 +169,25 @@ Future getAllUserPosts() async {
     'Authorization': "Token " + token
   });
   if (response.statusCode == 200) {
-    temp = json.decode(response.body);
+    data = json.decode(response.body);
   }
+  for (int j = 0; j < data.length; j++) {
+    // evaluating data[j]
 
-  allPosts = temp;
-  //print(allPosts);
+    // String username = await getUsernameFromID(data[j]['owner_id']);
+
+    results.add(Post(
+      longitude: data[j]['longitude'],
+      latitude: data[j]['latitude'],
+      text: data[j]['text'],
+      epochTime: convertTime(data[j]['timestamp']),
+      categories: ['Cat 1', 'Cat 2', 'Cat 3'],
+      username: data[j]['owner'],
+    ));
+  }
+  allPosts = results;
+  return results;
+
 }
 
 

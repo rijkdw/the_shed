@@ -3,7 +3,7 @@ import 'package:rw334/screens/home/chats.dart';
 import 'package:rw334/screens/home/chatscreen.dart';
 import 'package:rw334/screens/home/edit.dart';
 import 'package:rw334/screens/home/home.dart';
-import 'package:rw334/screens/home/settings.dart';
+
 import 'constants.dart';
 
 // ignore: missing_return
@@ -13,8 +13,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case HOME:
       return MaterialPageRoute(builder: (context) => UserHomePage());
-    case SETTINGS:
-      return MaterialPageRoute(builder: (context) => Settings());
+
     case EDIT:
       return MaterialPageRoute(builder: (context) => Edit());
     case CHAT:

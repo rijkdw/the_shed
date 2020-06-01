@@ -11,7 +11,7 @@ List<dynamic> allUserFeed;
 List allFeed;
 List allPosts;
 String owner;
-String username;
+String globalUsername;
 int userId;
 
 // unused for now
@@ -97,6 +97,7 @@ Future loggedIn(String usr, String psw) async {
     token = token["token"];
 
     userId = await userID(usr);
+    // globalUsername = usr;
     print(userId);
     makeUser();
     return null;

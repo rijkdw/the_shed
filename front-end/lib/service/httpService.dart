@@ -109,7 +109,7 @@ Future loggedIn(String usr, String psw) async {
 
 Future<void> makeUser() async {
   getAllUserPosts();
-  getUserFeed();
+  getUserFeed('Time', 'Asc');
   await new Future.delayed(const Duration(seconds : 6));
   // allUserPosts = createPosts(allPosts);
   // allUserFeed = createPosts(allFeed);
@@ -177,7 +177,7 @@ Future getAllUserPosts() async {
 
 
 // returns all the posts the current user is interested in
-Future<List<Post>> getUserFeed() async {
+Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   var data;
   var groups;
   int temp;
@@ -219,9 +219,24 @@ Future<List<Post>> getUserFeed() async {
         epochTime: convertTime(data[j]['timestamp']),
         categories: ['Cat 1', 'Cat 2', 'Cat 3'],
         username: data[j]['owner'],
+        locationname: 'Stellenbosch'
       ));
     }
   }
+  
+  // sort
+  int sortOrderNegator = sortOrder == 'Asc'
+      ? 1
+      : -1;
+  switch (sortKey) {
+    case 'Time': results.sort((a, b) => -sortOrderNegator*a.epochTime.compareTo(b.epochTime)); break;
+    case 'Location': results.sort((a, b) => sortOrderNegator*a.locationname.compareTo(b.locationname)); break;
+    case 'User': results.sort((a, b) => sortOrderNegator*a.username.compareTo(b.username)); break;
+    case 'Category': results.sort((a, b) => sortOrderNegator*a.categories.length.compareTo(b.categories.length)); break;
+    case 'Likes': break;
+    default: break;
+  }
+  
   allFeed = results;
   return results;
   //print(allFeed);

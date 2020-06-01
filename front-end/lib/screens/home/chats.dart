@@ -5,13 +5,14 @@ import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/home/chatscreen.dart';
 import 'package:rw334/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rw334/service/httpService.dart' as httpService;
 
 class ChatsPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
 
-    int userID = Provider.of<User>(context).id;
+    int userID = httpService.userId;
 
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +31,7 @@ class ChatsPage extends StatelessWidget {
         onPressed: () {
           showDialog(
             child: SearchDialog(
-              userID: Provider.of<User>(context, listen: false).id,
+              userID: userID, //Provider.of<User>(context, listen: false).id,
             ),
             context: context,
           );
@@ -51,7 +52,7 @@ class ChatsPage extends StatelessWidget {
           }
           List<Message> allMessagesList = [];
           for (int i = 0; i < snapshot.data.documents.length; i++) {
-            Message msg = Message.fromDocumentSnapshot(snapshot.data.documents[i]);List<int> allowedIDs = [msg.senderId, msg.receiverId];
+            Message msg = Message.fromDocumentSnapshot(snapshot.data.documents[i]);
             if ([msg.senderId, msg.receiverId].contains(userID)) {
               allMessagesList.add(msg);
             }
@@ -164,6 +165,7 @@ class _SearchDialogState extends State<SearchDialog> {
                     ]
                   ),
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ChatScreen(
                         thisUserID: widget.userID,
@@ -188,7 +190,7 @@ class ConversationList extends StatelessWidget {
 
   int getOtherUserID(BuildContext context, Message msg) {
     List<int> idsInvolved = [msg.senderId, msg.receiverId];
-    idsInvolved.remove(Provider.of<User>(context).id);
+    idsInvolved.remove(httpService.userId);
     return idsInvolved[0];
   }
 

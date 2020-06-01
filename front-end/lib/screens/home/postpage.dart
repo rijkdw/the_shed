@@ -109,7 +109,7 @@ class MetadataWidget extends StatelessWidget {
                 TextSpan( text: 'Posted ', style: _styleNormal, ),
                 TextSpan( text: '${this.post.getHHMM()}, ${this.post.getDDMMYY()}', style: _styleEmphasis, ),
                 TextSpan( text: ' in ', style: _styleNormal ),
-                TextSpan( text: '${this.post.location}', style: _styleEmphasis ),
+                TextSpan( text: '${this.post.locationname}', style: _styleEmphasis ),
               ]
             ),
           ),

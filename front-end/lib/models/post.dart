@@ -6,17 +6,19 @@ class Post with Timeable {
   String text;
   double latitude;
   double longitude;
+  String locationname;
   int userId;
   String username; // for display purposes only
   int groupId;
   String groupname; // for display purposes only
   var categories = <String>[];
 
-  Post({int id, String text, int epochTime, double latitude, double longitude, int userId, String username, int groupId, String groupname, var categories}) {
+  Post({int id, String text, int epochTime, double latitude, double longitude, String locationname, int userId, String username, int groupId, String groupname, var categories}) {
     this.id = id ?? 0;
     this.text = text ?? 'TEXT';
     this.latitude = latitude ?? 0;
     this.longitude = longitude ?? 0;
+    this.locationname = locationname ?? 'LOCATION';
     this.userId = userId ?? 0;
     this.groupId = groupId ?? 0;
     this.categories.addAll(categories);
@@ -37,8 +39,6 @@ class Post with Timeable {
       epochTime: json['epochTime'],
     );
   }
-
-  String get location => 'Stellenbosch, ZA';
 
   String get prettyCategories => this.categories.join('  |  ');
 

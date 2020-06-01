@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/message.dart';
-import 'package:rw334/models/user.dart';
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rw334/service/httpService.dart' as httpService;
 
 class ChatScreen extends StatefulWidget {
 
@@ -32,9 +31,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
     int currentUserID;
     if (widget.thisUserID != null) {
+      print('if was sufficient');
       currentUserID = widget.thisUserID;
     } else {
-      currentUserID = Provider.of<User>(context).id;
+      print('had to go into else');
+      currentUserID = httpService.userId;
     }
     String otherUsername = 'OTHER USER';
 

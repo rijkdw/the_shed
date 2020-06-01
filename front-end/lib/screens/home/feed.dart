@@ -47,11 +47,13 @@ class _FeedWidgetState extends State<FeedWidget> {
   String sortingKey = 'Time';
   String sortingOrder = 'Asc';
 
-  Future<List<Post>> _feedFuture = getUserFeed();
+  Future<List<Post>> _feedFuture = getUserFeed('Time', 'Asc');
 
   void sort() {
     print('Sorting in FeedWidget by $sortingKey, $sortingOrder');
-    this._feedFuture = getUserFeed();
+    setState(() {
+      this._feedFuture = getUserFeed(this.sortingKey, this.sortingOrder);
+    });
   }
 
   @override
@@ -150,9 +152,24 @@ class _FeedWidgetState extends State<FeedWidget> {
                 ],
               )
             ),
+
+            // the feed
             FutureBuilder<List<Post>>(
               future: _feedFuture,
               builder: (context, snapshot) {
+
+                // if data isn't here yet...
+                if (snapshot.connectionState != ConnectionState.done)
+                  return Expanded(
+                    child: Center(
+                      child: Text(
+                        'Waiting for posts...',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                  );
+                
+                // if the data is here
                 if (snapshot.hasData) {
                   List<Post> posts = snapshot.data;
                   return Flexible(
@@ -179,16 +196,11 @@ class _FeedWidgetState extends State<FeedWidget> {
                       ),
                     ),
                   );
-                } else {
-                  return Expanded(
-                    child: Center(
-                      child: Text(
-                        'Waiting for posts.',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                    ),
-                  );
-                }
+                } 
+                // dummy return
+                return Text(
+                  'yeet'
+                );
               },
             ),
           ],
@@ -306,7 +318,7 @@ class _PostCardState extends State<PostCard> {
                   style: _styleHeaderNormal
                 ),
                 TextSpan(
-                  text: widget.post.location,
+                  text: widget.post.locationname,
                   style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
                 ),
               ],

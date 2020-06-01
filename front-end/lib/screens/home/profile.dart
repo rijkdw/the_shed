@@ -173,11 +173,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             padding: const EdgeInsets.all(4),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
                                     builder: (context) => PostPage(
-                                      post: posts[i]
-                                    )
-                                  )
+                                      post: posts[i],
+                                    ),
+                                  ),
                                 );
                               },
                               child: PostCard(

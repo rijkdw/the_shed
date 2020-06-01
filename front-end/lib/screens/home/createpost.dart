@@ -157,7 +157,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                 ),
                 onPressed: () async{
                   String txt = textController.text;
-                  makePost(txt, 21);
+                  makePost(txt, userId);
                 },
               ),
             ),

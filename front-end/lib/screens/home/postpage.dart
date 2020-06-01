@@ -14,12 +14,13 @@ class PostPage extends StatelessWidget {
 
   final TextEditingController _commentController = TextEditingController();
 
-  void _postCommentSequence() {
-      if (this._commentController.value.text.trimLeft().trimRight().length > 0) {
-        // make and push the comment
-        this._commentController.clear();
-      }      
-    }
+  void _postCommentSequence() async {
+    if (this._commentController.value.text.trimLeft().trimRight().length > 0) {
+      // make and push the comment
+      // makeComment(_commentController.text, userId);
+      this._commentController.clear();
+    }      
+  }
 
   @override
   Widget build(BuildContext context) {

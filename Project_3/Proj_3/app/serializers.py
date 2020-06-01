@@ -50,12 +50,13 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         groups_data = validated_data.pop('groups')
         password = validated_data.pop('password')
-        email = validated_data.pop('email')
+        #email = validated_data.pop('email')
         user = User(**validated_data)
         user.set_password(password)
+        user.save()
         for group_data in groups_data:
             user.groups.add(group_data)
-        user.save()
+
         return user
 
     class Meta:

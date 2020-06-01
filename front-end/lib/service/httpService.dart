@@ -11,6 +11,7 @@ List<dynamic> allUserFeed;
 List allFeed;
 List allPosts;
 String owner;
+String username;
 int userId;
 
 // unused for now
@@ -193,16 +194,13 @@ Future<List<Post>> getAllUserPosts() async {
 Future<List<Comment>> getCommentsOnPost(int postID) async {
   List<Comment> results = [];
   String url = 'https://theshedapi.herokuapp.com/api/v1/Comments/?post=${postID.toString()}';
-  print('Looking at $url for our comments');
   var response = await get(url, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': "Token " + token
   });
   if (response.statusCode != 200) {
-    print('Not 200 code');
     return [];
   }
-  print('results received');
   var data = json.decode(response.body);
   for (int i = 0; i < data.length; i++) {
     results.add(Comment(

@@ -174,11 +174,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             child: InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => PostPage(
-                                      post: posts[i]
-                                    )
-                                  )
-                                );
+                                    builder: (context) => PostPage(posts[i])));
                               },
                               child: PostCard(
                                 post: posts[i],

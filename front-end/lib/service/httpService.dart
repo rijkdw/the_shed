@@ -67,11 +67,10 @@ Future userID(String user) async {
 }
 
 Future<String> getUsernameFromID(int id) async {
-
   String url = "https://theshedapi.herokuapp.com/api/v1/Users/?id=";
   url = url + '${id.toString()}';
   List<dynamic> list;
-  
+
   final response = await get(url, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': "Token " + token
@@ -83,7 +82,6 @@ Future<String> getUsernameFromID(int id) async {
   } else {
     return 'USERNAME';
   }
-
 }
 
 //returns user auth-token
@@ -106,11 +104,10 @@ Future loggedIn(String usr, String psw) async {
   }
 }
 
-
 Future<void> makeUser() async {
   getAllUserPosts();
   getUserFeed('Time', 'Asc');
-  await new Future.delayed(const Duration(seconds : 6));
+  //await new Future.delayed(const Duration(seconds: 6));
   // allUserPosts = createPosts(allPosts);
   // allUserFeed = createPosts(allFeed);
   // print List<Post>
@@ -118,7 +115,6 @@ Future<void> makeUser() async {
   // print(allUserPosts);
   // print("Posts user follow: ");
   // print(allUserFeed);
-
 }
 
 //makes a post by post request
@@ -159,7 +155,7 @@ Future makePost(String txt, int grp) async {
 }
 
 //returns all posts made by the Current user
-Future <List<Post>> getAllUserPosts() async {
+Future<List<Post>> getAllUserPosts() async {
   List data;
   List<Post> results = [];
   String url =
@@ -176,20 +172,22 @@ Future <List<Post>> getAllUserPosts() async {
 
     // String username = await getUsernameFromID(data[j]['owner_id']);
 
-    results.add(Post(
-      longitude: data[j]['longitude'],
-      latitude: data[j]['latitude'],
-      text: data[j]['text'],
-      epochTime: convertTime(data[j]['timestamp']),
-      categories: ['Cat 1', 'Cat 2', 'Cat 3'],
-      username: data[j]['owner'],
-    ));
+    results.add(
+      Post(
+        longitude: data[j]['longitude'],
+        latitude: data[j]['latitude'],
+        text: data[j]['text'],
+        epochTime: convertTime(data[j]['timestamp']),
+        categories: ['Cat 1', 'Cat 2', 'Cat 3'],
+        username: data[j]['owner'],
+        groupname: data[j]['group_name'],
+        locationname: 'Stellenbosch',
+      ),
+    );
   }
   allPosts = results;
   return results;
-
 }
-
 
 // returns all the posts the current user is interested in
 Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
@@ -198,8 +196,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   int temp;
   List<Post> results = [];
 
-  String url =
-      "https://theshedapi.herokuapp.com/api/v1/Users/?id=" + "$userId";
+  String url = "https://theshedapi.herokuapp.com/api/v1/Users/?id=" + "$userId";
   var response = await get(url, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': "Token " + token
@@ -215,74 +212,68 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
     url = url + "$temp";
     //print(url);
 
-    response = await get(url, headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': "Token " + token
-    });
+    response = await get(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': "Token " + token
+      },
+    );
 
     data = json.decode(response.body);
 
-    for (int j = 0; j < data.length; j++) {
+    for (int j = data.length - 1 ; j >= 0; j--) {
       // evaluating data[j]
 
       // String username = await getUsernameFromID(data[j]['owner_id']);
 
-      results.add(Post(
-        longitude: data[j]['longitude'],
-        latitude: data[j]['latitude'],
-        text: data[j]['text'],
-        epochTime: convertTime(data[j]['timestamp']),
-        categories: ['Cat 1', 'Cat 2', 'Cat 3'],
-        username: data[j]['owner'],
-        locationname: 'Stellenbosch'
-      ));
+      results.add(
+        Post(
+          longitude: data[j]['longitude'],
+          latitude: data[j]['latitude'],
+          text: data[j]['text'],
+          epochTime: convertTime(data[j]['timestamp']),
+          categories: ['Cat 1', 'Cat 2', 'Cat 3'],
+          username: data[j]['owner'],
+          locationname: 'Stellenbosch',
+          groupname: data[j]['group_name'],
+        ),
+      );
     }
   }
-  
+
   // sort
-  int sortOrderNegator = sortOrder == 'Asc'
-      ? 1
-      : -1;
+  int sortOrderNegator = sortOrder == 'Asc' ? 1 : -1;
   switch (sortKey) {
-    case 'Time': results.sort((a, b) => -sortOrderNegator*a.epochTime.compareTo(b.epochTime)); break;
-    case 'Location': results.sort((a, b) => sortOrderNegator*a.locationname.compareTo(b.locationname)); break;
-    case 'User': results.sort((a, b) => sortOrderNegator*a.username.compareTo(b.username)); break;
-    case 'Category': results.sort((a, b) => sortOrderNegator*a.categories.length.compareTo(b.categories.length)); break;
-    case 'Likes': break;
-    default: break;
+    case 'Time':
+      results.sort(
+          (a, b) => -sortOrderNegator * a.epochTime.compareTo(b.epochTime));
+      break;
+    case 'Location':
+      results.sort((a, b) =>
+          sortOrderNegator * a.locationname.compareTo(b.locationname));
+      break;
+    case 'User':
+      results
+          .sort((a, b) => sortOrderNegator * a.username.compareTo(b.username));
+      break;
+    case 'Category':
+      results.sort((a, b) =>
+          sortOrderNegator *
+          a.categories.length.compareTo(b.categories.length));
+      break;
+    case 'Likes':
+      break;
+    default:
+      break;
   }
-  
+
   allFeed = results;
   return results;
-  //print(allFeed);
 }
 
-//takes in a list of data
-//returns a list of type <Post>
-List createPosts(var all) {
-  Post post;
-  double long;
-  double lat;
-  String text;
-  var time;
-  List posts = [];
-
-  for (int i = 0; i < all.length; i++) {
-    print("succ");
-    long = all[i]["longitude"];
-    lat = all[i]["latitude"];
-    text = all[i]["text"];
-    time = all[i]["timestamp"];
-    time = convertTime(time);
-    post = new Post(text: text, epochTime: time, latitude:lat, longitude:long, categories: ['Gardening', 'Environmental', 'Sustainability']);
-
-    posts.add(post);
-  }
-  return posts;
-}
-
-int convertTime (String time) {
+int convertTime(String time) {
   var parsedDate = DateTime.parse(time);
-  int epoch = (parsedDate.toUtc().millisecondsSinceEpoch/1000).round();
+  int epoch = (parsedDate.toUtc().millisecondsSinceEpoch / 1000).round();
   return epoch;
 }

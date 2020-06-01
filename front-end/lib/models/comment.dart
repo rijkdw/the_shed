@@ -5,23 +5,26 @@ class Comment with Timeable {
   int id;
   int userId;
   int postId;
+  String username;
   String text;
 
-  Comment({int id, int userId, int postId, String text, int epochTime}) {
+  Comment({int id, int userId, int postId, String username, String text, int epochTime}) {
     this.id = id ?? 0;
     this.userId = userId ?? 0;
     this.postId = postId ?? 0;
     this.text = text ?? 'TEXT';
+    this.username = username ?? 'USERNAME';
     this.epochTime = epochTime ?? 0;
   }
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
       id: json['id'],
-      userId: json['userId'],
-      postId: json['postId'],
+      userId: json['owner'],
+      postId: json['post'],
       text: json['text'],
-      epochTime: json['epochtime'],
+      epochTime: (DateTime.parse(json['timestamp']).toUtc().millisecondsSinceEpoch/1000).round(),
+      username: 'UNDEFINED_USERNAME'
     );
   }
 
@@ -31,7 +34,5 @@ class Comment with Timeable {
     else if (this.isThisYear()) return getHHMM() + ' ' + getDDMM();
     else return getHHMM() + ' ' + getDDMMYY();
   }
-
-  String get username => 'USERNAME';
 
 }

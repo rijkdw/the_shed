@@ -73,7 +73,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             child: Align(
                               alignment: Alignment.bottomLeft,
                               child: Text(
-                                user.getName(),
+                                username,
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.white,
@@ -95,9 +95,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       child: Align(
                         //alignment: Alignment.topRight,
                         child: Text(
-                          user.getPost(),
+                          "$numberPost",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 20,
                             color: Colors.white,
                             letterSpacing: 0.7,
                           ),
@@ -130,7 +130,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         child: Text(
                           user.getFollowing(),
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 20,
                             color: Colors.white,
                             letterSpacing: 0.7,
                           ),

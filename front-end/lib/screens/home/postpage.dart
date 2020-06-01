@@ -14,12 +14,15 @@ class PostPage extends StatelessWidget {
 
   final TextEditingController _commentController = TextEditingController();
 
-  void _postCommentSequence() async {
+  void _postCommentSequence () {
+    String txt = _commentController.text;
+    int pid = post.id;
     if (this._commentController.value.text.trimLeft().trimRight().length > 0) {
       // make and push the comment
-      // makeComment(_commentController.text, userId);
+
+      makeComment(txt, pid);
       this._commentController.clear();
-    }      
+    }
   }
 
   @override
@@ -76,6 +79,7 @@ class PostPage extends StatelessWidget {
 
             // then all the comments
             FutureBuilder<List<Comment>>(
+
               future: _commentsFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done)
@@ -172,7 +176,7 @@ class PostPage extends StatelessWidget {
                             Icons.send
                           ),
                           iconSize: 30,
-                          onPressed: () {
+                          onPressed: () async {
                             _postCommentSequence();
                           },
                           color: Color.fromRGBO(255, 153, 0, 1.0),

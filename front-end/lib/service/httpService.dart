@@ -13,21 +13,26 @@ List allPosts;
 String owner;
 String username;
 int userId;
+int numberPost;
 
-// unused for now
-// Future getAllPosts() async {
-//   var data;
-//   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
-//   final response = await get(url, headers: <String, String>{
-//     'Content-Type': 'application/json; charset=UTF-8',
-//     'Authorization': "Token " + token
-//   });
-//   if (response.statusCode == 200) {
-//     data = json.decode(response.body);
-//   }
-//   print(response.statusCode);
-//   return data;
-// }
+Future makeComment(String txt, int pid) async {
+  String url = "https://theshedapi.herokuapp.com/api/v1/Comments/";
+  final res = await post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+    body: JsonEncoder().convert(
+      {
+        "text": txt,
+        "post": pid,
+        "owner": userId,
+      },
+    ),
+  );
+  return null;
+}
 
 Future signedUp(String username, String email, String psw) async {
   final String url = "https://theshedapi.herokuapp.com/api/registration/";
@@ -72,6 +77,7 @@ Future<String> getUsernameFromID(int id) async {
   String url = "https://theshedapi.herokuapp.com/api/v1/Users/?id=";
   url = url + '${id.toString()}';
   List<dynamic> list;
+  String res;
 
   final response = await get(url, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
@@ -80,7 +86,8 @@ Future<String> getUsernameFromID(int id) async {
 
   if (response.statusCode == 200) {
     list = json.decode(response.body);
-    return list[0]['username'];
+    res = list[0]['username'];
+    return res;
   } else {
     return 'USERNAME';
   }
@@ -107,6 +114,7 @@ Future loggedIn(String usr, String psw) async {
 }
 
 Future<void> makeUser() async {
+  username = await getUsernameFromID(userId);
   getAllUserPosts();
   getUserFeed('Time', 'Asc');
   //await new Future.delayed(const Duration(seconds: 6));
@@ -188,12 +196,16 @@ Future<List<Post>> getAllUserPosts() async {
     );
   }
   allPosts = results;
+  numberPost = allPosts.length;
+
   return results;
 }
 
 Future<List<Comment>> getCommentsOnPost(int postID) async {
   List<Comment> results = [];
-  String url = 'https://theshedapi.herokuapp.com/api/v1/Comments/?post=${postID.toString()}';
+
+  String url =
+      'https://theshedapi.herokuapp.com/api/v1/Comments/?post=${postID.toString()}';
   var response = await get(url, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': "Token " + token
@@ -203,14 +215,16 @@ Future<List<Comment>> getCommentsOnPost(int postID) async {
   }
   var data = json.decode(response.body);
   for (int i = 0; i < data.length; i++) {
-    results.add(Comment(
-      id: data[i]['id'],
-      text: data[i]['text'],
-      epochTime: convertTime(data[i]['timestamp']),
-      postId: postID,
-      userId: data[i]['owner'],
-      username: 'UNDEFINED_USERNAME'
-    ));
+    results.add(
+      Comment(
+        id: data[i]['id'],
+        text: data[i]['text'],
+        epochTime: convertTime(data[i]['timestamp']),
+        postId: postID,
+        userId: data[i]['owner'],
+        username: username,
+      ),
+    );
   }
   results.sort((a, b) => -b.epochTime.compareTo(a.epochTime));
   return results;
@@ -249,7 +263,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
 
     data = json.decode(response.body);
 
-    for (int j = data.length - 1 ; j >= 0; j--) {
+    for (int j = data.length - 1; j >= 0; j--) {
       // evaluating data[j]
 
       // String username = await getUsernameFromID(data[j]['owner_id']);

@@ -254,10 +254,24 @@ class MetadataWidget extends StatelessWidget {
 
 
 
-class CommentCard extends StatelessWidget {
+class CommentCard extends StatefulWidget {
   
-  Comment comment;
+  final Comment comment;  
   CommentCard({this.comment});
+
+  @override
+  _CommentCardState createState() => _CommentCardState();
+}
+
+class _CommentCardState extends State<CommentCard> {
+  
+  Future<String> _commentorName;
+
+  @override
+  void initState() { 
+    _commentorName = getUsernameFromID(widget.comment.userId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -312,27 +326,48 @@ class CommentCard extends StatelessWidget {
                 children: [
 
                   // commenter, time, "said"
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: comment.username,
+                  FutureBuilder(
+                    future: this._commentorName,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done)
+                        return Text(
+                          'Loading...',
                           style: _styleHeaderEmphasis.copyWith(
                             color: Theme.of(context).accentColor,
                           )
-                        ),
-                        TextSpan(
-                          text: ' at ',
-                          style: _styleHeaderNormal
-                        ),
-                        TextSpan(
-                          text: comment.getInPostTimeStamp(),
+                        );
+                      if (snapshot.hasData) {
+                        return RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: snapshot.data,
+                                style: _styleHeaderEmphasis.copyWith(
+                                  color: Theme.of(context).accentColor,
+                                )
+                              ),
+                              TextSpan(
+                                text: ' at ',
+                                style: _styleHeaderNormal
+                              ),
+                              TextSpan(
+                                text: widget.comment.getInPostTimeStamp(),
+                                style: _styleHeaderEmphasis.copyWith(
+                                  color: Theme.of(context).accentColor,
+                                )
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Text(
+                          'yeet',
                           style: _styleHeaderEmphasis.copyWith(
                             color: Theme.of(context).accentColor,
                           )
-                        ),
-                      ],
-                    ),
+                        );
+                      }
+                    },
                   ),
 
                   // spacing
@@ -342,7 +377,7 @@ class CommentCard extends StatelessWidget {
 
                   // comment body
                   Text(
-                    comment.text,
+                    widget.comment.text,
                     style: _styleBody,
                   )
                 ]

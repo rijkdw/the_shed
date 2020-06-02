@@ -44,6 +44,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle _style = TextStyle(fontSize: 16, color: Colors.black);
     return Consumer<User>(builder: (context, user, child) {
       return Column(
         children: <Widget>[
@@ -72,10 +73,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             child: Align(
                               alignment: Alignment.bottomLeft,
                               child: Text(
-                                username,
+                                (user.getUsername()).toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 18,
-                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).accentColor,
                                   letterSpacing: 0.7,
                                 ),
                               ),
@@ -88,11 +90,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 ),
                 // posts
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(left: 35, top: 28),
+                      // padding: EdgeInsets.only(left: 60, top: 28),
                       child: Align(
-                        //alignment: Alignment.topRight,
+                        alignment: Alignment.topRight,
                         child: Text(
                           "$numberPost",
                           style: TextStyle(
@@ -104,14 +108,15 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left: 35),
+                      //padding: EdgeInsets.only(left: 60),
                       child: Align(
-                        //alignment: Alignment.topRight,
+                        alignment: Alignment.topRight,
                         child: Text(
-                          "POSTS ",
+                          "POSTS",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).accentColor,
                             letterSpacing: 0.7,
                           ),
                         ),
@@ -123,9 +128,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 Column(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(left: 25, top: 28),
+                      //padding: EdgeInsets.only(left: 25, top: 28),
                       child: Align(
-                        //alignment: Alignment.topRight,
+                        alignment: Alignment.topRight,
                         child: Text(
                           user.getFollowing(),
                           style: TextStyle(
@@ -137,14 +142,15 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left: 25),
+                      // padding: EdgeInsets.only(left: 25),
                       child: Align(
-                        //alignment: Alignment.topRight,
+                        alignment: Alignment.topRight,
                         child: Text(
-                          "FOLLOWING ",
+                          "FRIENDS",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).accentColor,
                             letterSpacing: 0.7,
                           ),
                         ),
@@ -190,12 +196,10 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   ),
                 );
               } else {
-                return Expanded(
-                  child: Center(
-                    child: Text(
-                      'Waiting for posts.',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
+                return Center(
+                  child: Text(
+                    'Waiting for posts.',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
                 );
               }

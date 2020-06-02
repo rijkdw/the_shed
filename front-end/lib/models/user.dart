@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:rw334/service/httpService.dart';
 
 class User extends ChangeNotifier {
   String email;
@@ -10,7 +11,7 @@ class User extends ChangeNotifier {
   bool login; // logged in?
   String password;
   int id;
-  //final Map followers;
+  var groups;
   //final Map following;
 
   User({int id, String email, String username, String name, String picture, int post, int follow, String password}) {
@@ -22,7 +23,8 @@ class User extends ChangeNotifier {
     this.follow = follow ?? 0;
     this.login = true;
     this.password = password ?? '1234';
-    this.id = id ?? 0;
+    this.id = userId ?? 0;
+    this.groups = userGroups;
     //this.followers,
     //this.following
   }
@@ -92,6 +94,8 @@ class User extends ChangeNotifier {
     notifyListeners();
     return fine;
   }
+
+
 
 //Get info from DB
 }

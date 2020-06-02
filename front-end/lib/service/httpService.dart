@@ -11,9 +11,10 @@ List<dynamic> allUserFeed;
 List allFeed;
 List allPosts;
 String owner;
-String globalUsername;
+String username;
 int userId;
 int numberPost;
+var userGroups;
 
 Future makeComment(String txt, int pid) async {
   String url = "https://theshedapi.herokuapp.com/api/v1/Comments/";
@@ -104,7 +105,6 @@ Future loggedIn(String usr, String psw) async {
     token = token["token"];
 
     userId = await userID(usr);
-    // globalUsername = usr;
     print(userId);
     makeUser();
     return null;
@@ -246,6 +246,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   if (response.statusCode == 200) {
     data = json.decode(response.body);
     groups = data[0]["groups"];
+    userGroups = groups;
   }
 
   for (int i = 0; i < groups.length; i++) {

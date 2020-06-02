@@ -87,13 +87,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onPressed: ()async{
                 //printData();
                 createUserObject();
-                final User user = await signedUp(usernameField.value, emailField.value, passwordField.value);
+                String email = emailField.value;
+                String usr = usernameField.value;
+                final String psw = passwordField.value;
+                final User user = await signedUp(usr, email, psw);
 
                 setState(() {
                   _user = user;
                 });
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(builder: (context) => Home(psw)),
                         (Route<dynamic> route) => false);
               },
             )

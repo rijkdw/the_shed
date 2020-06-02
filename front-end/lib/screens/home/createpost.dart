@@ -121,13 +121,13 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                 TableRow(
                   children: [
                     Text( 'USERNAME', style: _metadataFieldStyle ),
-                    Text( globalUsername, style: _metadataValueStyle ),
+                    Text( 'Rice Balls', style: _metadataValueStyle ),
                   ]
                 ),
                 TableRow(
                   children: [
                     Text( 'TIME', style: _metadataFieldStyle ),
-                    Text( '${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}', style: _metadataValueStyle ),
+                    Text( '${DateTime.now().hour.toString().padLeft(2)}:${DateTime.now().minute.toString().padLeft(2)}', style: _metadataValueStyle ),
                   ]
                 ),
                 TableRow(

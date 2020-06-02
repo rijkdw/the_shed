@@ -142,14 +142,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               onPressed: () async {
-                FocusScope.of(context).unfocus(); // to remove the keyboard
                 String username = usernameController.value.text;
                 String psw = passwordController.value.text;
-                globalUsername = username;
                 String token = await loggedIn(username, psw);
                 //getAllPosts();
+
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(builder: (context) => Home(psw)),
                         (Route<dynamic> route) => false);
                 },
             ),
@@ -166,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     'SIGN UP',
                     style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                   ),
                 ),
               ),

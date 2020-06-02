@@ -197,6 +197,7 @@ Future<List<Post>> getAllUserPosts() async {
 
     results.add(
       Post(
+        id: data[j]['id'],
         longitude: data[j]['longitude'],
         latitude: data[j]['latitude'],
         text: data[j]['text'],

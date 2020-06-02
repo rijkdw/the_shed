@@ -44,11 +44,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle _style = TextStyle(fontSize: 16, color: Colors.black);
     return Consumer<User>(builder: (context, user, child) {
       return Column(
         children: <Widget>[
-          //TODO: profile card
           Container(
             padding: EdgeInsets.all(8),
             color: Colors.black45,
@@ -165,6 +163,18 @@ class _ProfileWidgetState extends State<ProfileWidget> {
           FutureBuilder<List<Post>>(
             future: _feedFuture,
             builder: (context, snapshot) {
+              // if data isn't here yet...
+              if (snapshot.connectionState != ConnectionState.done)
+                return Expanded(
+                  child: Center(
+                    child: Text(
+                      'Waiting for posts...',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  ),
+                );
+
+              // if the data is here
               if (snapshot.hasData) {
                 List<Post> posts = snapshot.data;
                 return Flexible(
@@ -172,38 +182,34 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
-                        padding: const EdgeInsets.all(4),
-                        itemCount: posts.length,
-                        itemBuilder: (context, i) {
-                          return Container(
-                            padding: const EdgeInsets.all(4),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => PostPage(
-                                      post: posts[i],
-                                    ),
+                      padding: const EdgeInsets.all(4),
+                      itemCount: posts.length,
+                      itemBuilder: (context, i) {
+                        return Container(
+                          padding: const EdgeInsets.all(4),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => PostPage(
+                                    post: posts[i],
                                   ),
-                                );
-                              },
-                              child: PostCard(
-                                post: posts[i],
-                                lineLimit: 3,
-                              ),
+                                ),
+                              );
+                            },
+                            child: PostCard(
+                              post: posts[i],
+                              lineLimit: 3,
                             ),
-                          );
-                        }),
-                  ),
-                );
-              } else {
-                return Center(
-                  child: Text(
-                    'Waiting for posts.',
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                        );
+                      }
+                    ),
                   ),
                 );
               }
+              // dummy return
+              return Text('yeet');
             },
           ),
         ],

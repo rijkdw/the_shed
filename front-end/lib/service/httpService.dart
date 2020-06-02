@@ -165,11 +165,8 @@ Future makePost(String txt, String grp) async {
 
   lat = lat.roundToDouble();
   long = long.roundToDouble();
-<<<<<<< HEAD
-=======
   String locationName = await getLocationFromCoords(lat, long);
   print(locationName);
->>>>>>> e7f2ab0c9953f653f0940180bcd211d177ceb310
 
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
   var temp = getGlobalGroups();

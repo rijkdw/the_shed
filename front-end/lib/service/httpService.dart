@@ -14,7 +14,18 @@ String owner;
 String globalUsername;
 int userId;
 int numberPost;
-List<int> userGroups;
+Set <String> globalGroupsID = {};
+Set <String> globalGroups = {};
+
+List <String> getGlobalGroups () {
+  List ls = globalGroups.toList();
+  return ls;
+}
+
+List <String> getGlobalGroupsID () {
+  List ls = globalGroupsID.toList();
+  return ls;
+}
 
 Future makeComment(String txt, int pid) async {
   String url = "https://theshedapi.herokuapp.com/api/v1/Comments/";
@@ -118,14 +129,6 @@ Future<void> makeUser() async {
   globalUsername = await getUsernameFromID(userId);
   getAllUserPosts();
   getUserFeed('Time', 'Asc');
-  //await new Future.delayed(const Duration(seconds: 6));
-  // allUserPosts = createPosts(allPosts);
-  // allUserFeed = createPosts(allFeed);
-  // print List<Post>
-  // print("Posts made by user: ");
-  // print(allUserPosts);
-  // print("Posts user follow: ");
-  // print(allUserFeed);
 }
 
 Future<String> getLocationFromCoords(double lat, double long) async {
@@ -156,9 +159,8 @@ Future makePost(String txt, String grp) async {
 
   lat = lat.roundToDouble();
   long = long.roundToDouble();
-  String group = "https://theshedapi.herokuapp.com/api/v1/groups/";
-  //group = group + "$grp" + '/';
-  group = grp;
+
+
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
 
   final response = await post(url,
@@ -167,7 +169,7 @@ Future makePost(String txt, String grp) async {
         'Authorization': "Token " + token
       },
       body: JsonEncoder().convert(
-          {"text": txt, "latitude": lat, "longitude": long, "group": group}));
+          {"text": txt, "latitude": lat, "longitude": long, "group": grp}));
   print(response.statusCode);
 }
 
@@ -186,8 +188,6 @@ Future<List<Post>> getAllUserPosts() async {
   }
   for (int j = 0; j < data.length; j++) {
     // evaluating data[j]
-
-    // String username = await getUsernameFromID(data[j]['owner_id']);
 
     results.add(
       Post(
@@ -241,7 +241,7 @@ Future<List<Comment>> getCommentsOnPost(int postID) async {
 Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   var data;
   List<int> groups;
-  int temp;
+  var temp;
   List<Post> results = [];
 
   String url = "https://theshedapi.herokuapp.com/api/v1/Users/?id=" + "$userId";
@@ -253,8 +253,15 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
     var data = json.decode(response.body);
     //temp =
     groups = new List<int>.from(data[0]["groups"]);
-   // groups = data[0]["groups"];
-    userGroups = groups;
+    // groups = data[0]["groups"];
+    temp = "https://theshedapi.herokuapp.com/api/v1/posts/?group=";
+    for (int i = 0; i < groups.length; i++) {
+      var gid = groups[i];
+      globalGroupsID.add(temp+"$gid"+'/');
+    }
+
+    temp = null;
+
   }
 
   for (int i = 0; i < groups.length; i++) {
@@ -277,6 +284,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
       // evaluating data[j]
 
       // String username = await getUsernameFromID(data[j]['owner_id']);
+      globalGroups.add(data[j]["group_name"]);
 
       results.add(
         Post(
@@ -321,6 +329,8 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   }
 
   allFeed = results;
+   print(globalGroupsID);
+   print(globalGroups);
   return results;
 }
 

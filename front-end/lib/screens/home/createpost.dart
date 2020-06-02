@@ -9,7 +9,7 @@ class PostCreatorPage extends StatefulWidget {
 }
 
 class _PostCreatorPageState extends State<PostCreatorPage> {
-  String _selectedGroup = 'https://theshedapi.herokuapp.com/api/v1/groups/1';
+  String _selectedGroup;
 
   String get selectedGroup => _selectedGroup;
 
@@ -83,7 +83,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                   elevation: 8,
                   isDense: true,
                   style: _style,
-                  items: user.getGroups().map<DropdownMenuItem<String>>((String value) {
+                  items: getGlobalGroups().map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(
@@ -164,6 +164,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                   onPressed: () async {
                     String txt = textController.text;
                     makePost(txt, selectedGroup);
+                    Navigator.pop(context);
                   },
                 ),
               ),

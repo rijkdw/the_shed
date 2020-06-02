@@ -11,7 +11,7 @@ class User extends ChangeNotifier {
   bool login; // logged in?
   String password;
   int id;
-  List<int> groups;
+
 
   //final Map following;
 
@@ -33,7 +33,7 @@ class User extends ChangeNotifier {
     this.login = true;
     this.password = password ?? '1234';
     this.id = userId ?? 0;
-    this.groups = userGroups;
+
     //this.followers,
     //this.following
   }
@@ -81,21 +81,12 @@ class User extends ChangeNotifier {
     return posts;
   }
 
-  List<String> getGroups() {
-    List<String> ls = [];
-    List<int> str = userGroups;
-    String url = "https://theshedapi.herokuapp.com/api/v1/groups/";
-    for (int i = 0; i < str.length; i++) {
-      int temp = str[i];
-      ls.add(url + "$temp");
-    }
-    return ls;
-  }
+
 
   // ignore: missing_return
   String logout() {
     this.login = false;
-    print("user loged out, take me to sign up page. ples pappy");
+    print("user logged out, take me to sign up page. ples pappy");
     notifyListeners();
     return null;
   }

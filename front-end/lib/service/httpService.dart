@@ -139,6 +139,7 @@ Future<String> getLocationFromCoords(double lat, double long) async {
 
 //makes a post by post request
 Future makePost(String txt, String grp) async {
+  print("????? REEEEEEEEEEEEEEEEEEEEEEE ???");
   Location location = new Location();
 
   PermissionStatus _permissionGranted;
@@ -160,8 +161,11 @@ Future makePost(String txt, String grp) async {
   lat = lat.roundToDouble();
   long = long.roundToDouble();
 
-
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
+  var temp = getGlobalGroups();
+  var temp2 = getGlobalGroupsID();
+  String group = temp2[temp.indexOf(grp)];
+  print(group);
 
   final response = await post(url,
       headers: <String, String>{
@@ -169,7 +173,7 @@ Future makePost(String txt, String grp) async {
         'Authorization': "Token " + token
       },
       body: JsonEncoder().convert(
-          {"text": txt, "latitude": lat, "longitude": long, "group": grp}));
+          {"text": txt, "latitude": lat, "longitude": long, "group": group}));
   print(response.statusCode);
 }
 

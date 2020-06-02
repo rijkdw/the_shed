@@ -165,8 +165,10 @@ Future makePost(String txt, String grp) async {
 
   lat = lat.roundToDouble();
   long = long.roundToDouble();
+
   String locationName = await getLocationFromCoords(lat, long);
   print(locationName);
+
 
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
   var temp = getGlobalGroups();
@@ -266,7 +268,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
     //temp =
     groups = new List<int>.from(data[0]["groups"]);
     // groups = data[0]["groups"];
-    temp = "https://theshedapi.herokuapp.com/api/v1/posts/?group=";
+    temp = "https://theshedapi.herokuapp.com/api/v1/groups/";
     for (int i = 0; i < groups.length; i++) {
       var gid = groups[i];
       globalGroupsID.add(temp+"$gid"+'/');

@@ -7,7 +7,7 @@ class Edit extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.black,
         title: Text("Edit Profile"),
       ),
       body: EditBody(),
@@ -21,30 +21,49 @@ class EditBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Consumer<User>(
       builder: (context, user, child) {
         return Container(
+          color: Color.fromRGBO(41, 41, 41, 1),
           child: Column(
             children: <Widget>[
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Username",
-                ),
-                controller: usernameController,
-              ),
+              Card(
+                margin: EdgeInsets.only(top: 8.0, bottom: 8.0, left: 10.0, right: 10.0),
+                color: Color.fromRGBO(41, 41, 41, 1),
 
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: TextField(
+                        cursorColor: Theme.of(context).accentColor,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Username",
+                        ),
+                        controller: usernameController,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10.0),
+
+                      child: TextField(
+                        obscureText: true,
+                        cursorColor: Theme.of(context).accentColor,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                        ),
+                        controller: passwordController,
+                      ),
+                    ),
+                  ],
                 ),
-                controller: passwordController,
               ),
               RaisedButton(
-                child: Text("Save"),
+                color: Theme.of(context).accentColor,
+                child: Text(
+                  "Save",
+                ),
                 onPressed: () {
                   String username;
                   String password;

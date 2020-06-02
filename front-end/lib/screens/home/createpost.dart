@@ -9,7 +9,7 @@ class PostCreatorPage extends StatefulWidget {
 }
 
 class _PostCreatorPageState extends State<PostCreatorPage> {
-  String _selectedGroup = 'Ronaldo\'s Greenhouse';
+  String _selectedGroup = 'https://theshedapi.herokuapp.com/api/v1/groups/1';
 
   String get selectedGroup => _selectedGroup;
 
@@ -153,7 +153,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                   ),
                   onPressed: () async {
                     String txt = textController.text;
-                    makePost(txt, userId);
+                    makePost(txt, selectedGroup);
                   },
                 ),
               ),

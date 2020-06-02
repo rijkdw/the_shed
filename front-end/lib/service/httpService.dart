@@ -128,7 +128,7 @@ Future<void> makeUser() async {
 }
 
 //makes a post by post request
-Future makePost(String txt, int grp) async {
+Future makePost(String txt, String grp) async {
   Location location = new Location();
 
   PermissionStatus _permissionGranted;
@@ -150,8 +150,8 @@ Future makePost(String txt, int grp) async {
   lat = lat.roundToDouble();
   long = long.roundToDouble();
   String group = "https://theshedapi.herokuapp.com/api/v1/groups/";
-  group = group + "$grp" + '/';
-
+  //group = group + "$grp" + '/';
+  group = grp;
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
 
   final response = await post(url,

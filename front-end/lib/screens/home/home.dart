@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => User(
         picture: 'assets/user1.jpeg',
-        username: username,
+        username: globalUsername,
         password: psw
 
     ),

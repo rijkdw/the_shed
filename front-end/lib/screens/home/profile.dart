@@ -74,6 +74,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               alignment: Alignment.bottomLeft,
                               child: Text(
                                 (user.getUsername()).toUpperCase(),
+                                // (globalUsername).toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,

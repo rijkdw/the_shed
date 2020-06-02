@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:rw334/models/comment.dart';
-import 'package:rw334/models/user.dart';
 import 'package:location/location.dart';
 import 'package:rw334/models/post.dart';
 
@@ -11,7 +10,7 @@ List<dynamic> allUserFeed;
 List allFeed;
 List allPosts;
 String owner;
-String username;
+String globalUsername;
 int userId;
 int numberPost;
 var userGroups;
@@ -115,7 +114,7 @@ Future loggedIn(String usr, String psw) async {
 }
 
 Future<void> makeUser() async {
-  username = await getUsernameFromID(userId);
+  globalUsername = await getUsernameFromID(userId);
   getAllUserPosts();
   getUserFeed('Time', 'Asc');
   //await new Future.delayed(const Duration(seconds: 6));
@@ -223,7 +222,7 @@ Future<List<Comment>> getCommentsOnPost(int postID) async {
         epochTime: convertTime(data[i]['timestamp']),
         postId: postID,
         userId: data[i]['owner'],
-        username: username,
+        username: 'UNDEFINED_USERNAME',
       ),
     );
   }

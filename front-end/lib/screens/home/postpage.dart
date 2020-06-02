@@ -4,24 +4,48 @@ import 'package:rw334/models/comment.dart';
 import 'package:rw334/service/httpService.dart';
 import 'feed.dart';
 
-class PostPage extends StatelessWidget {
+class PostPage extends StatefulWidget {
   
   final Post post;
-  Future<List<Comment>> _commentsFuture;
-  PostPage({@required this.post}) {
-    this._commentsFuture = getCommentsOnPost(post.id);
-  }
+  
+  PostPage({@required this.post});
 
+  @override
+  _PostPageState createState() => _PostPageState();
+}
+
+class _PostPageState extends State<PostPage> {
+  
   final TextEditingController _commentController = TextEditingController();
+
+  // this is for refresh purposes
+  List<Comment> _additionalComments;
+
+  Future<List<Comment>> _commentsFuture;
+  @override
+  void initState() {
+    _additionalComments = [];
+    this._commentsFuture = getCommentsOnPost(widget.post.id);
+    super.initState();
+  }
 
   void _postCommentSequence () {
     String txt = _commentController.text;
-    int pid = post.id;
+    int pid = widget.post.id;
     if (this._commentController.value.text.trimLeft().trimRight().length > 0) {
+      
       // make and push the comment
-
       makeComment(txt, pid);
       this._commentController.clear();
+      FocusScope.of(context).unfocus(); // to remove the keyboard
+      setState(() {
+        _additionalComments.add(Comment(
+          postId: widget.post.id,
+          text: _commentController.text,
+          epochTime: (DateTime.now().millisecondsSinceEpoch/1000).round(),
+        ));
+        this._commentsFuture = getCommentsOnPost(widget.post.id);
+      });
     }
   }
 
@@ -38,92 +62,86 @@ class PostPage extends StatelessWidget {
           "assets/logo.png",
           width: 120,
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ),
-            iconSize: 30,
-            onPressed: () {
-              print('PostPage refresh button');
-            },
-          ),
-        ],
       ),
       body: Container(
         color: Color.fromRGBO(41, 41, 41, 1),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
+        child: Stack(
           children: <Widget>[
+            Column(
+              children: <Widget>[
 
-            // post card with metadata widget below it
-            Container(
-              padding: const EdgeInsets.all(8),
-              width: MediaQuery.of(context).size.width,
-              child: PostCard(
-                post: this.post,
-                lineLimit: 100,
-              ),
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            MetadataWidget(
-              post: this.post
-            ),
-            SizedBox(
-              height: 8,
-            ),
+                // post card with metadata widget below it
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  width: MediaQuery.of(context).size.width,
+                  child: PostCard(
+                    post: this.widget.post,
+                    lineLimit: 100,
+                  ),
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                MetadataWidget(
+                  post: this.widget.post
+                ),
+                SizedBox(
+                  height: 8,
+                ),
 
-            // then all the comments
-            FutureBuilder<List<Comment>>(
+                // then all the comments
+                FutureBuilder<List<Comment>>(
 
-              future: _commentsFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done)
-                  return Expanded(
-                    child: Center(
-                      child: Text(
-                        'Waiting for comments...',
-                        style: TextStyle( fontSize: 20, color: Colors.white ),
-                      ),
-                    ),
-                  );
-                
-                if (snapshot.hasData) {
-                  List<Comment> comments = snapshot.data;
-                  if (comments.length == 0) {
-                    return Expanded(
-                      child: Center(
-                        child: Text(
-                          'No comments.',
-                          style: TextStyle( fontSize: 20, color: Colors.white ),
+                  future: this._commentsFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done)
+                      return Expanded(
+                        child: Center(
+                          child: Text(
+                            'Waiting for comments...',
+                            style: TextStyle( fontSize: 20, color: Colors.white ),
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: comments.length,
-                    itemBuilder: (context, index) {
-                      return CommentCard(
-                        comment: comments[index],
+                      );
+                    
+                    if (snapshot.hasData) {
+                      // if (_additionalComments.length > 0) _additionalComments.removeLast();
+                      List<Comment> comments = [...snapshot.data, ..._additionalComments];
+                      if (comments.length == 0) {
+                        return Expanded(
+                          child: Center(
+                            child: Text(
+                              'No comments.',
+                              style: TextStyle( fontSize: 20, color: Colors.white ),
+                            ),
+                          ),
+                        );
+                      }
+                      return Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: comments.length,
+                          itemBuilder: (context, index) {
+                            // to fix a bug where it displays weird empty comments
+                            if (comments[index].text.trimRight().trimLeft().length == 0) return null;
+                            return CommentCard(
+                              comment: comments[index],
+                            );
+                          }
+                        ),
                       );
                     }
-                  );
-                }
 
-                return Text('???');
-              },
-            ),
+                    return Center(
+                      child: Text(
+                        '???'
+                      )
+                    );
+                  },
+                ),
 
-            // then the input widget for commenting
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
+                // then the input widget for commenting
+                Container(
                   width: double.infinity,
                   height: 70.0,
                   padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
@@ -145,7 +163,6 @@ class PostPage extends StatelessWidget {
                   ),
                   child: Row(
                     children: <Widget>[
-
                       // text input
                       Flexible(
                         child: Container(
@@ -185,7 +202,7 @@ class PostPage extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
           ],
         ),

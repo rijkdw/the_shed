@@ -19,10 +19,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
   Widget build(BuildContext context) {
     final _style = TextStyle(fontSize: 20, color: Colors.black);
     final _labelStyle = TextStyle(color: Colors.white, fontSize: 18);
-    final _metadataFieldStyle = TextStyle(
-        color: Theme.of(context).accentColor,
-        fontSize: 18,
-        fontWeight: FontWeight.bold);
+    final _metadataFieldStyle = TextStyle(color: Theme.of(context).accentColor, fontSize: 18, fontWeight: FontWeight.bold);
     final _metadataValueStyle = TextStyle(color: Colors.white, fontSize: 18);
     final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 20.0);
     final _inputHintStyle = TextStyle(color: Colors.grey, fontSize: 20.0);
@@ -123,9 +120,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                   ]),
                   TableRow(children: [
                     Text('TIME', style: _metadataFieldStyle),
-                    Text(
-                        '${DateTime.now().hour.toString().padLeft(2)}:${DateTime.now().minute.toString().padLeft(2)}',
-                        style: _metadataValueStyle),
+                    Text('${DateTime.now().hour.toString().padLeft(2)}:${DateTime.now().minute.toString().padLeft(2)}', style: _metadataValueStyle),
                   ]),
                   TableRow(children: [
                     Text('LOCATION', style: _metadataFieldStyle),
@@ -138,8 +133,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                           return Text(snapshot.data, style: _metadataValueStyle);
                         return Text('yeet', style: _metadataValueStyle);
                       },
-                    )
-                    
+                    ),
                   ]),
                 ],
               ),

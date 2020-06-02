@@ -6,15 +6,24 @@ class User extends ChangeNotifier {
   String username;
   String picture;
   String name;
-  int posts;  // number of posts
+  int posts; // number of posts
   int follow; // number of followers
   bool login; // logged in?
   String password;
   int id;
-  var groups;
+  List<int> groups;
+
   //final Map following;
 
-  User({int id, String email, String username, String name, String picture, int post, int follow, String password}) {
+  User(
+      {int id,
+      String email,
+      String username,
+      String name,
+      String picture,
+      int post,
+      int follow,
+      String password}) {
     this.email = email ?? 'example@example.com';
     this.username = username ?? 'username';
     this.picture = picture ?? 'assets/user1.jpeg';
@@ -29,19 +38,16 @@ class User extends ChangeNotifier {
     //this.following
   }
 
-
   factory User.fromJson(Map<String, dynamic> json) => User(
-    username: json["username"],
-    password: json["password"],
-    email: json["email"],
-  );
+        username: json["username"],
+        password: json["password"],
+        email: json["email"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "username": username,
-    "password": password,
-  };
-
-
+        "username": username,
+        "password": password,
+      };
 
   String getEmail() {
     return this.email;
@@ -66,7 +72,8 @@ class User extends ChangeNotifier {
   }
 
   @override
-  String toString() => 'User:  email=\"$email\", username=\"$username\", name=\"$name\", password=\"$password\"';
+  String toString() =>
+      'User:  email=\"$email\", username=\"$username\", name=\"$name\", password=\"$password\"';
 
   String getPost() {
     int post = this.posts;
@@ -74,8 +81,19 @@ class User extends ChangeNotifier {
     return posts;
   }
 
+  List<String> getGroups() {
+    List<String> ls = [];
+    List<int> str = userGroups;
+    String url = "https://theshedapi.herokuapp.com/api/v1/groups/";
+    for (int i = 0; i < str.length; i++) {
+      int temp = str[i];
+      ls.add(url + "$temp");
+    }
+    return ls;
+  }
+
   // ignore: missing_return
-  String logout () {
+  String logout() {
     this.login = false;
     print("user loged out, take me to sign up page. ples pappy");
     notifyListeners();
@@ -86,7 +104,7 @@ class User extends ChangeNotifier {
     bool fine = false;
     this.username = username;
     this.password = psw;
-    print(psw + " "+ username);
+    print(psw + " " + username);
     /* if (database allows username)
     *   fine = true;
     */
@@ -94,8 +112,6 @@ class User extends ChangeNotifier {
     notifyListeners();
     return fine;
   }
-
-
 
 //Get info from DB
 }

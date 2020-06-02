@@ -13,7 +13,7 @@ String owner;
 String globalUsername;
 int userId;
 int numberPost;
-var userGroups;
+List<int> userGroups;
 
 Future makeComment(String txt, int pid) async {
   String url = "https://theshedapi.herokuapp.com/api/v1/Comments/";
@@ -233,7 +233,7 @@ Future<List<Comment>> getCommentsOnPost(int postID) async {
 // returns all the posts the current user is interested in
 Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   var data;
-  var groups;
+  List<int> groups;
   int temp;
   List<Post> results = [];
 
@@ -243,8 +243,10 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
     'Authorization': "Token " + token
   });
   if (response.statusCode == 200) {
-    data = json.decode(response.body);
-    groups = data[0]["groups"];
+    var data = json.decode(response.body);
+    //temp =
+    groups = new List<int>.from(data[0]["groups"]);
+   // groups = data[0]["groups"];
     userGroups = groups;
   }
 

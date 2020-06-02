@@ -96,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _user = user;
                 });
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => Home(psw)),
+                    MaterialPageRoute(builder: (context) => Home(psw:psw)),
                         (Route<dynamic> route) => false);
               },
             )

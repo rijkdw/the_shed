@@ -10,10 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:rw334/models/user.dart';
 
 class Home extends StatelessWidget {
-  const Home(String psw, {this.onSignedOut});
+  Home({this.psw, this.onSignedOut});
   final VoidCallback onSignedOut;
+  final psw;
 
-  get psw => psw;
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,8 @@ class Home extends StatelessWidget {
       create: (context) => User(
         picture: 'assets/user1.jpeg',
         username: globalUsername,
-        password: psw
+        password: this.psw
+
 
     ),
       child: MaterialApp(

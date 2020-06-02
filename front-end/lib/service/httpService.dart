@@ -120,7 +120,7 @@ Future loggedIn(String usr, String psw) async {
     makeUser();
     return null;
   } else {
-    print(response.statusCode);
+    print('Error in loggin in:  ${response.statusCode}');
     return null;
   }
 }
@@ -132,7 +132,6 @@ Future<void> makeUser() async {
 }
 
 Future<String> getLocationFromCoords(double lat, double long) async {
-  print('Looking up $lat, $long.');
   try {
     final coordinates = Coordinates(lat, long);
     List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);

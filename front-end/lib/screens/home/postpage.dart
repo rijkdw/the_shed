@@ -131,7 +131,6 @@ class _PostPageState extends State<PostPage> {
                         ),
                       );
                     }
-
                     return Center(
                       child: Text(
                         '???'

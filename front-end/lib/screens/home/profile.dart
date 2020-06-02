@@ -48,111 +48,94 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       return Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(8),
-            color: Colors.black45,
-            height: 125,
             child: Row(
-              children: [
-                // profile picture and display name
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
                 Container(
-                  child: Row(
+                  child: Column(
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: CircleAvatar(
-                              backgroundImage: AssetImage(user.getPicture()),
-                              radius: 40,
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 5, left: 2),
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Text(
-                                (user.getUsername()).toUpperCase(),
-                                // (globalUsername).toUpperCase(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).accentColor,
-                                  letterSpacing: 0.7,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                      Container(
+                        child: CircleAvatar(
+                          backgroundImage: AssetImage(user.getPicture()),
+                          radius: 40,
+                        ),
                       ),
+                      Container(
+                        child: Text(
+                          (user.getUsername()).toUpperCase(),
+                          // (globalUsername).toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).accentColor,
+                            letterSpacing: 0.7,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
-                // posts
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: <Widget>[
                     Container(
-                      // padding: EdgeInsets.only(left: 60, top: 28),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          "$numberPost",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            letterSpacing: 0.7,
+                      margin: EdgeInsets.only(
+                        left: 40,
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            margin:EdgeInsets.only(right:20.0),
+                            child: Text(
+                              "$numberPost",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                letterSpacing: 0.7,
+                              ),
+                            ),
                           ),
-                        ),
+                          Container(
+                            margin:EdgeInsets.only(right:20.0),
+                            //padding: EdgeInsets.only(left: 60),
+                            child: Text(
+                              "POSTS",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).accentColor,
+                                letterSpacing: 0.7,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     Container(
-                      //padding: EdgeInsets.only(left: 60),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          "POSTS",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).accentColor,
-                            letterSpacing: 0.7,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            //padding: EdgeInsets.only(left: 25, top: 28),
+                            child: Text(
+                              user.getFollowing(),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                letterSpacing: 0.7,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                // followers
-                Column(
-                  children: <Widget>[
-                    Container(
-                      //padding: EdgeInsets.only(left: 25, top: 28),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          user.getFollowing(),
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            letterSpacing: 0.7,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      // padding: EdgeInsets.only(left: 25),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          "FRIENDS",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).accentColor,
-                            letterSpacing: 0.7,
-                          ),
-                        ),
+                          Container(
+                            child: Text(
+                              "FRIENDS",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).accentColor,
+                                letterSpacing: 0.7,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ],
@@ -182,29 +165,28 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(4),
-                      itemCount: posts.length,
-                      itemBuilder: (context, i) {
-                        return Container(
-                          padding: const EdgeInsets.all(4),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => PostPage(
-                                    post: posts[i],
+                        padding: const EdgeInsets.all(4),
+                        itemCount: posts.length,
+                        itemBuilder: (context, i) {
+                          return Container(
+                            padding: const EdgeInsets.all(4),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => PostPage(
+                                      post: posts[i],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            child: PostCard(
-                              post: posts[i],
-                              lineLimit: 3,
+                                );
+                              },
+                              child: PostCard(
+                                post: posts[i],
+                                lineLimit: 3,
+                              ),
                             ),
-                          ),
-                        );
-                      }
-                    ),
+                          );
+                        }),
                   ),
                 );
               }

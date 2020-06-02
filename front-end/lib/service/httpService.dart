@@ -282,7 +282,6 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
     url = "https://theshedapi.herokuapp.com/api/v1/posts/?group=";
     temp = groups[i];
     url = url + "$temp";
-    //print(url);
 
     response = await get(
       url,
@@ -346,6 +345,14 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
    print(globalGroupsID);
    print(globalGroups);
   return results;
+}
+bool updateProfile(String usr, String psw) {
+  int status = 201;
+  bool rip = false;
+  if (status != 201){
+    return true;
+  }
+  return false;
 }
 
 int convertTime(String time) {

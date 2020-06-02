@@ -10,18 +10,6 @@ class SearchPage extends StatelessWidget {
           "assets/logo.png",
           width: 120,
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ),
-            iconSize: 30,
-            onPressed: () {
-              print('SearchPage refresh pressed');
-            },
-          ),
-        ],
       ),
       body: Container(
         color: Color.fromRGBO(41, 41, 41, 1),

@@ -129,7 +129,17 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                   ]),
                   TableRow(children: [
                     Text('LOCATION', style: _metadataFieldStyle),
-                    Text('Stellenbosch, ZA', style: _metadataValueStyle),
+                    FutureBuilder<String>(
+                      future: getLocationFromCoords(-33.93, 18.87),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done)
+                          return Text('Loading...', style: _metadataValueStyle);
+                        if (snapshot.hasData)
+                          return Text(snapshot.data, style: _metadataValueStyle);
+                        return Text('yeet', style: _metadataValueStyle);
+                      },
+                    )
+                    
                   ]),
                 ],
               ),

@@ -20,18 +20,6 @@ class _LikePageState extends State<LikePage> {
           "assets/logo.png",
           width: 120,
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ),
-            iconSize: 30,
-            onPressed: () {
-              print('LikePage refresh pressed');
-            },
-          ),
-        ],
       ),
       body: Container(
         color: Color.fromRGBO(41, 41, 41, 1),

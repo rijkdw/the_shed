@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart';
 import 'package:rw334/models/comment.dart';
 import 'package:location/location.dart';
@@ -125,6 +126,12 @@ Future<void> makeUser() async {
   // print(allUserPosts);
   // print("Posts user follow: ");
   // print(allUserFeed);
+}
+
+Future<String> getLocationFromCoords(double lat, double long) async {
+  final coordinates = Coordinates(lat, long);
+  List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+  return '${addresses.first.featureName}, ${addresses.first.addressLine}';
 }
 
 //makes a post by post request

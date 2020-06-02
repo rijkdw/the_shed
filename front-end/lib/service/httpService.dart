@@ -105,7 +105,7 @@ Future<String> getUsernameFromID(int id) async {
   }
 }
 
-//returns user auth-token
+// returns user auth-token
 Future loggedIn(String usr, String psw) async {
   String apiURL = "https://theshedapi.herokuapp.com/api-token-auth/";
 
@@ -132,12 +132,17 @@ Future<void> makeUser() async {
 }
 
 Future<String> getLocationFromCoords(double lat, double long) async {
-  final coordinates = Coordinates(lat, long);
-  List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-  return '${addresses.first.featureName}, ${addresses.first.addressLine}';
+  print('Looking up $lat, $long.');
+  try {
+    final coordinates = Coordinates(lat, long);
+    List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    return '${addresses.first.locality}, ${addresses.first.countryCode}';
+  } catch (Exception) {
+    return 'ERROR';
+  }
 }
 
-//makes a post by post request
+// makes a post by post request
 Future makePost(String txt, String grp) async {
   Location location = new Location();
 
@@ -159,7 +164,8 @@ Future makePost(String txt, String grp) async {
 
   lat = lat.roundToDouble();
   long = long.roundToDouble();
-
+  String locationName = await getLocationFromCoords(lat, long);
+  print(locationName);
 
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
 

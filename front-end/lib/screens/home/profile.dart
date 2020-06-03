@@ -201,15 +201,16 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               // dummy return
               return Expanded(
                 child: Center(
-                    child: Icon(
-                  Icons.error,
-                  size: 50,
-                )
-                    // child: Text(
-                    //   'Waiting for posts...',
-                    //   style: TextStyle(fontSize: 20, color: Colors.white),
-                    // ),
-                    ),
+                  child: Icon(
+                    Icons.error,
+                    color: Colors.white,
+                    size: 50,
+                  )
+                  // child: Text(
+                  //   'Waiting for posts...',
+                  //   style: TextStyle(fontSize: 20, color: Colors.white),
+                  // ),
+                ),
               );
             },
           ),

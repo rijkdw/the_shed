@@ -68,94 +68,94 @@ class _FeedPageState extends State<FeedPage> {
               children: <Widget>[
                 // the sorting bar
                 Container(
-                    padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
-                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0, 3),
-                        blurRadius: 1,
-                        color: Colors.black.withOpacity(0.2),
-                      )
-                    ]),
-                    child: Row(
-                      children: [
-                        // the label
-                        Text(
-                          'Sort by...',
+                  padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
+                  decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0, 3),
+                      blurRadius: 1,
+                      color: Colors.black.withOpacity(0.2),
+                    )
+                  ]),
+                  child: Row(
+                    children: [
+                      // the label
+                      Text(
+                        'Sort by...',
+                        style: _style,
+                      ),
+
+                      // sort by time, group, user, etc
+                      Container(
+                        margin: const EdgeInsets.only(left: 12),
+                        child: DropdownButton<String>(
+                          value: sortingKey,
+                          icon: null,
+                          elevation: 8,
+                          isDense: true,
                           style: _style,
+                          items: <String>[
+                            'Time',
+                            'Location',
+                            'User',
+                            'Category',
+                            'Likes'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String newValue) {
+                            print('\"$newValue\" has been selected as sorting key');
+                            setState(() {
+                              sortingKey = newValue;
+                            });
+                          },
                         ),
+                      ),
 
-                        // sort by time, group, user, etc
-                        Container(
-                          margin: const EdgeInsets.only(left: 12),
-                          child: DropdownButton<String>(
-                            value: sortingKey,
-                            icon: null,
-                            elevation: 8,
-                            isDense: true,
-                            style: _style,
-                            items: <String>[
-                              'Time',
-                              'Location',
-                              'User',
-                              'Category',
-                              'Likes'
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (String newValue) {
-                              print(
-                                  '\"$newValue\" has been selected as sorting key');
-                              setState(() {
-                                sortingKey = newValue;
-                              });
-                            },
+                      // sort ascending or descending
+                      Container(
+                        margin: const EdgeInsets.only(left: 12),
+                        child: DropdownButton<String>(
+                          value: sortingOrder,
+                          icon: null,
+                          elevation: 8,
+                          isDense: true,
+                          style: _style,
+                          items: <String>['Asc', 'Desc']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String newValue) {
+                            print('\"$newValue\" has been selected as sorting order');
+                            setState(() {
+                              sortingOrder = newValue;
+                            });
+                          },
+                        ),
+                      ),
+
+                      // confirm
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          width: 40,
+                          child: OutlineButton(
+                            splashColor: Theme.of(context).accentColor,
+                            onPressed: () => sort(),
+                            child: Text(
+                              'Go',
+                            )
                           ),
                         ),
-
-                        // sort ascending or descending
-                        Container(
-                          margin: const EdgeInsets.only(left: 12),
-                          child: DropdownButton<String>(
-                            value: sortingOrder,
-                            icon: null,
-                            elevation: 8,
-                            isDense: true,
-                            style: _style,
-                            items: <String>['Asc', 'Desc']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (String newValue) {
-                              print(
-                                  '\"$newValue\" has been selected as sorting order');
-                              setState(() {
-                                sortingOrder = newValue;
-                              });
-                            },
-                          ),
-                        ),
-
-                        // confirm
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            width: 40,
-                            child: OutlineButton(
-                                splashColor: Theme.of(context).accentColor,
-                                onPressed: () => sort(),
-                                child: Text(
-                                  'Go',
-                                )),
-                          ),
-                        )
-                      ],
-                    )),
+                      )
+                    ],
+                  )
+                ),
 
                 // the feed
                 FutureBuilder<List<Post>>(
@@ -212,6 +212,7 @@ class _FeedPageState extends State<FeedPage> {
                       child: Center(
                         child: Icon(
                           Icons.error,
+                          color: Colors.white,
                           size: 50,
                         )
                         // child: Text(

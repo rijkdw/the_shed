@@ -166,13 +166,16 @@ class _SearchDialogState extends State<SearchDialog> {
                     ]
                   ),
                   onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ChatScreen(
-                        thisUserID: widget.userID,
-                        otherUserID: this._searchResults[index].id,
-                      ),
-                    ));
+                    try {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ChatScreen(
+                          thisUserID: widget.userID,
+                          // otherUserID: this._searchResults[index].id,
+                          otherUserID: this._searchResults[index].id,
+                        ),
+                      ));
+                    } catch (Exception) {}
                   },
                 );
               },

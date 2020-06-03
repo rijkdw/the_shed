@@ -3,6 +3,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart';
 import 'package:rw334/models/comment.dart';
 import 'package:location/location.dart';
+import 'package:rw334/models/group.dart';
 import 'package:rw334/models/post.dart';
 
 var token;
@@ -129,6 +130,41 @@ Future<void> makeUser() async {
   globalUsername = await getUsernameFromID(userId);
   getAllUserPosts();
   getUserFeed('Time', 'Asc');
+}
+
+Future<List<Group>> getAllGroups() async {
+  // await Future.delayed(Duration(milliseconds: 200));
+  // return [
+  //   Group( name: 'Orgy Group', description: 'A group for orgies.', id: 0, tag: 'First', epochTime: 0 ),
+  //   Group( name: 'Jaak Experience', description: 'A group for Jaak.', id: 1, tag: 'Jaak', epochTime: 0 ),
+  // ];
+
+  List data = [];
+  List<Group> results = [];
+  String url = "https://theshedapi.herokuapp.com/api/v1/groups/";
+  final response = await get(url, headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': "Token " + token
+  });
+  if (response.statusCode == 200) {
+    data = json.decode(response.body);
+  }
+  for (int i = 0; i < data.length; i++) {
+    // evaluating data[j]
+    results.add(
+      Group(
+        id: data[i]['id'] ?? 'DEF_ID',
+        epochTime: convertTime(data[i]['date_created']) ?? 'DEF_TIME',
+        name: data[i]['name'] ?? 'DEF_NAME',
+        tag: data[i]['tag'] ?? 'DEF_TAG',
+        description: data[i]['description'] ?? 'DEF_DESC',
+      ),
+    );
+  }
+  allPosts = results;
+  numberPost = allPosts.length;
+
+  return results;
 }
 
 Future<String> getLocationFromCoords(double lat, double long) async {

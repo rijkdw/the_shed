@@ -21,8 +21,6 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({this.onSignedIn});
   final VoidCallback onSignedIn;
 
-
-
   @override
   State<StatefulWidget> createState() => _LoginScreenState();
 }
@@ -109,9 +107,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                  width: 12,
+                  width: 32,
                 ),
                 Container(
+                  decoration: BoxDecoration(
+                    border: Border.all( width: 1.0, color: Theme.of(context).accentColor ),
+                  ),
+                  height: 20,
+                  width: 20,
                   child: Checkbox(
                     activeColor: Theme.of(context).accentColor,
                     onChanged: (bool newValue) {
@@ -124,6 +127,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 18,
             ),
             // Login button
             RaisedButton(

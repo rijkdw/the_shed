@@ -138,6 +138,7 @@ class _GroupCardState extends State<GroupCard> {
     var _descStyle = TextStyle( color: Colors.white70, fontSize: 16 );
     var _expandedStyle = TextStyle( color: Colors.white70, fontSize: 14 );
     var _expandedStyleEmp = TextStyle( color: Theme.of(context).accentColor, fontSize: 16, fontWeight: FontWeight.bold );
+    var _buttonStyle = TextStyle( color: Color.fromRGBO(30, 30, 30, 1.0), fontSize: 18, fontWeight: FontWeight.bold );
 
     return Container(
       decoration: BoxDecoration(
@@ -185,75 +186,68 @@ class _GroupCardState extends State<GroupCard> {
                 ),
                 // the rest
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Expanded(
-                      flex: 80,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          // metadata
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Created at',
-                                  style: _expandedStyle
-                                ),
-                                TextSpan(
-                                  text: ' ${widget.group.timeCreated}',
-                                  style: _expandedStyleEmp
-                                ),
-                              ] 
-                            ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // metadata
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Created at',
+                                style: _expandedStyle
+                              ),
+                              TextSpan(
+                                text: ' ${widget.group.timeCreated}',
+                                style: _expandedStyleEmp
+                              ),
+                            ] 
                           ),
-                          FutureBuilder<String>(
-                            future: _creatorName,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData)
-                                return RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: 'by',
-                                        style: _expandedStyle
-                                      ),
-                                      TextSpan(
-                                        text: ' ${snapshot.data}',
-                                        style: _expandedStyleEmp
-                                      ),
-                                    ] 
-                                  ),
-                                );
-                              return Text(
-                                'Loading...',
-                                overflow: TextOverflow.ellipsis,
-                                style: _expandedStyle,
+                        ),
+                        FutureBuilder<String>(
+                          future: _creatorName,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData)
+                              return RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'by',
+                                      style: _expandedStyle
+                                    ),
+                                    TextSpan(
+                                      text: ' ${snapshot.data}',
+                                      style: _expandedStyleEmp
+                                    ),
+                                  ] 
+                                ),
                               );
-                            },
-                          ),
-                        ],
-                      ),
+                            return Text(
+                              'Loading...',
+                              overflow: TextOverflow.ellipsis,
+                              style: _expandedStyle,
+                            );
+                          },
+                        ),
+                      ],
                     ),
                     // button
-                    Flexible(
-                      flex: 31,
-                      child: FlatButton(
-                        onPressed: () {
-                          print('Tapped on the action button for \"${widget.group.name}\".');
-                          _userOwnsThisGroup()
-                              ? this._deleteSequence()
-                              : this._joinSequence();
-                        },
-                        color: Theme.of(context).accentColor,
-                        child: Text(
-                          _userOwnsThisGroup()
-                              ? 'DELETE'
-                              : 'JOIN', 
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        )
-                      ),
+                    FlatButton(
+                      onPressed: () {
+                        print('Tapped on the action button for \"${widget.group.name}\".');
+                        _userOwnsThisGroup()
+                            ? this._deleteSequence()
+                            : this._joinSequence();
+                      },
+                      color: Theme.of(context).accentColor,
+                      child: Text(
+                        _userOwnsThisGroup()
+                            ? 'DELETE'
+                            : 'JOIN', 
+                        style: _buttonStyle
+                      )
                     ),
                   ],
                 )

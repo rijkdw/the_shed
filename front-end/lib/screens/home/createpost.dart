@@ -125,7 +125,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                   TableRow(children: [
                     Text('LOCATION', style: _metadataFieldStyle),
                     FutureBuilder<String>(
-                      future: getLocationFromCoords(-33.93, 18.87),
+                      future: getCurrentLocationName(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState != ConnectionState.done)
                           return Text('Loading...', style: _metadataValueStyle);

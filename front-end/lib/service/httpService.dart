@@ -141,6 +141,29 @@ Future<String> getLocationFromCoords(double lat, double long) async {
   }
 }
 
+Future<String> getCurrentLocationName() async {
+  Location location = new Location();
+
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
+  _locationData = await location.getLocation();
+  double lat;
+  double long;
+
+  _permissionGranted = await location.hasPermission();
+  if (_permissionGranted == PermissionStatus.DENIED) {
+    _permissionGranted = await location.requestPermission();
+    // Stellenbosch's location
+    lat = -33.93;
+    long = 18.86;
+  } else {
+    lat = _locationData.latitude.roundToDouble();
+    long = _locationData.longitude.roundToDouble();
+  }
+
+  return await getLocationFromCoords(lat, long);
+}
+
 // makes a post by post request
 Future makePost(String txt, String grp) async {
   print("????? REEEEEEEEEEEEEEEEEEEEEEE ???");
@@ -155,8 +178,9 @@ Future makePost(String txt, String grp) async {
   _permissionGranted = await location.hasPermission();
   if (_permissionGranted == PermissionStatus.DENIED) {
     _permissionGranted = await location.requestPermission();
-    lat = null;
-    long = null;
+    // Stellenbosch's location
+    lat = -33.93;
+    long = 18.86;
   } else {
     lat = _locationData.latitude;
     long = _locationData.longitude;
@@ -200,7 +224,7 @@ Future<List<Post>> getAllUserPosts() async {
   }
   for (int j = 0; j < data.length; j++) {
     // evaluating data[j]
-
+    String locationName = await getLocationFromCoords(data[j]['latitude'], data[j]['longitude']);
     results.add(
       Post(
         id: data[j]['id'],
@@ -211,7 +235,7 @@ Future<List<Post>> getAllUserPosts() async {
         categories: ['Cat 1', 'Cat 2', 'Cat 3'],
         username: data[j]['owner'],
         groupname: data[j]['group_name'],
-        locationname: 'Stellenbosch',
+        locationname: locationName,
       ),
     );
   }
@@ -297,7 +321,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
 
       // String username = await getUsernameFromID(data[j]['owner_id']);
       globalGroups.add(data[j]["group_name"]);
-
+      String locationName = await getLocationFromCoords(data[j]['latitude'], data[j]['longitude']);
       results.add(
         Post(
           longitude: data[j]['longitude'],
@@ -306,7 +330,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
           epochTime: convertTime(data[j]['timestamp']),
           categories: ['Cat 1', 'Cat 2', 'Cat 3'],
           username: data[j]['owner'],
-          locationname: 'Stellenbosch',
+          locationname: locationName,
           groupname: data[j]['group_name'],
           id: data[j]['id'],
         ),

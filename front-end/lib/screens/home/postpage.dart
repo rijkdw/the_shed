@@ -250,19 +250,44 @@ class MetadataWidget extends StatelessWidget {
             text: TextSpan(
               // Posted <time> at <location>
               children: [
-                TextSpan( text: 'Posted ', style: _styleNormal, ),
-                TextSpan( text: '${this.post.getHHMM()}, ${this.post.getDDMMYY()}', style: _styleEmphasis, ),
+                TextSpan( text: 'Posted ', style: _styleNormal ),
+                TextSpan( text: '${this.post.getHHMM()}, ${this.post.getDDMMYY()}', style: _styleEmphasis ),
                 TextSpan( text: ' in ', style: _styleNormal ),
                 TextSpan( text: '${this.post.locationname}', style: _styleEmphasis ),
               ]
             ),
           ),
+          // child: FutureBuilder<String>(
+          //   future: getCurrentLocationName(),
+          //   builder: (context, snapshot) {
+          //     if (snapshot.connectionState != ConnectionState.done)
+          //       return CircularProgressIndicator(
+          //       );
+          //     if (snapshot.hasData)
+          //       return RichText(
+          //         maxLines: 1,
+          //         overflow: TextOverflow.ellipsis,
+          //         text: TextSpan(
+          //           // Posted <time> at <location>
+          //           children: [
+          //             TextSpan( text: 'Posted ', style: _styleNormal ),
+          //             TextSpan( text: '${this.post.getHHMM()}, ${this.post.getDDMMYY()}', style: _styleEmphasis ),
+          //             TextSpan( text: ' in ', style: _styleNormal ),
+          //             TextSpan( text: '${this.post.locationname}', style: _styleEmphasis ),
+          //           ]
+          //         ),
+          //       );
+          //     return Icon(
+          //       Icons.error,
+          //       size: 50,
+          //     );
+          //   },
+          // ),
         ),
       ]
     );
   }
 }
-
 
 
 class CommentCard extends StatelessWidget {

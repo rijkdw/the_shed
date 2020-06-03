@@ -19,6 +19,36 @@ class EditBody extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  showAlertDialog(BuildContext context) {
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Align(
+        alignment: Alignment.center,
+        child: Text(
+          "OOPS!",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        ),
+      ),
+      content: Text(
+        "Something went wrong. Please try again.",
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<User>(
@@ -83,7 +113,7 @@ class EditBody extends StatelessWidget {
                   if (res == true) {
                     Navigator.of(context).pop(true);
                   } else {
-                    print("Garbage request");
+                    showAlertDialog(context);
                   }
                 },
               ),

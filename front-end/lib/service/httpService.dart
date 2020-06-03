@@ -166,7 +166,7 @@ Future<String> getCurrentLocationName() async {
 
 // makes a post by post request
 Future makePost(String txt, String grp) async {
-  print("????? REEEEEEEEEEEEEEEEEEEEEEE ???");
+  // print("????? REEEEEEEEEEEEEEEEEEEEEEE ???");
   Location location = new Location();
 
   PermissionStatus _permissionGranted;

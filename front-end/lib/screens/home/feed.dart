@@ -288,11 +288,13 @@ class _PostCardState extends State<PostCard> {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Color.fromRGBO(30, 30, 30, 1.0),
-        borderRadius: BorderRadius.all(Radius.circular(4)),
+        // borderRadius: BorderRadius.all(Radius.circular(4)),
         // To highlight the user's own posts
-        border: Border.all(
-          color: Theme.of(context).accentColor.withOpacity(widget.post.username == globalUsername ? 0.3 : 0.0),
-          width: 3,
+        border: Border(
+          left: BorderSide(
+            color: Theme.of(context).accentColor.withOpacity(widget.post.username == globalUsername ? 0.5 : 0.0),
+            width: 3,
+          ),
         ),
         boxShadow: [
           BoxShadow(

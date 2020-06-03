@@ -43,6 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   }
 
+  bool _isBusyLoggingIn = false;  
+
   @override
   Widget build(BuildContext context) {
 
@@ -142,12 +144,33 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               onPressed: () async {
+
                 FocusScope.of(context).unfocus(); // to remove the keyboard
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Material(
+                      type: MaterialType.transparency,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    )
+                  )
+                );
+                // showDialog<void>(
+                //   context: context,
+                //   barrierDismissible: false,
+                //   builder: (BuildContext context) => Material(
+                //     type: MaterialType.transparency,
+                //     child: Center(
+                //       child: CircularProgressIndicator(),
+                //     )
+                //   )
+                // );
                 String username = usernameController.value.text;
                 String psw = passwordController.value.text;
-                String token = await loggedIn(username, psw);
+                await loggedIn(username, psw);
                 //getAllPosts();
-
+                Navigator.pop(context);
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => Home(psw:psw)),
                         (Route<dynamic> route) => false);
@@ -171,27 +194,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SignUpScreen()
+                  )
+                );
               },
             ),
-            // // for rijk to access the app
-            // RaisedButton(
-            //   color: Color.fromRGBO(255, 153, 0, 1.0),
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(3.0),
-            //   ),
-            //   child: Container(
-            //     padding: const EdgeInsets.all(8),
-            //     child: Text(
-            //       'Rijk\'s backdoor',
-            //       style:
-            //       TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            //     ),
-            //   ),
-            //   onPressed: () {
-            //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home('yeet')));
-            //   },
-            // )
           ],
         ),
       ),

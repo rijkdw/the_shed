@@ -43,13 +43,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: Container(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         color: Colors.black,
         child: Column(

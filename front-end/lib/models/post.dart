@@ -58,4 +58,20 @@ class Post with Timeable {
     }
   }
 
+  String getInPostPageTimestamp() {
+    // if today
+    if (this.isToday()) {
+      return getHHMM() + ' today';
+    // if yesterday
+    } else if (this.isYesterday()) {
+      return getHHMM() + ' yesterday';
+    // if this year
+    } else if (this.isThisYear()) {
+      return getHHMM() + ' ' + getDDMM();
+    // else
+    } else {
+      return getHHMM() + ' ' + getDDMMYYYY();
+    }
+  }
+
 }

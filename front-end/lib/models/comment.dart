@@ -29,7 +29,7 @@ class Comment with Timeable {
   }
 
   String getInPostTimeStamp() {
-    if (this.isToday()) return getHHMM();
+    if (this.isToday()) return getHHMM() + ' today';
     else if (this.isYesterday()) return getHHMM() + ' yesterday';
     else if (this.isThisYear()) return getHHMM() + ' ' + getDDMM();
     else return getHHMM() + ' ' + getDDMMYY();

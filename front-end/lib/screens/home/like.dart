@@ -37,11 +37,11 @@ class _LikePageState extends State<LikePage> {
               splashColor: Colors.white,
               // splashRadius: 10,
               icon: Icon(
-                Icons.thumb_up,
+                Icons.favorite,
                 color: iconColor,
               ),
               onPressed: () {
-                var colors = [Colors.red, Colors.blue, Colors.green, Colors.yellow];
+                var colors = [Theme.of(context).accentColor, Colors.black, Colors.white];
                 setState(() {
                   final random = new Random();
                   Color newColor;

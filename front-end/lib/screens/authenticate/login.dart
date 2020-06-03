@@ -43,13 +43,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   }
 
-  bool _isBusyLoggingIn = false;  
-
   @override
   Widget build(BuildContext context) {
 
-    return Material(
-      child: Container(
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: Container(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         color: Colors.black,
         child: Column(

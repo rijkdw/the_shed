@@ -13,6 +13,8 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
 
   String get selectedGroup => _selectedGroup;
 
+  Future<String> _locationName = getCurrentLocationName();
+
   TextEditingController textController = new TextEditingController();
 
   @override
@@ -120,12 +122,12 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                   ]),
                   TableRow(children: [
                     Text('TIME', style: _metadataFieldStyle),
-                    Text('${DateTime.now().hour.toString().padLeft(2)}:${DateTime.now().minute.toString().padLeft(2)}', style: _metadataValueStyle),
+                    Text('${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}', style: _metadataValueStyle),
                   ]),
                   TableRow(children: [
                     Text('LOCATION', style: _metadataFieldStyle),
                     FutureBuilder<String>(
-                      future: getCurrentLocationName(),
+                      future: _locationName,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState != ConnectionState.done)
                           return Text('Loading...', style: _metadataValueStyle);
@@ -157,8 +159,10 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                   ),
                   onPressed: () async {
                     String txt = textController.text;
-                    makePost(txt, selectedGroup);
-                    Navigator.pop(context);
+                    if (txt.trimRight().trimLeft().length > 1) {
+                      makePost(txt, selectedGroup);
+                      Navigator.pop(context);
+                    }
                   },
                 ),
               ),

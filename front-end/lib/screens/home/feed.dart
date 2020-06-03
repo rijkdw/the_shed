@@ -4,7 +4,12 @@ import 'package:rw334/service/httpService.dart';
 import 'postpage.dart';
 import 'createpost.dart';
 
-class FeedPage extends StatelessWidget {
+class FeedPage extends StatefulWidget {
+  @override
+  _FeedPageState createState() => _FeedPageState();
+}
+
+class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +33,11 @@ class FeedPage extends StatelessWidget {
           size: 30,
         ),
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => PostCreatorPage()));
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PostCreatorPage()
+            )
+          );
         },
       ),
     );
@@ -49,6 +57,12 @@ class _FeedWidgetState extends State<FeedWidget> {
 
   void sort() {
     print('Sorting in FeedWidget by $sortingKey, $sortingOrder');
+    setState(() {
+      this._feedFuture = getUserFeed(this.sortingKey, this.sortingOrder);
+    });
+  }
+
+  void refresh() {
     setState(() {
       this._feedFuture = getUserFeed(this.sortingKey, this.sortingOrder);
     });

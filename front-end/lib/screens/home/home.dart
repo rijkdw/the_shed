@@ -14,8 +14,6 @@ class Home extends StatelessWidget {
   final VoidCallback onSignedOut;
   final psw;
 
-
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -23,8 +21,6 @@ class Home extends StatelessWidget {
         picture: 'assets/user1.jpeg',
         username: globalUsername,
         password: this.psw
-
-
     ),
       child: MaterialApp(
         theme: ThemeData(

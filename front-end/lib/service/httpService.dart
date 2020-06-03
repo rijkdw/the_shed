@@ -157,8 +157,8 @@ Future<String> getCurrentLocationName() async {
     lat = -33.93;
     long = 18.86;
   } else {
-    lat = _locationData.latitude.roundToDouble();
-    long = _locationData.longitude.roundToDouble();
+    lat = _locationData.latitude;
+    long = _locationData.longitude;
   }
 
   return await getLocationFromCoords(lat, long);
@@ -166,7 +166,7 @@ Future<String> getCurrentLocationName() async {
 
 // makes a post by post request
 Future makePost(String txt, String grp) async {
-  // print("????? REEEEEEEEEEEEEEEEEEEEEEE ???");
+  print('Making post \"$txt\" in \"$grp\"');
   Location location = new Location();
 
   PermissionStatus _permissionGranted;
@@ -186,8 +186,6 @@ Future makePost(String txt, String grp) async {
     long = _locationData.longitude;
   }
   
-  lat = lat.roundToDouble();
-  long = long.roundToDouble();
   print('makePost() found lat and long to be $lat and $long');
 
   String locationName = await getLocationFromCoords(lat, long);

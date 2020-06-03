@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:rw334/screens/home/groups.dart';
 import 'package:rw334/service/httpService.dart';
 import 'feed.dart';
 import 'profile.dart';
@@ -88,7 +89,7 @@ class _UserHomePageState extends State<UserHomePage> {
         children: [
           Container( color: backColor, child: FeedPage(), ),
           Container( color: backColor, child: SearchPage(), ),
-          Container( color: backColor, child: LikePage(), ),
+          Container( color: backColor, child: GroupsPage(), ),
           Container( color: backColor, child: ChatsPage(), ),
           Container( color: backColor, child: ProfilePage(), )
         ],

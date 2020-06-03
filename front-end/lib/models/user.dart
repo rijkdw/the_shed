@@ -28,7 +28,7 @@ class User extends ChangeNotifier {
     this.username = username ?? 'username';
     this.picture = picture ?? 'assets/user1.jpeg';
     this.name = name ?? 'name';
-    this.posts = post ?? 0;
+    this.posts = numberPost ?? 0;
     this.follow = follow ?? 0;
     this.login = true;
     this.password = password ?? '1234';
@@ -108,5 +108,9 @@ class User extends ChangeNotifier {
     }
   }
 
-//Get info from DB
+  void updatePosts() {
+    this.posts = this.posts + 1;
+    notifyListeners();
+  }
+
 }

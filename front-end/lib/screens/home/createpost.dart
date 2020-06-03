@@ -162,6 +162,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                   ),
                   onPressed: () async {
                     String txt = textController.text;
+                    user.updatePosts();
                     if (txt.trimRight().trimLeft().length > 1) {
                       makePost(txt, selectedGroup);
                       Navigator.pop(context);

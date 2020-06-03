@@ -14,7 +14,7 @@ List allPosts;
 String owner;
 String globalUsername;
 int userId;
-int numberPost;
+int numberPost = 0;
 Set<String> globalGroupsID = {};
 Set<String> globalGroups = {};
 
@@ -50,16 +50,23 @@ Future makeComment(String txt, int pid) async {
 Future signedUp(String username, String email, String psw) async {
   final String url = "https://theshedapi.herokuapp.com/api/registration/";
 
-  final response = await post(url, headers: <String, String>{
-    'Content-Type': 'application/json; charset=UTF-8',
-  }, body: {
-    "username": username,
-    "password": psw
-  });
+  final response = await post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: JsonEncoder().convert(
+      {
+        "username": username,
+        "password": psw,
+        "email": email,
+        "groups": [51],
+      },
+    ),
+  );
 
   if (response.statusCode == 200) {
     var resBody = json.decode(response.body);
-    //print(resBody);
     return null;
   } else {
     //print(response.statusCode);

@@ -48,7 +48,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       return Column(
         children: <Widget>[
           Card(
-            margin: EdgeInsets.all(10),
+            margin: EdgeInsets.only(left:6, top: 10, right: 6, bottom: 2),
             color: Colors.black38,
             //shadowColor: Colors.green,
             child: Container(
@@ -92,7 +92,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             Container(
                               margin: EdgeInsets.only(right: 20.0),
                               child: Text(
-                                "$numberPost",
+                                user.getPost(),
+
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,

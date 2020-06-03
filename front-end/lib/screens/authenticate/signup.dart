@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/user.dart';
+import 'package:rw334/screens/authenticate/login.dart';
 import 'package:rw334/screens/home/home.dart';
 import 'package:rw334/service/httpService.dart';
 
@@ -62,7 +63,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             // username textbox
             emailField,
-            nameField,
             usernameField,
             passwordField,
 
@@ -84,17 +84,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               onPressed: ()async{
                 //printData();
-                createUserObject();
                 String email = emailField.value;
                 String usr = usernameField.value;
                 final String psw = passwordField.value;
-                final User user = await signedUp(usr, email, psw);
+                await signedUp(usr, email, psw);
 
-                setState(() {
-                  _user = user;
-                });
+
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => Home(psw:psw)),
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
                         (Route<dynamic> route) => false);
               },
             )

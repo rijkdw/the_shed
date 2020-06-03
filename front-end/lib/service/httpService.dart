@@ -14,15 +14,15 @@ String owner;
 String globalUsername;
 int userId;
 int numberPost;
-Set <String> globalGroupsID = {};
-Set <String> globalGroups = {};
+Set<String> globalGroupsID = {};
+Set<String> globalGroups = {};
 
-List <String> getGlobalGroups () {
+List<String> getGlobalGroups() {
   List ls = globalGroups.toList();
   return ls;
 }
 
-List <String> getGlobalGroupsID () {
+List<String> getGlobalGroupsID() {
   List ls = globalGroupsID.toList();
   return ls;
 }
@@ -58,10 +58,10 @@ Future signedUp(String username, String email, String psw) async {
 
   if (response.statusCode == 200) {
     var resBody = json.decode(response.body);
-    print(resBody);
+    //print(resBody);
     return null;
   } else {
-    print(response.statusCode);
+    //print(response.statusCode);
     return null;
   }
 }
@@ -116,11 +116,11 @@ Future loggedIn(String usr, String psw) async {
     token = token["token"];
 
     userId = await userID(usr);
-    print(userId);
+    //print(userId);
     makeUser();
     return null;
   } else {
-    print(response.statusCode);
+    //print(response.statusCode);
     return null;
   }
 }
@@ -137,11 +137,12 @@ Future<String> getLocationFromCoords(double lat, double long) async {
   }
   try {
     final coordinates = Coordinates(lat, long);
-    List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    List<Address> addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
     // print('${addresses.first.locality}');
     return '${addresses.first.locality}, ${addresses.first.countryCode}';
   } on Exception catch (e) {
-    print(e.toString());
+    //print(e.toString());
     return '???';
   }
 }
@@ -171,7 +172,7 @@ Future<String> getCurrentLocationName() async {
 
 // makes a post by post request
 Future makePost(String txt, String grp) async {
-  print('Making post \"$txt\" in \"$grp\"');
+  //print('Making post \"$txt\" in \"$grp\"');
   Location location = new Location();
 
   PermissionStatus _permissionGranted;
@@ -190,17 +191,17 @@ Future makePost(String txt, String grp) async {
     lat = _locationData.latitude;
     long = _locationData.longitude;
   }
-  
-  print('makePost() found lat and long to be $lat and $long');
+
+  //print('makePost() found lat and long to be $lat and $long');
 
   String locationName = await getLocationFromCoords(lat, long);
-  print('makePost() therefore thinks you\'re at $locationName');
+  //print('makePost() therefore thinks you\'re at $locationName');
 
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
   var temp = getGlobalGroups();
   var temp2 = getGlobalGroupsID();
   String group = temp2[temp.indexOf(grp)];
-  print(group);
+  //print(group);
 
   final response = await post(url,
       headers: <String, String>{
@@ -209,7 +210,7 @@ Future makePost(String txt, String grp) async {
       },
       body: JsonEncoder().convert(
           {"text": txt, "latitude": lat, "longitude": long, "group": group}));
-  print(response.statusCode);
+  //print(response.statusCode);
 }
 
 //returns all posts made by the Current user
@@ -227,7 +228,8 @@ Future<List<Post>> getAllUserPosts() async {
   }
   for (int j = 0; j < data.length; j++) {
     // evaluating data[j]
-    String locationName = await getLocationFromCoords(data[j]['latitude'], data[j]['longitude']);
+    String locationName =
+        await getLocationFromCoords(data[j]['latitude'], data[j]['longitude']);
     results.add(
       Post(
         id: data[j]['id'],
@@ -297,11 +299,10 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
     temp = "https://theshedapi.herokuapp.com/api/v1/groups/";
     for (int i = 0; i < groups.length; i++) {
       var gid = groups[i];
-      globalGroupsID.add(temp+"$gid"+'/');
+      globalGroupsID.add(temp + "$gid" + '/');
     }
 
     temp = null;
-
   }
 
   for (int i = 0; i < groups.length; i++) {
@@ -324,7 +325,8 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
 
       // String username = await getUsernameFromID(data[j]['owner_id']);
       globalGroups.add(data[j]["group_name"]);
-      String locationName = await getLocationFromCoords(data[j]['latitude'], data[j]['longitude']);
+      String locationName = await getLocationFromCoords(
+          data[j]['latitude'], data[j]['longitude']);
       results.add(
         Post(
           longitude: data[j]['longitude'],
@@ -368,17 +370,31 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   }
 
   allFeed = results;
-   print(globalGroupsID);
-   print(globalGroups);
+  //print(globalGroupsID);
+  //print(globalGroups);
   return results;
 }
-bool updateProfile(String usr, String psw) {
-  int status = 201;
-  bool rip = false;
-  if (status != 201){
-    return true;
+
+Future<bool> updateProfile(String newUsr) async {
+  String url = "https://theshedapi.herokuapp.com/api/v1/Users/";
+  url = url + "$userId" + '/';
+  var response = await patch(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+    body: JsonEncoder().convert(
+      {
+        "username": newUsr,
+      },
+    ),
+  );
+
+  if (response.statusCode != 200) {
+    return false;
   }
-  return false;
+  return true;
 }
 
 int convertTime(String time) {

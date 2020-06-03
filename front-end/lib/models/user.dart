@@ -91,17 +91,21 @@ class User extends ChangeNotifier {
     return null;
   }
 
-  bool update(String username, String psw) {
+  Future<bool> update(String username, String psw) async {
     bool fine = false;
-    this.username = username;
-    this.password = psw;
-    print(psw + " " + username);
-    /* if (database allows username)
-    *   fine = true;
-    */
-    fine = true;
-    notifyListeners();
-    return fine;
+    if (psw != this.password) {
+      return false;
+    }
+
+
+    bool res = await updateProfile(username);
+    print("res: ");
+    print(res);
+    if (res == true) {
+      this.username = username;
+      notifyListeners();
+      return true;
+    }
   }
 
 //Get info from DB

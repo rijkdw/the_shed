@@ -47,100 +47,107 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     return Consumer<User>(builder: (context, user, child) {
       return Column(
         children: <Widget>[
-          Container(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: Column(
+          Card(
+            margin: EdgeInsets.all(10),
+            color: Colors.black38,
+            //shadowColor: Colors.green,
+            child: Container(
+              margin: EdgeInsets.all(10.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage(user.getPicture()),
+                            radius: 40,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 5),
+                          child: Text(
+                            (user.getUsername()).toUpperCase(),
+                            // (globalUsername).toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).accentColor,
+                              letterSpacing: 0.7,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Row(
                     children: <Widget>[
                       Container(
-                        child: CircleAvatar(
-                          backgroundImage: AssetImage(user.getPicture()),
-                          radius: 40,
+                        margin: EdgeInsets.only(
+                          left: 40,
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(right: 20.0),
+                              child: Text(
+                                "$numberPost",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  letterSpacing: 0.7,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(right: 20.0),
+                              //padding: EdgeInsets.only(left: 60),
+                              child: Text(
+                                "POSTS",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).accentColor,
+                                  letterSpacing: 0.7,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       Container(
-                        child: Text(
-                          (user.getUsername()).toUpperCase(),
-                          // (globalUsername).toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).accentColor,
-                            letterSpacing: 0.7,
-                          ),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              //padding: EdgeInsets.only(left: 25, top: 28),
+                              child: Text(
+                                user.getFollowing(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  letterSpacing: 0.7,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                "FRIENDS",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).accentColor,
+                                  letterSpacing: 0.7,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      )
+                      ),
                     ],
                   ),
-                ),
-                Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: 40,
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            margin:EdgeInsets.only(right:20.0),
-                            child: Text(
-                              "$numberPost",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                letterSpacing: 0.7,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin:EdgeInsets.only(right:20.0),
-                            //padding: EdgeInsets.only(left: 60),
-                            child: Text(
-                              "POSTS",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).accentColor,
-                                letterSpacing: 0.7,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            //padding: EdgeInsets.only(left: 25, top: 28),
-                            child: Text(
-                              user.getFollowing(),
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                letterSpacing: 0.7,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Text(
-                              "FRIENDS",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).accentColor,
-                                letterSpacing: 0.7,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           FutureBuilder<List<Post>>(
@@ -194,15 +201,15 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               // dummy return
               return Expanded(
                 child: Center(
-                  child: Icon(
-                    Icons.error,
-                    size: 50,
-                  )
-                  // child: Text(
-                  //   'Waiting for posts...',
-                  //   style: TextStyle(fontSize: 20, color: Colors.white),
-                  // ),
-                ),
+                    child: Icon(
+                  Icons.error,
+                  size: 50,
+                )
+                    // child: Text(
+                    //   'Waiting for posts...',
+                    //   style: TextStyle(fontSize: 20, color: Colors.white),
+                    // ),
+                    ),
               );
             },
           ),

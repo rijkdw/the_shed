@@ -132,7 +132,6 @@ Future<void> makeUser() async {
 }
 
 Future<String> getLocationFromCoords(double lat, double long) async {
-  print('Looking up $lat, $long.');
   try {
     final coordinates = Coordinates(lat, long);
     List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
@@ -162,13 +161,13 @@ Future makePost(String txt, String grp) async {
     lat = _locationData.latitude;
     long = _locationData.longitude;
   }
-
+  
   lat = lat.roundToDouble();
   long = long.roundToDouble();
+  print('makePost() found lat and long to be $lat and $long');
 
   String locationName = await getLocationFromCoords(lat, long);
-  print(locationName);
-
+  print('makePost() therefore thinks you\'re at $locationName');
 
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
   var temp = getGlobalGroups();
@@ -242,8 +241,8 @@ Future<List<Comment>> getCommentsOnPost(int postID) async {
         text: data[i]['text'],
         epochTime: convertTime(data[i]['timestamp']),
         postId: postID,
-        userId: data[i]['owner'],
-        username: 'UNDEFINED_USERNAME',
+        username: data[i]['owner'],
+        // username: 'UNDEFINED_USERNAME',
       ),
     );
   }

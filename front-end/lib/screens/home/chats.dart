@@ -46,7 +46,8 @@ class ChatsPage extends StatelessWidget {
                 color: Color.fromRGBO(41, 41, 41, 1)
               ),
               child: Center(
-                child: Text('Loading...'),
+                child: CircularProgressIndicator(),
+                // child: Text('Loading...'),
               ),
             );
           }

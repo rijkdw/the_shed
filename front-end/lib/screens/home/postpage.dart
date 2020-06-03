@@ -97,9 +97,18 @@ class _PostPageState extends State<PostPage> {
                     if (snapshot.connectionState != ConnectionState.done)
                       return Expanded(
                         child: Center(
-                          child: Text(
-                            'Waiting for comments...',
-                            style: TextStyle( fontSize: 20, color: Colors.white ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              CircularProgressIndicator(),
+                              // SizedBox(
+                              //   height: 20,
+                              // ),
+                              // Text(
+                              //   'Waiting for comments...',
+                              //   style: TextStyle( fontSize: 20, color: Colors.white ),
+                              // ),
+                            ],
                           ),
                         ),
                       );
@@ -131,10 +140,13 @@ class _PostPageState extends State<PostPage> {
                         ),
                       );
                     }
-                    return Center(
-                      child: Text(
-                        '???'
-                      )
+                    return Expanded(
+                      child: Center(
+                        child: Text(
+                          'Something went wrong :(',
+                          style: TextStyle( fontSize: 20, color: Colors.white ),
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -253,24 +265,10 @@ class MetadataWidget extends StatelessWidget {
 
 
 
-class CommentCard extends StatefulWidget {
+class CommentCard extends StatelessWidget {
   
   final Comment comment;  
   CommentCard({this.comment});
-
-  @override
-  _CommentCardState createState() => _CommentCardState();
-}
-
-class _CommentCardState extends State<CommentCard> {
-  
-  Future<String> _commentorName;
-
-  @override
-  void initState() { 
-    _commentorName = getUsernameFromID(widget.comment.userId);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -324,51 +322,34 @@ class _CommentCardState extends State<CommentCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  // commenter, time, "said"
-                  FutureBuilder(
-                    future: this._commentorName,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done)
-                        return Text(
-                          'Loading...',
+                  // commenter, time, "said"                  
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          // text: snapshot.data,
+                          text: this.comment.username,
                           style: _styleHeaderEmphasis.copyWith(
                             color: Theme.of(context).accentColor,
                           )
-                        );
-                      if (snapshot.hasData) {
-                        return RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: snapshot.data,
-                                style: _styleHeaderEmphasis.copyWith(
-                                  color: Theme.of(context).accentColor,
-                                )
-                              ),
-                              TextSpan(
-                                text: ' at ',
-                                style: _styleHeaderNormal
-                              ),
-                              TextSpan(
-                                text: widget.comment.getInPostTimeStamp(),
-                                style: _styleHeaderEmphasis.copyWith(
-                                  color: Theme.of(context).accentColor,
-                                )
-                              ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return Text(
-                          'yeet',
+                        ),
+                        TextSpan(
+                          text: ' at ',
+                          style: _styleHeaderNormal
+                        ),
+                        TextSpan(
+                          text: this.comment.getInPostTimeStamp(),
                           style: _styleHeaderEmphasis.copyWith(
                             color: Theme.of(context).accentColor,
                           )
-                        );
-                      }
-                    },
+                        ),
+                        TextSpan(
+                          text: ' said ',
+                          style: _styleHeaderNormal
+                        ),
+                      ],
+                    ),
                   ),
-
                   // spacing
                   SizedBox(
                     height: 4,
@@ -376,7 +357,7 @@ class _CommentCardState extends State<CommentCard> {
 
                   // comment body
                   Text(
-                    widget.comment.text,
+                    this.comment.text,
                     style: _styleBody,
                   )
                 ]

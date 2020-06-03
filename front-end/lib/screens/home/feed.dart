@@ -161,10 +161,11 @@ class _FeedWidgetState extends State<FeedWidget> {
                 if (snapshot.connectionState != ConnectionState.done)
                   return Expanded(
                     child: Center(
-                      child: Text(
-                        'Waiting for posts...',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
+                      child: CircularProgressIndicator(),
+                      // child: Text(
+                      //   'Waiting for posts...',
+                      //   style: TextStyle(fontSize: 20, color: Colors.white),
+                      // ),
                     ),
                   );
 
@@ -203,7 +204,18 @@ class _FeedWidgetState extends State<FeedWidget> {
                   );
                 }
                 // dummy return
-                return Text('yeet');
+                return Expanded(
+                  child: Center(
+                    child: Icon(
+                      Icons.error,
+                      size: 50,
+                    )
+                    // child: Text(
+                    //   'Waiting for posts...',
+                    //   style: TextStyle(fontSize: 20, color: Colors.white),
+                    // ),
+                  )
+                );
               },
             ),
           ],

@@ -35,7 +35,8 @@ class Comments(models.Model):
     text = models.CharField(max_length=200)
     timestamp = models.DateTimeField(null=True, auto_now_add=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, default='User')
+
 
 
 

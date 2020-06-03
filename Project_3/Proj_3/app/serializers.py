@@ -67,9 +67,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    owner = serializers.CurrentUserDefault()
+    owner = serializers.CharField(default=CurrentUserDefault(), read_only=True)
 
     class Meta:
         model = Comments
         fields = '__all__'
+        read_only_fields = ['owner']
 

@@ -36,9 +36,12 @@ class PostViewSet(viewsets.ModelViewSet):
 class CommentsViewSet(viewsets.ModelViewSet):
     queryset = Comments.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly, permissions.IsAuthenticatedOrReadOnly]
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('text', 'timestamp', 'post', 'owner')
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class UserCreate(generics.CreateAPIView):

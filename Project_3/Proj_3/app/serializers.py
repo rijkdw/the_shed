@@ -28,12 +28,13 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.CharField(source='owner.username', read_only=True)
     group_id = serializers.IntegerField(read_only=True)
     group_name = serializers.CharField(source='group.name', read_only=True)
+    tag = serializers.CharField(source='group.tag', read_only=True)
 
     class Meta:
         model = Post
         fields = "__all__"
         extra_fields = ['id']
-        read_only_fields = ['slug', 'owner_id', 'group_id', 'group_name']
+        read_only_fields = ['slug', 'owner_id', 'group_id', 'group_name', 'tag']
         ordering = ['timestamp']
 
     def get_field_names(self, declared_fields, info):

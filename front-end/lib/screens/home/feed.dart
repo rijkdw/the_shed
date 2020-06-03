@@ -287,15 +287,20 @@ class _PostCardState extends State<PostCard> {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          color: Color.fromRGBO(30, 30, 30, 1.0),
-          borderRadius: BorderRadius.all(Radius.circular(4)),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0, 2),
-              blurRadius: 1,
-              color: Colors.black.withOpacity(0.2),
-            )
-          ]),
+        color: Color.fromRGBO(30, 30, 30, 1.0),
+        borderRadius: BorderRadius.all(Radius.circular(4)),
+        // To highlight the user's own posts
+        border: Border.all(
+          color: Theme.of(context).accentColor.withOpacity(widget.post.username == globalUsername ? 0.3 : 0.0),
+          width: 3,
+        ),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 2),
+            blurRadius: 1,
+            color: Colors.black.withOpacity(0.2),
+          )
+        ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

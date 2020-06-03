@@ -131,7 +131,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                           return Text('Loading...', style: _metadataValueStyle);
                         if (snapshot.hasData)
                           return Text(snapshot.data, style: _metadataValueStyle);
-                        return Text('yeet', style: _metadataValueStyle);
+                        return Text('ERROR', style: _metadataValueStyle);
                       },
                     ),
                   ]),

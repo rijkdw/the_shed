@@ -235,10 +235,17 @@ Future makePost(String txt, String grp) async {
     long = _locationData.longitude;
   }
 
+
   //print('makePost() found lat and long to be $lat and $long');
 
+
+  lat = lat.roundToDouble();
+  long = long.roundToDouble();
+
   String locationName = await getLocationFromCoords(lat, long);
-  //print('makePost() therefore thinks you\'re at $locationName');
+  print(locationName);
+
+
 
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
   var temp = getGlobalGroups();

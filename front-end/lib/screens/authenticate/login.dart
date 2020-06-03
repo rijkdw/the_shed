@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/authenticate/signup.dart';
 import 'package:rw334/screens/home/home.dart';
 import 'package:rw334/service/httpService.dart';
+
 
 
 class EmailFieldValidator {
@@ -174,6 +176,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 String username = usernameController.value.text;
                 String psw = passwordController.value.text;
                 await loggedIn(username, psw);
+
+               Hive.box('psw').put(0,psw);
+               Hive.box('usr').put(0,username);
+               Hive.box('status').put(0,false);
+               print(Hive.box('usr').get(0));
+               print(Hive.box('status').get(0));
+
+
                 //getAllPosts();
                 Navigator.pop(context);
                 Navigator.of(context).pushAndRemoveUntil(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:rw334/service/httpService.dart';
 import 'authenticate/login.dart';
 import 'home/home.dart';
 
@@ -7,34 +9,41 @@ class RootPage extends StatefulWidget {
   _RootPageState createState() => new _RootPageState();
 }
 
-enum AuthStatus { notSignedIn, signedIn }
-
 class _RootPageState extends State<RootPage> {
-  AuthStatus authStatus = AuthStatus.notSignedIn;
+  final passBox = Hive.box('psw');
+  final userBox = Hive.box('usr');
+  final stBox = Hive.box('status');
 
-  void _signedIn() {
-    setState(() {
-      authStatus = AuthStatus.signedIn;
-    });
-  }
-
-  void _signedOut() {
-    setState(() {
-      authStatus = AuthStatus.notSignedIn;
-    });
-  }
+  _RootPageState();
 
   @override
   Widget build(BuildContext context) {
-    switch (authStatus) {
-      case AuthStatus.notSignedIn:
-        return new LoginScreen();
+    bool _state = stBox.get(0) as bool;
+    print(_state);
 
-      //case AuthStatus.signedIn:
-       // return new Home(
-          //onSignedOut: _signedOut,
-       // );
+    if (_state == null) {
+      Hive.box('status').put(0, true);
     }
-    return null;
+
+    print(_state);
+    String _usr = userBox.get(0) as String;
+    String _psw = passBox.get(0) as String;
+/*
+    if (!_state) {
+      WidgetsFlutterBinding.ensureInitialized();
+      print("ariba");
+      print(_usr);
+      loggedIn(_usr, _psw);
+
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Home(psw: _psw)),
+          (Route<dynamic> route) => false);
+      //return Home(psw:_psw);
+    } else {
+      print("sad noises");
+      return LoginScreen();
+    }
+    */
+  return LoginScreen();
   }
 }

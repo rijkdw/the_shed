@@ -109,7 +109,7 @@ Future<String> getUsernameFromID(int id) async {
     res = list[0]['username'];
     return res;
   } else {
-    return 'USERNAME';
+    return 'DEF_USERNAME';
   }
 }
 
@@ -381,6 +381,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
           locationname: locationName,
           groupname: data[j]['group_name'],
           id: data[j]['id'],
+          userId: data[j]['owner_id'],
         ),
       );
     }

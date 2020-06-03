@@ -181,11 +181,11 @@ class _FeedPageState extends State<FeedPage> {
                           height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width,
                           child: ListView.builder(
-                            padding: const EdgeInsets.all(4),
+                            // padding: const EdgeInsets.all(4),
                             itemCount: posts.length,
                             itemBuilder: (context, i) {
                               return Container(
-                                padding: const EdgeInsets.all(4),
+                                padding: const EdgeInsets.fromLTRB(6, 6, 6, 0),
                                 child: InkWell(
                                   onTap: () {
                                     Navigator.of(context).push(
@@ -273,43 +273,31 @@ class _PostCardState extends State<PostCard> {
   // build method
   @override
   Widget build(BuildContext context) {
-    TextStyle _styleHeaderEmphasis = TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-    TextStyle _styleHeaderNormal = TextStyle(
-      color: Colors.white70,
-      fontSize: 14,
-    );
-    TextStyle _styleTitle = TextStyle(
-      color: Colors.white,
-      fontSize: 20,
-    );
-    TextStyle _styleFooter = TextStyle(
-      color: Colors.white70,
-      fontSize: 16,
-    );
+    TextStyle _styleHeaderEmphasis = TextStyle( color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, );
+    TextStyle _styleHeaderNormal = TextStyle( color: Colors.white70, fontSize: 14, );
+    TextStyle _styleTitle = TextStyle( color: Colors.white, fontSize: 20, );
+    TextStyle _styleFooter = TextStyle( color: Colors.white70, fontSize: 16, );
 
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Color.fromRGBO(30, 30, 30, 1.0),
-        // borderRadius: BorderRadius.all(Radius.circular(4)),
+        // borderRadius: BorderRadius.only(topLeft: Radius.circular(4)),
         // To highlight the user's own posts
         border: Border(
           left: BorderSide(
-            color: Theme.of(context).accentColor.withOpacity(widget.post.username == globalUsername ? 0.5 : 0.0),
+            color: Theme.of(context).accentColor.withOpacity(widget.post.userId == userId ? 1.0 : 0.0),
             width: 3,
           ),
         ),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 2),
-            blurRadius: 1,
-            color: Colors.black.withOpacity(0.2),
-          )
-        ]),
+        // boxShadow: [
+        //   BoxShadow(
+        //     offset: Offset(0, 2),
+        //     blurRadius: 1,
+        //     color: Colors.black.withOpacity(0.2),
+        //   )
+        // ]
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -328,22 +316,6 @@ class _PostCardState extends State<PostCard> {
                   style: _styleHeaderEmphasis.copyWith(
                       color: Theme.of(context).accentColor),
                 ),
-                // TextSpan(
-                //   text: ' at ',
-                //   style: _styleHeaderNormal
-                // ),
-                // TextSpan(
-                //   text: widget.post.getInFeedTimestamp(),
-                //   style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
-                // ),
-                // TextSpan(
-                //   text: ' near ',
-                //   style: _styleHeaderNormal
-                // ),
-                // TextSpan(
-                //   text: widget.post.locationname,
-                //   style: _styleHeaderEmphasis.copyWith( color: Theme.of(context).accentColor ),
-                // ),
               ],
             ),
           ),

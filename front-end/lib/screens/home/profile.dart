@@ -174,11 +174,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
-                        padding: const EdgeInsets.all(4),
+                        // padding: const EdgeInsets.all(6),
                         itemCount: posts.length,
                         itemBuilder: (context, i) {
                           return Container(
-                            padding: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.fromLTRB(6, 6, 6, 0),
                             child: InkWell(
                               onTap: () {
                                 Navigator.of(context).push(

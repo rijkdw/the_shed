@@ -132,12 +132,17 @@ Future<void> makeUser() async {
 }
 
 Future<String> getLocationFromCoords(double lat, double long) async {
+  if (lat > 90.0 || lat < -90.0 || long > 180.0 || long < -180.0) {
+    return '!!!';
+  }
   try {
     final coordinates = Coordinates(lat, long);
     List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    // print('${addresses.first.locality}');
     return '${addresses.first.locality}, ${addresses.first.countryCode}';
-  } catch (Exception) {
-    return 'ERROR';
+  } on Exception catch (e) {
+    print(e.toString());
+    return '???';
   }
 }
 

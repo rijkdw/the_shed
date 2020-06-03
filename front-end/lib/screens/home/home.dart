@@ -74,19 +74,11 @@ class _UserHomePageState extends State<UserHomePage> {
         index: _page,
         animationCurve: Curves.fastLinearToSlowEaseIn,
         items: <Widget>[
-          Icon(
-            Icons.home,
-            size: 30,
-            color: Colors.black,
-          ),
-          Icon(Icons.search, size: 30, color: Colors.black),
-          Icon(
-            Icons.favorite_border,
-            size: 30,
-            color: Colors.black,
-          ),
-          Icon(Icons.message, size: 30, color: Colors.black),
-          Icon(Icons.person, size: 30, color: Colors.black),
+          Icon( Icons.home, size: 30, color: Colors.black, ),
+          Icon( Icons.search, size: 30, color: Colors.black, ),
+          Icon( Icons.people, size: 30, color: Colors.black, ),
+          Icon( Icons.message, size: 30, color: Colors.black, ),
+          Icon( Icons.person, size: 30, color: Colors.black, ),
         ],
         onTap: navigationTapped,
       ),
@@ -94,26 +86,11 @@ class _UserHomePageState extends State<UserHomePage> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: [
-          Container(
-            color: backColor,
-            child: FeedPage(),
-          ),
-          Container(
-            color: backColor,
-            child: SearchPage(),
-          ),
-          Container(
-            color: backColor,
-            child: LikePage(),
-          ),
-          Container(
-            color: backColor,
-            child: ChatsPage(),
-          ),
-          Container(
-            color: backColor,
-            child: ProfilePage(),
-          )
+          Container( color: backColor, child: FeedPage(), ),
+          Container( color: backColor, child: SearchPage(), ),
+          Container( color: backColor, child: LikePage(), ),
+          Container( color: backColor, child: ChatsPage(), ),
+          Container( color: backColor, child: ProfilePage(), )
         ],
       ),
     );

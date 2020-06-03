@@ -10,46 +10,7 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Image.asset(
-          "assets/logo.png",
-          width: 120,
-        ),
-      ),
-      body: Container(
-        color: Color.fromRGBO(41, 41, 41, 1),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: FeedWidget(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        // mini: true,
-        child: Icon(
-          Icons.add,
-          size: 30,
-        ),
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => PostCreatorPage()
-            )
-          );
-        },
-      ),
-    );
-  }
-}
-
-class FeedWidget extends StatefulWidget {
-  @override
-  _FeedWidgetState createState() => _FeedWidgetState();
-}
-
-class _FeedWidgetState extends State<FeedWidget> {
+  
   String sortingKey = 'Time';
   String sortingOrder = 'Asc';
 
@@ -66,175 +27,206 @@ class _FeedWidgetState extends State<FeedWidget> {
     setState(() {
       this._feedFuture = getUserFeed(this.sortingKey, this.sortingOrder);
     });
-  }
-
+  }  
+  
   @override
   Widget build(BuildContext context) {
+
     final TextStyle _style = TextStyle(fontSize: 16, color: Colors.black);
 
-    return Stack(
-      children: [
-        Column(
-          children: <Widget>[
-            // the sorting bar
-            Container(
-                padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
-                decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0, 3),
-                    blurRadius: 1,
-                    color: Colors.black.withOpacity(0.2),
-                  )
-                ]),
-                child: Row(
-                  children: [
-                    // the label
-                    Text(
-                      'Sort by...',
-                      style: _style,
-                    ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Image.asset(
+          "assets/logo.png",
+          width: 120,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        // mini: true,
+        child: Icon(
+          Icons.add,
+          size: 30,
+        ),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PostCreatorPage(
+                refreshCallback: refresh,
+              )
+            )
+          );
+        },
+      ),
+      body: Container(
+        color: Color.fromRGBO(41, 41, 41, 1),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            Column(
+              children: <Widget>[
+                // the sorting bar
+                Container(
+                    padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
+                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0, 3),
+                        blurRadius: 1,
+                        color: Colors.black.withOpacity(0.2),
+                      )
+                    ]),
+                    child: Row(
+                      children: [
+                        // the label
+                        Text(
+                          'Sort by...',
+                          style: _style,
+                        ),
 
-                    // sort by time, group, user, etc
-                    Container(
-                      margin: const EdgeInsets.only(left: 12),
-                      child: DropdownButton<String>(
-                        value: sortingKey,
-                        icon: null,
-                        elevation: 8,
-                        isDense: true,
-                        style: _style,
-                        items: <String>[
-                          'Time',
-                          'Location',
-                          'User',
-                          'Category',
-                          'Likes'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String newValue) {
-                          print(
-                              '\"$newValue\" has been selected as sorting key');
-                          setState(() {
-                            sortingKey = newValue;
-                          });
-                        },
-                      ),
-                    ),
+                        // sort by time, group, user, etc
+                        Container(
+                          margin: const EdgeInsets.only(left: 12),
+                          child: DropdownButton<String>(
+                            value: sortingKey,
+                            icon: null,
+                            elevation: 8,
+                            isDense: true,
+                            style: _style,
+                            items: <String>[
+                              'Time',
+                              'Location',
+                              'User',
+                              'Category',
+                              'Likes'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String newValue) {
+                              print(
+                                  '\"$newValue\" has been selected as sorting key');
+                              setState(() {
+                                sortingKey = newValue;
+                              });
+                            },
+                          ),
+                        ),
 
-                    // sort ascending or descending
-                    Container(
-                      margin: const EdgeInsets.only(left: 12),
-                      child: DropdownButton<String>(
-                        value: sortingOrder,
-                        icon: null,
-                        elevation: 8,
-                        isDense: true,
-                        style: _style,
-                        items: <String>['Asc', 'Desc']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String newValue) {
-                          print(
-                              '\"$newValue\" has been selected as sorting order');
-                          setState(() {
-                            sortingOrder = newValue;
-                          });
-                        },
-                      ),
-                    ),
+                        // sort ascending or descending
+                        Container(
+                          margin: const EdgeInsets.only(left: 12),
+                          child: DropdownButton<String>(
+                            value: sortingOrder,
+                            icon: null,
+                            elevation: 8,
+                            isDense: true,
+                            style: _style,
+                            items: <String>['Asc', 'Desc']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String newValue) {
+                              print(
+                                  '\"$newValue\" has been selected as sorting order');
+                              setState(() {
+                                sortingOrder = newValue;
+                              });
+                            },
+                          ),
+                        ),
 
-                    // confirm
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        width: 40,
-                        child: OutlineButton(
-                            splashColor: Theme.of(context).accentColor,
-                            onPressed: () => sort(),
-                            child: Text(
-                              'Go',
-                            )),
-                      ),
-                    )
-                  ],
-                )),
+                        // confirm
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            width: 40,
+                            child: OutlineButton(
+                                splashColor: Theme.of(context).accentColor,
+                                onPressed: () => sort(),
+                                child: Text(
+                                  'Go',
+                                )),
+                          ),
+                        )
+                      ],
+                    )),
 
-            // the feed
-            FutureBuilder<List<Post>>(
-              future: _feedFuture,
-              builder: (context, snapshot) {
-                // if data isn't here yet...
-                if (snapshot.connectionState != ConnectionState.done)
-                  return Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                      // child: Text(
-                      //   'Waiting for posts...',
-                      //   style: TextStyle(fontSize: 20, color: Colors.white),
-                      // ),
-                    ),
-                  );
+                // the feed
+                FutureBuilder<List<Post>>(
+                  future: _feedFuture,
+                  builder: (context, snapshot) {
+                    // if data isn't here yet...
+                    if (snapshot.connectionState != ConnectionState.done)
+                      return Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                          // child: Text(
+                          //   'Waiting for posts...',
+                          //   style: TextStyle(fontSize: 20, color: Colors.white),
+                          // ),
+                        ),
+                      );
 
-                // if the data is here
-                if (snapshot.hasData) {
-                  List<Post> posts = snapshot.data;
-                  return Flexible(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(4),
-                        itemCount: posts.length,
-                        itemBuilder: (context, i) {
-                          return Container(
+                    // if the data is here
+                    if (snapshot.hasData) {
+                      List<Post> posts = snapshot.data;
+                      return Flexible(
+                        child: Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
                             padding: const EdgeInsets.all(4),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => PostPage(
-                                      post: posts[i],
-                                    ),
+                            itemCount: posts.length,
+                            itemBuilder: (context, i) {
+                              return Container(
+                                padding: const EdgeInsets.all(4),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => PostPage(
+                                          post: posts[i],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: PostCard(
+                                    post: posts[i],
+                                    lineLimit: 3,
                                   ),
-                                );
-                              },
-                              child: PostCard(
-                                post: posts[i],
-                                lineLimit: 3,
-                              ),
-                            ),
-                          );
-                        }
-                      ),
-                    ),
-                  );
-                }
-                // dummy return
-                return Expanded(
-                  child: Center(
-                    child: Icon(
-                      Icons.error,
-                      size: 50,
-                    )
-                    // child: Text(
-                    //   'Waiting for posts...',
-                    //   style: TextStyle(fontSize: 20, color: Colors.white),
-                    // ),
-                  )
-                );
-              },
+                                ),
+                              );
+                            }
+                          ),
+                        ),
+                      );
+                    }
+                    // dummy return
+                    return Expanded(
+                      child: Center(
+                        child: Icon(
+                          Icons.error,
+                          size: 50,
+                        )
+                        // child: Text(
+                        //   'Waiting for posts...',
+                        //   style: TextStyle(fontSize: 20, color: Colors.white),
+                        // ),
+                      )
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }

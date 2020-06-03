@@ -4,17 +4,20 @@ import 'package:rw334/models/user.dart';
 import 'package:rw334/service/httpService.dart';
 
 class PostCreatorPage extends StatefulWidget {
+  
+  final VoidCallback refreshCallback;
+  PostCreatorPage({@required this.refreshCallback});
+  
   @override
   _PostCreatorPageState createState() => _PostCreatorPageState();
 }
 
 class _PostCreatorPageState extends State<PostCreatorPage> {
+  
   String _selectedGroup;
-
   String get selectedGroup => _selectedGroup;
 
   Future<String> _locationName = getCurrentLocationName();
-
   TextEditingController textController = new TextEditingController();
 
   @override
@@ -162,6 +165,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                     if (txt.trimRight().trimLeft().length > 1) {
                       makePost(txt, selectedGroup);
                       Navigator.pop(context);
+                      widget.refreshCallback();
                     }
                   },
                 ),

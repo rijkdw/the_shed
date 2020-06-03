@@ -130,6 +130,11 @@ class _GroupCardState extends State<GroupCard> {
     return widget.group.creatorID == http.userId;
   }
 
+  bool _userIsInThisGroup() {
+    // TODO
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
 

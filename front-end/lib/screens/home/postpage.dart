@@ -91,7 +91,6 @@ class _PostPageState extends State<PostPage> {
 
                 // then all the comments
                 FutureBuilder<List<Comment>>(
-
                   future: this._commentsFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState != ConnectionState.done)
@@ -133,8 +132,11 @@ class _PostPageState extends State<PostPage> {
                           itemBuilder: (context, index) {
                             // to fix a bug where it displays weird empty comments
                             if (comments[index].text.trimRight().trimLeft().length == 0) return null;
-                            return CommentCard(
-                              comment: comments[index],
+                            return Container(
+                              padding: const EdgeInsets.fromLTRB(6, 6, 6, 0),
+                              child: CommentCard(
+                                comment: comments[index],
+                              ),
                             );
                           }
                         ),
@@ -295,6 +297,10 @@ class CommentCard extends StatelessWidget {
   final Comment comment;  
   CommentCard({this.comment});
 
+  bool _userMadeComment() {
+    return comment.username == globalUsername;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -314,7 +320,7 @@ class CommentCard extends StatelessWidget {
     );
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+      // margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
       width: MediaQuery.of(context).size.width,
       
       child: Row(
@@ -334,14 +340,20 @@ class CommentCard extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Color.fromRGBO(30, 30, 30, 1.0),
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0,2),
-                    blurRadius: 1,
-                    color: Colors.black.withOpacity(0.2),
-                  )
-                ]
+                border: Border(
+                  left: BorderSide(
+                    color: Theme.of(context).accentColor.withOpacity(_userMadeComment() ? 1.0 : 0.0),
+                    width: 3,
+                  ),
+                ),
+                // borderRadius: BorderRadius.all(Radius.circular(4)),
+                // boxShadow: [
+                //   BoxShadow(
+                //     offset: Offset(0,2),
+                //     blurRadius: 1,
+                //     color: Colors.black.withOpacity(0.2),
+                //   )
+                // ]
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

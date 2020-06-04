@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/authenticate/login.dart';
@@ -58,6 +59,7 @@ class SettingsDrawer extends StatelessWidget {
                       ),
                       onTap: () {
                         user.logout();
+                        Hive.box('status').put(0, null);
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => LoginScreen()),

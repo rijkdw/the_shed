@@ -22,28 +22,34 @@ class _RootPageState extends State<RootPage> {
     print(_state);
 
     if (_state == null) {
-      Hive.box('status').put(0, true);
+      Hive.box('status').put(0, false);
     }
 
-    print(_state);
+
     String _usr = userBox.get(0) as String;
     String _psw = passBox.get(0) as String;
-/*
-    if (!_state) {
+
+    if (_state) {
       WidgetsFlutterBinding.ensureInitialized();
       print("ariba");
       print(_usr);
+      wait();
       loggedIn(_usr, _psw);
 
-      Navigator.of(context).pushAndRemoveUntil(
+     /* Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => Home(psw: _psw)),
           (Route<dynamic> route) => false);
-      //return Home(psw:_psw);
+
+      */
+      return Home(psw:_psw);
     } else {
-      print("sad noises");
+      //Hive.box('status').put(0, null);
       return LoginScreen();
     }
-    */
-  return LoginScreen();
+
+
   }
+}
+void wait () async {
+  await Future.delayed(const Duration(seconds: 6));
 }

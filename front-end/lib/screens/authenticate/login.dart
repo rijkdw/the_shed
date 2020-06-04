@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                Hive.box('psw').put(0,psw);
                Hive.box('usr').put(0,username);
-               Hive.box('status').put(0,false);
+               Hive.box('status').put(0,true);
                print(Hive.box('usr').get(0));
                print(Hive.box('status').get(0));
 

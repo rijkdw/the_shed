@@ -142,8 +142,17 @@ class _GroupCardState extends State<GroupCard> {
       else widget.refreshCallback();
     }
 
-    void _deleteSequence() {
+    void _deleteSequence() async {
       print('Attempting to delete \"${widget.group.name}\".');
+      int statusCode = await http.deleteGroup(widget.group.name);
+      if (statusCode != 204)
+        showDialog(
+          context: context,
+          child: AlertDialog(
+            title: Text('Error:  $statusCode'),
+          ),
+        );
+      else widget.refreshCallback();
     }
 
     void _leaveSequence() async {

@@ -440,6 +440,31 @@ int convertTime(String time) {
   return epoch;
 }
 
+Future<int> deleteGroup(String name) async{
+  String url = "https://theshedapi.herokuapp.com/api/v1/groups/?name=$name";
+  var temp;
+  int id;
+  var res = await get(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+  );
+  temp = json.decode(res.body);
+  id = temp[0]["id"] as int;
+  url = "https://theshedapi.herokuapp.com/api/v1/groups/$id/";
+  print(url);
+
+  res = await delete(url, headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': "Token " + token
+  });
+  print(res.statusCode);
+
+  return res.statusCode;
+
+}
 
 Future<int> makeGroup(String name, String desc, String tag) async {
   String url = "https://theshedapi.herokuapp.com/api/v1/groups/";

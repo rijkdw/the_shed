@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rw334/models/post.dart';
@@ -7,10 +9,11 @@ import 'package:rw334/screens/home/postpage.dart';
 import 'package:rw334/service/httpService.dart';
 import 'drawer.dart';
 import 'feed.dart';
+import 'package:image/image.dart' as imageUtils;
 
 class ProfilePage extends StatelessWidget {
 //http request-get
-
+//TODO: https://ui-avatars.com/api/?name=j&rounded=true&bold=true&color=fffff&background=a0a0a0
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,10 +43,15 @@ class ProfileWidget extends StatefulWidget {
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
+  String _theme = themeGen();
   Future<dynamic> _feedFuture = getAllUserPosts();
 
   @override
   Widget build(BuildContext context) {
+    String _url = "https://www.tinygraphs.com/labs/isogrids/hexa16/$globalUsername?theme=$_theme&numcolors=4&size=220&fmt=jpeg";
+    print(_url);
+    _url = "https://webstockreview.net/images/clipart-face-silhouette-1.png";
+
     return Consumer<User>(builder: (context, user, child) {
       return Column(
         children: <Widget>[
@@ -61,9 +69,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       children: <Widget>[
                         Container(
                           child: CircleAvatar(
-                            backgroundImage: AssetImage(user.getPicture()),
-                            radius: 40,
-                          ),
+                            radius: 30.0,
+                            backgroundImage:
+                            NetworkImage(_url),
+                            backgroundColor: Colors.transparent,
+                          )
                         ),
                         Container(
                           margin: EdgeInsets.only(top: 5),
@@ -219,3 +229,19 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     });
   }
 }
+
+String themeGen() {
+
+  int sum = 0;
+  for (int i = 0; i < globalUsername.length; i++) {
+    sum +=  globalUsername.codeUnitAt(i);
+  }
+  var themes = ["frogideas", "sugarsweets", "heatwave","daisygarden",
+    "seascape", "summerwarmth", "bythepool", "duskfalling", "berrypie", "base"];
+
+  int len = themes.length;
+  int choice = sum % len;
+
+  return themes[choice];
+}
+

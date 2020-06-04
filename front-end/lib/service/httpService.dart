@@ -14,7 +14,6 @@ List allPosts;
 String owner;
 String globalUsername;
 int userId;
-int numberPost = 0;
 Set<String> globalGroupsID = {};
 Set<String> globalGroups = {};
 
@@ -165,7 +164,6 @@ Future<List<Group>> getAllGroups() async {
     );
   }
   allPosts = results;
-  numberPost = allPosts.length;
 
   return results;
 }
@@ -284,7 +282,6 @@ Future<List<Post>> getAllUserPosts() async {
     );
   }
   allPosts = results;
-  numberPost = allPosts.length;
 
   return results;
 }

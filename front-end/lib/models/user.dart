@@ -28,7 +28,7 @@ class User extends ChangeNotifier {
     this.username = username ?? 'username';
     this.picture = picture ?? 'assets/user1.jpeg';
     this.name = name ?? 'name';
-    this.posts = numberPost ?? 0;
+    this.posts = allPosts.length ?? 0;
     this.follow = follow ?? 0;
     this.login = true;
     this.password = password ?? '1234';

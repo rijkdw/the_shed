@@ -467,13 +467,42 @@ Future makeGroup(String name, String desc, String tag) async {
 }
 
 //TODO: Still in production!
+//TODO: ready for test
 Future joinGroup(String grp) async {
   //url = na group
-  String url_prof = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
+  String pUrl = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
+
   var temp = getGlobalGroups();
   var temp2 = getGlobalGroupsID();
-  String group = temp2[temp.indexOf(grp)];
+  String gUrl = temp2[temp.indexOf(grp)];
+  temp = null;
 
+  int gid =  getGid(gUrl);
 
-  //var response = await patch();
+  var response = await patch(
+    pUrl,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+    body: JsonEncoder().convert(
+      {
+        "groups":[gid]
+      },
+    ),
+  );
+  if (response.statusCode != 200) {
+    return false;
+  }
+  return true;
+}
+
+int getGid(String gUrl) {
+  String thing = "https://theshedapi.herokuapp.com/api/v1/groups/";
+  var split_ =  gUrl.split(thing);
+  var temp = split_[1];
+  split_ = temp.split("/");
+  temp = split_[0];
+  int res = int.parse(temp);
+  return res;
 }

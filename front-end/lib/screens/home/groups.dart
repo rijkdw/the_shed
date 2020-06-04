@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rw334/models/group.dart';
+import 'package:rw334/screens/home/creategroup.dart';
 import 'package:rw334/service/httpService.dart' as http;
 
 class GroupsPage extends StatefulWidget {
@@ -9,7 +10,14 @@ class GroupsPage extends StatefulWidget {
 }
 
 class _GroupsPageState extends State<GroupsPage> {
+  
   Future<List<Group>> _allGroups = http.getAllGroups();
+
+  void refresh() {
+    setState(() {
+      this._allGroups = http.getAllGroups();
+    });
+  }  
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +35,15 @@ class _GroupsPageState extends State<GroupsPage> {
           Icons.add,
           size: 30,
         ),
-        onPressed: () => print('Open the group creator pls sir'),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => GroupCreatorPage(
+                refreshCallback: refresh,
+              )
+            )
+          );
+        }
       ),
       body: Container(
         color: Color.fromRGBO(41, 41, 41, 1.0),
@@ -58,16 +74,6 @@ class _GroupsPageState extends State<GroupsPage> {
                   shrinkWrap: true,
                   itemCount: groups.length,
                   itemBuilder: (context, index) {
-                    if (index == 0) {
-                      Group myGroup = groups[0];
-                      myGroup.creatorID = http.userId;
-                      return Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 6),
-                        child: GroupCard(
-                          group: myGroup,
-                        ),
-                      );
-                    }
                     return Container(
                       margin: const EdgeInsets.fromLTRB(0, 0, 0, 6),
                       child: GroupCard(
@@ -153,7 +159,7 @@ class _GroupCardState extends State<GroupCard> {
   }
 
   bool _userIsInThisGroup() {
-    return http.getGlobalGroupsID().contains(widget.group.id);
+    return http.getGlobalGroups().contains(widget.group.name);
   }
 
   @override
@@ -232,31 +238,20 @@ class _GroupCardState extends State<GroupCard> {
                             ] 
                           ),
                         ),
-                        FutureBuilder<String>(
-                          future: _creatorName,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData)
-                              return RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'by',
-                                      style: _expandedStyle
-                                    ),
-                                    TextSpan(
-                                      text: ' ${snapshot.data}',
-                                      style: _expandedStyleEmp
-                                    ),
-                                  ] 
-                                ),
-                              );
-                            return Text(
-                              'Loading...',
-                              overflow: TextOverflow.ellipsis,
-                              style: _expandedStyle,
-                            );
-                          },
-                        ),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'by',
+                                style: _expandedStyle
+                              ),
+                              TextSpan(
+                                text: ' ${widget.group.createdBy}',
+                                style: _expandedStyleEmp
+                              ),
+                            ] 
+                          ),
+                        )
                       ],
                     ),
                     // button

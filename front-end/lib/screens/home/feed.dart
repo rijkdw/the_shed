@@ -244,32 +244,7 @@ class PostCard extends StatefulWidget {
 
 // state
 class _PostCardState extends State<PostCard> {
-  // variables
-  final categoriesAccented = false;
-
-  RichText getPrettyCategories() {
-    TextStyle _styleFooter = TextStyle(
-      color: Colors.white70,
-      fontSize: 16,
-    );
-
-    List<TextSpan> returnList = [];
-    int i = 0;
-    for (String category in widget.post.categories) {
-      returnList.add(TextSpan(
-          text: category,
-          style: _styleFooter.copyWith(color: Theme.of(context).accentColor)));
-      if (i < widget.post.categories.length) {
-        returnList.add(TextSpan(
-          text: '  |  ',
-          style: _styleFooter,
-        ));
-      }
-      i++;
-    }
-    return RichText(text: TextSpan(children: returnList));
-  }
-
+  
   // build method
   @override
   Widget build(BuildContext context) {
@@ -338,15 +313,11 @@ class _PostCardState extends State<PostCard> {
             height: 6,
           ),
 
-          categoriesAccented
-              // accented categories
-              ? this.getPrettyCategories()
-
-              // plain white categories
-              : Text(
-                  widget.post.prettyCategories,
-                  style: _styleFooter,
-                )
+          // plain white categories
+          Text(
+            widget.post.tag ?? '(no tag)',
+            style: _styleFooter,
+          )
         ],
       ),
     );

@@ -160,6 +160,7 @@ Future<List<Group>> getAllGroups() async {
         name: data[i]['name'] ?? 'DEF_NAME',
         tag: data[i]['tag'] ?? 'DEF_TAG',
         description: data[i]['description'] ?? 'DEF_DESC',
+        createdBy: data[i]['created_by'],
       ),
     );
   }
@@ -275,7 +276,7 @@ Future<List<Post>> getAllUserPosts() async {
         latitude: data[j]['latitude'],
         text: data[j]['text'],
         epochTime: convertTime(data[j]['timestamp']),
-        categories: ['Cat 1', 'Cat 2', 'Cat 3'],
+        tag: data[j]['tag'],
         username: data[j]['owner'],
         groupname: data[j]['group_name'],
         locationname: locationName,
@@ -286,12 +287,6 @@ Future<List<Post>> getAllUserPosts() async {
   numberPost = allPosts.length;
 
   return results;
-}
-void joinGroup(String url) async {
-  //url = na group
-  String url_prof = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
-
-  //var response = await patch();
 }
 
 /// Get all the comments on the post with the given ID.
@@ -378,7 +373,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
           latitude: data[j]['latitude'],
           text: data[j]['text'],
           epochTime: convertTime(data[j]['timestamp']),
-          categories: ['Cat 1', 'Cat 2', 'Cat 3'],
+          tag: data[j]['tag'],
           username: data[j]['owner'],
           locationname: locationName,
           groupname: data[j]['group_name'],
@@ -470,7 +465,6 @@ Future makeGroup(String name, String desc, String tag) async {
     return false;
   }
 }
-
 
 //TODO: Still in production!
 Future joinGroup(String grp) async {

@@ -19,7 +19,11 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('name', 'id', 'description', 'date_created', 'tag')
+    filter_fields = ('name', 'id', 'description', 'date_created', 'tag', 'created_by')
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
+        self.request.user.groups.add()
 
 
 class PostViewSet(viewsets.ModelViewSet):

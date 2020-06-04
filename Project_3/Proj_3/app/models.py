@@ -29,6 +29,7 @@ class Post(models.Model):
 Group.add_to_class('description', models.CharField(max_length=180, null=True, blank=True))
 Group.add_to_class('date_created', models.DateTimeField(null=True, auto_now_add=True))
 Group.add_to_class('tag', models.CharField(max_length=180, null=True, blank=True))
+Group.add_to_class('created_by', models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, default='User'))
 
 
 class Comments(models.Model):

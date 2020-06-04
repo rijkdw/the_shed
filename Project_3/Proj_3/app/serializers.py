@@ -17,10 +17,11 @@ class CurrentUserDefault(object):
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    created_by = serializers.CharField(default=CurrentUserDefault(), read_only=True)
 
     class Meta:
         model = Group
-        fields = ['name', 'id', 'description', 'date_created', 'tag']
+        fields = ['name', 'id', 'description', 'date_created', 'tag', 'created_by']
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):

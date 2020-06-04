@@ -467,12 +467,38 @@ Future<int> joinGroup(String grp) async {
   //url = na group
   String pUrl = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
 
-  var temp = getGlobalGroups();
-  var temp2 = getGlobalGroupsID();
-  String gUrl = temp2[temp.indexOf(grp)];
-  temp = null;
+  var groupIdResponse = await get(
+    'https://theshedapi.herokuapp.com/api/v1/groups/?name=$grp',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+  );
 
-  int gid =  getGid(gUrl);
+  if (groupIdResponse.statusCode != 200) return groupIdResponse.statusCode;
+  var data = json.decode(groupIdResponse.body);
+  
+  print('Data:  $data');
+
+  int gid = data[0]['id'];
+  print('Group ID:  $gid');
+
+  var userResponse = await get(
+    'https://theshedapi.herokuapp.com/api/v1/Users/?id=$userId',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+  );
+
+  if (userResponse.statusCode != 200) return userResponse.statusCode;
+  data = json.decode(userResponse.body);
+
+  List<dynamic> oldListOfIDs = data[0]['groups'];
+  var newListOfIDs = oldListOfIDs;
+  if (!newListOfIDs.contains(gid)) newListOfIDs.add(gid);
+
+  print('New list of gids:  ${newListOfIDs.toString()}');
 
   var response = await patch(
     pUrl,
@@ -482,10 +508,12 @@ Future<int> joinGroup(String grp) async {
     },
     body: JsonEncoder().convert(
       {
-        "groups":[gid]
+        "groups": newListOfIDs
       },
     ),
   );
+  globalGroupsID.add('https://theshedapi.herokuapp.com/api/v1/groups/$gid/');
+  globalGroups.add(grp);
   return response.statusCode;
 }
 

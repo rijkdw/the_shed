@@ -78,6 +78,7 @@ class _GroupsPageState extends State<GroupsPage> {
                       margin: const EdgeInsets.fromLTRB(0, 0, 0, 6),
                       child: GroupCard(
                         group: groups[index],
+                        refreshCallback: refresh,
                       ),
                     );
                   }
@@ -108,7 +109,8 @@ class _GroupsPageState extends State<GroupsPage> {
 class GroupCard extends StatefulWidget {
   
   final Group group;
-  GroupCard({@required this.group});
+  final VoidCallback refreshCallback;
+  GroupCard({@required this.group, @required this.refreshCallback});
 
   @override
   _GroupCardState createState() => _GroupCardState();
@@ -116,28 +118,6 @@ class GroupCard extends StatefulWidget {
 
 class _GroupCardState extends State<GroupCard> {
   
-  Future<String> _creatorName;
-  
-  @override
-  void initState() { 
-    super.initState();
-    _creatorName = http.getUsernameFromID(widget.group.creatorID);
-  }
-
-  void _joinSequence() async {
-    print('Attempting to join \"${widget.group.name}\".');
-    int statusCode = await http.joinGroup(widget.group.name);
-    print(statusCode);
-  }
-
-  void _deleteSequence() {
-    print('Attempting to delete \"${widget.group.name}\".');
-  }
-
-  void _leaveSequence() {
-    print('Attempting to leave \"${widget.group.name}\".');
-  }
-
   bool _userOwnsThisGroup() {
     return widget.group.createdBy == http.globalUsername;
   }
@@ -149,22 +129,43 @@ class _GroupCardState extends State<GroupCard> {
   @override
   Widget build(BuildContext context) {
 
+    void _joinSequence() async {
+      print('Attempting to join \"${widget.group.name}\".');
+      int statusCode = await http.joinGroup(widget.group.name);
+      if (statusCode != 200)
+        showDialog(
+          context: context,
+          child: AlertDialog(
+            title: Text('Error:  $statusCode'),
+          ),
+        );
+      else widget.refreshCallback();
+    }
+
+    void _deleteSequence() {
+      print('Attempting to delete \"${widget.group.name}\".');
+    }
+
+    void _leaveSequence() {
+      print('Attempting to leave \"${widget.group.name}\".');
+    }
+
     void _performAppropriateSequence() {
-      if (_userOwnsThisGroup())
-        _deleteSequence();
-      else if (_userIsInThisGroup())
-        _leaveSequence();
-      else
-        _joinSequence();
+      // if not in the group, join it
+      if (!_userIsInThisGroup()) _joinSequence();
+      // if owns, delete it
+      else if (_userOwnsThisGroup()) _deleteSequence();
+      // else leave it     
+      else _leaveSequence();
     }
 
     String _appropriateButtonText() {
-      if (_userOwnsThisGroup())
-        return 'DELETE';
-      else if (_userIsInThisGroup())
-        return 'LEAVE';
-      else
-        return 'JOIN';
+      // if not in the group, join it
+      if (!_userIsInThisGroup()) return 'JOIN';
+      // if owns, delete it
+      if (_userOwnsThisGroup()) return 'DELETE';
+      // else leave it
+      return 'LEAVE';
     }
 
     var _titleStyle = TextStyle( color: Theme.of(context).accentColor, fontSize: 20 );

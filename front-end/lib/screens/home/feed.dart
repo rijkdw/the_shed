@@ -32,6 +32,12 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
 
+    print('GlobalGroups:');
+    for (String str in getGlobalGroups()) print(str);
+
+    print('GlobalGroupsID:');
+    for (String str in getGlobalGroupsID()) print(str);
+
     final TextStyle _style = TextStyle(fontSize: 16, color: Colors.black);
 
     return Scaffold(
@@ -172,6 +178,16 @@ class _FeedPageState extends State<FeedPage> {
                     // if the data is here
                     if (snapshot.hasData) {
                       List<Post> posts = snapshot.data;
+                      if (posts.length == 0)
+                        return Expanded(
+                          child: Center(
+                            child: Text(
+                              'No posts in your feed.\n\nJoin some groups!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle( fontSize: 20, color: Colors.white ),
+                            ),
+                          ),
+                        );
                       return Flexible(
                         child: Container(
                           height: MediaQuery.of(context).size.height,

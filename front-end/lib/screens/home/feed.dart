@@ -32,12 +32,6 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
 
-    print('GlobalGroups:');
-    for (String str in getGlobalGroups()) print(str);
-
-    print('GlobalGroupsID:');
-    for (String str in getGlobalGroupsID()) print(str);
-
     final TextStyle _style = TextStyle(fontSize: 16, color: Colors.black);
 
     return Scaffold(

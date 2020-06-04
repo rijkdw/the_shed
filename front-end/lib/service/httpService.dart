@@ -299,6 +299,12 @@ Future<List<Post>> getAllUserPosts() async {
 
   return results;
 }
+void joinGroup(String url) async {
+  //url = na group
+  String url_prof = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
+
+  //var response = await patch();
+}
 
 Future<List<Comment>> getCommentsOnPost(int postID) async {
   List<Comment> results = [];

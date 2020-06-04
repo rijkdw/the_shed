@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:rw334/screens/home/groups.dart';
 import 'package:rw334/service/httpService.dart';
 import 'feed.dart';
@@ -20,7 +21,7 @@ class Home extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => User(
         picture: 'assets/user1.jpeg',
-        username: globalUsername,
+        username: Hive.box('usr').get(0),
         password: this.psw
     ),
       child: MaterialApp(

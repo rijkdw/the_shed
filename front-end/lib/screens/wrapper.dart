@@ -33,14 +33,9 @@ class _RootPageState extends State<RootPage> {
       WidgetsFlutterBinding.ensureInitialized();
       print("ariba");
       print(_usr);
-      wait();
+
       loggedIn(_usr, _psw);
-
-     /* Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Home(psw: _psw)),
-          (Route<dynamic> route) => false);
-
-      */
+      wait();
       return Home(psw:_psw);
     } else {
       //Hive.box('status').put(0, null);

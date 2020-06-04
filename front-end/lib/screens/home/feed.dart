@@ -166,22 +166,27 @@ class _FeedPageState extends State<FeedPage> {
                       return Expanded(
                         child: Center(
                           child: CircularProgressIndicator(),
-                          // child: Text(
-                          //   'Waiting for posts...',
-                          //   style: TextStyle(fontSize: 20, color: Colors.white),
-                          // ),
                         ),
                       );
 
                     // if the data is here
                     if (snapshot.hasData) {
                       List<Post> posts = snapshot.data;
+                      if (posts.length == 0)
+                        return Expanded(
+                          child: Center(
+                            child: Text(
+                              'No posts in your feed.\n\nJoin some groups!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle( fontSize: 20, color: Colors.white ),
+                            ),
+                          ),
+                        );
                       return Flexible(
                         child: Container(
                           height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width,
                           child: ListView.builder(
-                            // padding: const EdgeInsets.all(4),
                             itemCount: posts.length,
                             itemBuilder: (context, i) {
                               return Container(
@@ -215,10 +220,6 @@ class _FeedPageState extends State<FeedPage> {
                           color: Colors.white,
                           size: 50,
                         )
-                        // child: Text(
-                        //   'Waiting for posts...',
-                        //   style: TextStyle(fontSize: 20, color: Colors.white),
-                        // ),
                       )
                     );
                   },
@@ -244,32 +245,7 @@ class PostCard extends StatefulWidget {
 
 // state
 class _PostCardState extends State<PostCard> {
-  // variables
-  final categoriesAccented = false;
-
-  RichText getPrettyCategories() {
-    TextStyle _styleFooter = TextStyle(
-      color: Colors.white70,
-      fontSize: 16,
-    );
-
-    List<TextSpan> returnList = [];
-    int i = 0;
-    for (String category in widget.post.categories) {
-      returnList.add(TextSpan(
-          text: category,
-          style: _styleFooter.copyWith(color: Theme.of(context).accentColor)));
-      if (i < widget.post.categories.length) {
-        returnList.add(TextSpan(
-          text: '  |  ',
-          style: _styleFooter,
-        ));
-      }
-      i++;
-    }
-    return RichText(text: TextSpan(children: returnList));
-  }
-
+  
   // build method
   @override
   Widget build(BuildContext context) {
@@ -290,13 +266,6 @@ class _PostCardState extends State<PostCard> {
             width: 3,
           ),
         ),
-        // boxShadow: [
-        //   BoxShadow(
-        //     offset: Offset(0, 2),
-        //     blurRadius: 1,
-        //     color: Colors.black.withOpacity(0.2),
-        //   )
-        // ]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -338,15 +307,11 @@ class _PostCardState extends State<PostCard> {
             height: 6,
           ),
 
-          categoriesAccented
-              // accented categories
-              ? this.getPrettyCategories()
-
-              // plain white categories
-              : Text(
-                  widget.post.prettyCategories,
-                  style: _styleFooter,
-                )
+          // plain white categories
+          Text(
+            widget.post.tag ?? '(no tag)',
+            style: _styleFooter,
+          )
         ],
       ),
     );

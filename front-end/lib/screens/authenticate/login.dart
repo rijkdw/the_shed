@@ -42,6 +42,35 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> validateAndSubmit() async {
 
   }
+  showAlertDialog(BuildContext context) {
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Align(
+        alignment: Alignment.center,
+        child: Text(
+          "OOPS!",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        ),
+      ),
+      content: Text(
+        "Something went wrong. Please try again.",
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,16 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () async {
 
                 FocusScope.of(context).unfocus(); // to remove the keyboard
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Material(
-                      type: MaterialType.transparency,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    )
-                  )
-                );
+
                 // showDialog<void>(
                 //   context: context,
                 //   barrierDismissible: false,
@@ -175,20 +195,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 // );
                 String username = usernameController.value.text;
                 String psw = passwordController.value.text;
-                await loggedIn(username, psw);
 
-               Hive.box('psw').put(0,psw);
-               Hive.box('usr').put(0,username);
-               Hive.box('status').put(0,true);
-               print(Hive.box('usr').get(0));
-               print(Hive.box('status').get(0));
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => Material(
+                            type: MaterialType.transparency,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            )
+                        )
+                    )
+                );
+                if (await loggedIn(username, psw)) {
+                  Hive.box('psw').put(0, psw);
+                  Hive.box('usr').put(0, username);
+                  Hive.box('status').put(0, true);
+                  print(Hive.box('usr').get(0));
+                  print(Hive.box('status').get(0));
 
 
-                //getAllPosts();
-                Navigator.pop(context);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => Home(psw:psw)),
-                        (Route<dynamic> route) => false);
+                  //getAllPosts();
+                  Navigator.pop(context);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => Home(psw: psw)),
+                          (Route<dynamic> route) => false);
+                }
+                else {
+                  Navigator.pop(context);
+                  showAlertDialog(context);
+                }
                 },
             ),
             // sign up button

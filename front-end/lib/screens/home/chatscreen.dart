@@ -7,7 +7,8 @@ class ChatScreen extends StatefulWidget {
 
   final int otherUserID;
   final int thisUserID;
-  const ChatScreen({@required this.otherUserID, this.thisUserID});
+  final String otherUsername;
+  const ChatScreen({@required this.otherUserID, this.thisUserID, this.otherUsername});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -37,7 +38,6 @@ class _ChatScreenState extends State<ChatScreen> {
       print('had to go into else');
       currentUserID = httpService.userId;
     }
-    String otherUsername = 'OTHER USER';
 
     int getOtherPersonId() {
       List<int> idsInvolved = [currentUserID, this._otherUserID];//[_messageList[0].senderId, _messageList[0].receiverId];
@@ -70,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          otherUsername
+          widget.otherUsername ?? 'Other user',
         ),
         backgroundColor: Colors.black,
       ),

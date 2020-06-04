@@ -13,49 +13,6 @@ final User dummyUser = User(
   post: 420,
 );
 
-var dummyPosts = [
-  Post(
-    text: 'How to grow better carrots?',
-    categories: ['Gardening', 'Environmental', 'Sustainability'],
-    id: 1,
-    epochTime: (DateTime(2018, 01, 04, 20, 04).millisecondsSinceEpoch/1000).floor(),
-  ),
-  Post(
-    text: 'How to ride bicycle?',
-    categories: ['Sports', 'Lifestyle', 'Transportation'],
-    id: 2,
-  ),
-  Post(
-    text: 'How to overthrow a lawfully elected government?',
-    categories: ['Politics', 'Military Tactics', 'Genocide'],
-    id: 3,
-  ),
-  Post(
-    text: 'A very long post title.  '*20,
-    categories: ['Cat 1', 'Cat 2', 'Cat 3'],
-  ),
-  Post(
-    text: 'Title',
-    categories: ['Categoryyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy 1', 'Cat 2', 'Cat 3'],
-  ),
-  Post(
-    text: 'TestTitle',
-    categories: ['Cat 1', 'Cat 2', 'Cat 3'],
-  ),
-  Post(
-    text: 'TestTitle',
-    categories: ['Cat 1', 'Cat 2', 'Cat 3'],
-  ),
-  Post(
-    text: 'TestTitle',
-    categories: ['Cat 1', 'Cat 2', 'Cat 3'],
-  ),
-  Post(
-    text: 'TestTitle',
-    categories: ['Cat 1', 'Cat 2', 'Cat 3'],
-  ),
-];
-
 var dummyComments = [
   Comment(
     epochTime: (DateTime(2019, 01, 01, 10, 00).millisecondsSinceEpoch/1000).floor(),

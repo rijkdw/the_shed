@@ -14,7 +14,6 @@ List allPosts;
 String owner;
 String globalUsername;
 int userId;
-int numberPost = 0;
 Set<String> globalGroupsID = {};
 Set<String> globalGroups = {};
 
@@ -126,11 +125,11 @@ Future loggedIn(String usr, String psw) async {
     userId = await userID(usr);
     //print(userId);
     makeUser();
-    return null;
-  } else {
-    //print(response.statusCode);
-    return null;
+    return true;
   }
+    //print(response.statusCode);
+  return false;
+
 }
 
 Future<void> makeUser() async {
@@ -139,13 +138,8 @@ Future<void> makeUser() async {
   getUserFeed('Time', 'Asc');
 }
 
+/// Get a List<Group> of all the groups that exist.
 Future<List<Group>> getAllGroups() async {
-  // await Future.delayed(Duration(milliseconds: 200));
-  // return [
-  //   Group( name: 'Orgy Group', description: 'A group for orgies.', id: 0, tag: 'First', epochTime: 0 ),
-  //   Group( name: 'Jaak Experience', description: 'A group for Jaak.', id: 1, tag: 'Jaak', epochTime: 0 ),
-  // ];
-
   List data = [];
   List<Group> results = [];
   String url = "https://theshedapi.herokuapp.com/api/v1/groups/";
@@ -163,17 +157,17 @@ Future<List<Group>> getAllGroups() async {
         id: data[i]['id'] ?? 'DEF_ID',
         epochTime: convertTime(data[i]['date_created']) ?? 'DEF_TIME',
         name: data[i]['name'] ?? 'DEF_NAME',
-        tag: data[i]['tag'] ?? 'DEF_TAG',
+        tag: data[i]['tag'] ?? '(no tags)',
         description: data[i]['description'] ?? 'DEF_DESC',
+        createdBy: data[i]['created_by'],
       ),
     );
   }
-  allPosts = results;
-  numberPost = allPosts.length;
 
   return results;
 }
 
+/// Get the name of the location at the given coordinates.
 Future<String> getLocationFromCoords(double lat, double long) async {
   if (lat > 90.0 || lat < -90.0 || long > 180.0 || long < -180.0) {
     return '!!!';
@@ -190,6 +184,7 @@ Future<String> getLocationFromCoords(double lat, double long) async {
   }
 }
 
+/// Get the name of location the device is currently at.
 Future<String> getCurrentLocationName() async {
   Location location = new Location();
 
@@ -213,7 +208,7 @@ Future<String> getCurrentLocationName() async {
   return await getLocationFromCoords(lat, long);
 }
 
-// makes a post by post request
+/// Makes a post with the given text in the given group.
 Future makePost(String txt, String grp) async {
   //print('Making post \"$txt\" in \"$grp\"');
   Location location = new Location();
@@ -235,17 +230,8 @@ Future makePost(String txt, String grp) async {
     long = _locationData.longitude;
   }
 
-
-  //print('makePost() found lat and long to be $lat and $long');
-
-
-  lat = lat.roundToDouble();
-  long = long.roundToDouble();
-
   String locationName = await getLocationFromCoords(lat, long);
   print(locationName);
-
-
 
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
   var temp = getGlobalGroups();
@@ -263,7 +249,7 @@ Future makePost(String txt, String grp) async {
   //print(response.statusCode);
 }
 
-//returns all posts made by the Current user
+/// Get all the posts made by the current user.
 Future<List<Post>> getAllUserPosts() async {
   List data;
   List<Post> results = [];
@@ -287,7 +273,7 @@ Future<List<Post>> getAllUserPosts() async {
         latitude: data[j]['latitude'],
         text: data[j]['text'],
         epochTime: convertTime(data[j]['timestamp']),
-        categories: ['Cat 1', 'Cat 2', 'Cat 3'],
+        tag: data[j]['tag'],
         username: data[j]['owner'],
         groupname: data[j]['group_name'],
         locationname: locationName,
@@ -295,11 +281,11 @@ Future<List<Post>> getAllUserPosts() async {
     );
   }
   allPosts = results;
-  numberPost = allPosts.length;
 
   return results;
 }
 
+/// Get all the comments on the post with the given ID.
 Future<List<Comment>> getCommentsOnPost(int postID) async {
   List<Comment> results = [];
 
@@ -329,7 +315,7 @@ Future<List<Comment>> getCommentsOnPost(int postID) async {
   return results;
 }
 
-// returns all the posts the current user is interested in
+/// returns all the posts the current user is interested in
 Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   var data;
   List<int> groups;
@@ -383,7 +369,7 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
           latitude: data[j]['latitude'],
           text: data[j]['text'],
           epochTime: convertTime(data[j]['timestamp']),
-          categories: ['Cat 1', 'Cat 2', 'Cat 3'],
+          tag: data[j]['tag'],
           username: data[j]['owner'],
           locationname: locationName,
           groupname: data[j]['group_name'],
@@ -452,4 +438,164 @@ int convertTime(String time) {
   var parsedDate = DateTime.parse(time);
   int epoch = (parsedDate.toUtc().millisecondsSinceEpoch / 1000).round();
   return epoch;
+}
+
+Future<int> deleteGroup(String name) async{
+  String url = "https://theshedapi.herokuapp.com/api/v1/groups/?name=$name";
+  var temp;
+  int id;
+  var res = await get(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+  );
+  temp = json.decode(res.body);
+  id = temp[0]["id"] as int;
+  url = "https://theshedapi.herokuapp.com/api/v1/groups/$id/";
+  print(url);
+
+  res = await delete(url, headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': "Token " + token
+  });
+  print(res.statusCode);
+
+  return res.statusCode;
+
+}
+
+Future<int> makeGroup(String name, String desc, String tag) async {
+  String url = "https://theshedapi.herokuapp.com/api/v1/groups/";
+  var response = await post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+    body: JsonEncoder().convert({
+      "name": name,
+      "description": desc,
+      "tag": tag
+    }),
+  );
+
+  return response.statusCode;
+}
+
+Future<int> joinGroup(String grp) async {
+  //url = na group
+  String pUrl = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
+
+  var groupIdResponse = await get(
+    'https://theshedapi.herokuapp.com/api/v1/groups/?name=$grp',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+  );
+
+  if (groupIdResponse.statusCode != 200) return groupIdResponse.statusCode;
+  var data = json.decode(groupIdResponse.body);
+  print('Data:  $data');
+
+  int gid = data[0]['id'];
+  print('Group ID to add:  $gid');
+
+  var userResponse = await get(
+    'https://theshedapi.herokuapp.com/api/v1/Users/?id=$userId',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+  );
+
+  if (userResponse.statusCode != 200) return userResponse.statusCode;
+  data = json.decode(userResponse.body);
+
+  List<dynamic> oldListOfIDs = data[0]['groups'];
+  var newListOfIDs = oldListOfIDs;
+  if (!newListOfIDs.contains(gid)) newListOfIDs.add(gid);
+
+  print('New list of gids:  ${newListOfIDs.toString()}');
+
+  var response = await patch(
+    pUrl,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+    body: JsonEncoder().convert(
+      {
+        "groups": newListOfIDs
+      },
+    ),
+  );
+  globalGroupsID.add('https://theshedapi.herokuapp.com/api/v1/groups/$gid/');
+  globalGroups.add(grp);
+  return response.statusCode;
+}
+
+Future<int> leaveGroup(String grp) async {
+  //url = na group
+  String pUrl = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
+
+  var groupIdResponse = await get(
+    'https://theshedapi.herokuapp.com/api/v1/groups/?name=$grp',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+  );
+  if (groupIdResponse.statusCode != 200) return groupIdResponse.statusCode;
+  var data = json.decode(groupIdResponse.body);   // json of all groups matching groupname=grp  
+  print('Data:  $data');
+
+  int gid = data[0]['id']; // group id to remove
+  print('Group ID to remove:  $gid');
+
+  var userResponse = await get(
+    'https://theshedapi.herokuapp.com/api/v1/Users/?id=$userId',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+  );
+
+  if (userResponse.statusCode != 200) return userResponse.statusCode;
+  data = json.decode(userResponse.body); // json of all users matching id=userId
+
+  List<dynamic> oldListOfIDs = data[0]['groups'];   // all groups user is member of
+  var newListOfIDs = oldListOfIDs;
+  bool removed = newListOfIDs.remove(gid);
+
+  print('New list of gids:  ${newListOfIDs.toString()}');
+
+  var response = await patch(
+    pUrl,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+    body: JsonEncoder().convert(
+      {
+        "groups": newListOfIDs
+      },
+    ),
+  );
+  globalGroupsID.remove('https://theshedapi.herokuapp.com/api/v1/groups/$gid/');
+  globalGroups.remove(grp);
+  return response.statusCode;
+}
+
+int getGid(String gUrl) {
+  print(gUrl);
+  String thing = "https://theshedapi.herokuapp.com/api/v1/groups/";
+  var split_ =  gUrl.split(thing);
+  var temp = split_[1];
+  split_ = temp.split("/");
+  temp = split_[0];
+  int res = int.parse(temp);
+  return res;
 }

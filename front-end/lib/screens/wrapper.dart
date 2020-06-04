@@ -18,7 +18,14 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool _state = stBox.get(0) as bool;
+    bool _state;
+    if (stBox.get(0) as bool == null) {
+      _state = false;
+    }
+    else {
+      _state = stBox.get(0) as bool;
+    }
+
     print(_state);
 
     if (_state == null) {
@@ -33,14 +40,9 @@ class _RootPageState extends State<RootPage> {
       WidgetsFlutterBinding.ensureInitialized();
       print("ariba");
       print(_usr);
-      wait();
+
       loggedIn(_usr, _psw);
-
-     /* Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Home(psw: _psw)),
-          (Route<dynamic> route) => false);
-
-      */
+      wait();
       return Home(psw:_psw);
     } else {
       //Hive.box('status').put(0, null);

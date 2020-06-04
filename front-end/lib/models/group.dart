@@ -2,10 +2,10 @@ import 'package:rw334/models/timeable.dart';
 
 class Group with Timeable {
 
-  String name, description, tag;
+  String name, description, tag, createdBy;
   int id, creatorID;
 
-  Group({this.name, this.description, this.tag, this.id, this.creatorID, int epochTime}) {
+  Group({this.name, this.description, this.tag, this.id, this.creatorID, this.createdBy, int epochTime}) {
     this.epochTime = epochTime;
   }
 

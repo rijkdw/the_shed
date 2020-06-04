@@ -93,7 +93,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               margin: EdgeInsets.only(right: 20.0),
                               child: Text(
                                 user.getPost(),
-
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,

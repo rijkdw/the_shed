@@ -1,14 +1,21 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/home/chatscreen.dart';
 import 'package:rw334/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rw334/service/httpService.dart' as httpService;
 
-class ChatsPage extends StatelessWidget {
+class ChatsPage extends StatefulWidget {
   
+  @override
+  _ChatsPageState createState() => _ChatsPageState();
+}
+
+class _ChatsPageState extends State<ChatsPage> {
+
+  TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
 
@@ -30,10 +37,48 @@ class ChatsPage extends StatelessWidget {
         ),
         onPressed: () {
           showDialog(
-            child: SearchDialog(
-              userID: userID, //Provider.of<User>(context, listen: false).id,
-            ),
             context: context,
+            child: AlertDialog(
+              title: Text('Search for username'),
+              content: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Username'
+                ),
+                controller: _searchController,
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Search'),
+                  onPressed: () async {
+                    String username = _searchController.text.trim();
+                    print('Searching for \"$username\"');
+                    int userID = await httpService.userID(username);
+                    // if user was not found
+                    if (userID == null) {
+                      Navigator.of(context, rootNavigator: true).pop('dialog');
+                      showDialog(
+                        context: context,
+                        child: AlertDialog(
+                          title: Text('Username \"$username\" not found.'),
+                        )
+                      );
+                    }
+                    // if user was found
+                    else {
+                      Navigator.of(context, rootNavigator: true).pop('dialog');
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ChatScreen(
+                          thisUserID: httpService.userId,
+                          // otherUserID: this._searchResults[index].id,
+                          otherUserID: userID,
+                          otherUsername: username
+                        ),
+                      ));
+                    }
+                  }
+                )
+              ],
+            ),
           );
         },
       ),
@@ -63,125 +108,6 @@ class ChatsPage extends StatelessWidget {
             allMessagesList: allMessagesList,
           );
         }   
-      ),
-    );
-  }
-}
-
-class SearchDialog extends StatefulWidget {
-
-  final int userID;
-  SearchDialog({@required this.userID});
-
-  @override
-  _SearchDialogState createState() => _SearchDialogState();
-}
-
-class _SearchDialogState extends State<SearchDialog> {
-
-  final TextEditingController _newUserController = TextEditingController();
-
-  List<User> _searchResults = [];
-
-  List<User> searchForUsers() {
-    List<User> dummyUsers = [
-      User(username: 'Rijk', id: 1),
-      User(username: 'Ronaldo', id: 2),
-      User(username: 'Jeff', id: 3),
-      User(username: 'Steve', id: 4),
-      User(username: 'Mike', id: 5),
-      User(username: 'Harvey', id: 6),
-    ];
-    int numToDisplay = (new Random()).nextInt(3)+2;
-    List<User> returnUsers = [];
-    for (int i = 0; i < numToDisplay; i++) {
-      int nextIndex = (new Random()).nextInt(dummyUsers.length-1);
-      returnUsers.add(dummyUsers[nextIndex]);
-    }
-    return returnUsers;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Dialog(
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            child: Row(
-              children: <Widget>[
-                Flexible(
-                  flex: 80,
-                  child: TextField(
-                    decoration: InputDecoration.collapsed(
-                      hintText: 'Search for a user',
-                    ),
-                    controller: _newUserController,
-                  ),
-                ),
-                Flexible(
-                  flex: 20,
-                  child: Container(
-                    child: RaisedButton(
-                      color: Color.fromRGBO(255, 153, 0, 1.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0),
-                      ),
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          this._searchResults = searchForUsers();
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider(),
-          Container(
-            padding: const EdgeInsets.all(4),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: this._searchResults.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        child: Icon(
-                          Icons.face,
-                          color: Color.fromRGBO(255, 153, 0, 1.0),
-                        ),
-                      ),
-                      Text(
-                        '${this._searchResults[index].username} (${this._searchResults[index].id})',
-                      ),
-                    ]
-                  ),
-                  onTap: () {
-                    try {
-                      Navigator.pop(context);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ChatScreen(
-                          thisUserID: widget.userID,
-                          // otherUserID: this._searchResults[index].id,
-                          otherUserID: this._searchResults[index].id,
-                        ),
-                      ));
-                    } catch (Exception) {}
-                  },
-                );
-              },
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -256,6 +182,12 @@ class Conversation extends StatelessWidget {
   final Message lastMessage;  
   Conversation({@required this.lastMessage});
 
+  int _getOtherID() {
+    List<int> idsInvolved = [lastMessage.senderId, lastMessage.receiverId];
+    idsInvolved.remove(httpService.userId);
+    return idsInvolved[0];
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -297,10 +229,23 @@ class Conversation extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         color: debug ? Colors.white : _chatColor,
-                        child: Text(
-                          lastMessage.senderName,
-                          style: _senderStyle,
-                        )
+                        child: FutureBuilder<String>(
+                          future: httpService.getUsernameFromID(_getOtherID()),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState != ConnectionState.done) {
+                              return Text(
+                                'Loading...',
+                                style: _senderStyle,
+                              );
+                            }
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data,
+                                style: _senderStyle,
+                              );
+                            }
+                          },
+                        ),
                       ),
                     ),
                     Flexible(

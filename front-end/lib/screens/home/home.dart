@@ -1,11 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:rw334/screens/home/groups.dart';
-import 'package:rw334/service/httpService.dart';
 import 'feed.dart';
 import 'profile.dart';
-import 'search.dart';
-import 'like.dart';
 import 'chats.dart';
 import 'package:provider/provider.dart';
 import 'package:rw334/models/user.dart';
@@ -20,9 +18,9 @@ class Home extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => User(
         picture: 'assets/user1.jpeg',
-        username: globalUsername,
+        username: Hive.box('usr').get(0) ?? "none",
         password: this.psw
-    ),
+      ),
       child: MaterialApp(
         theme: ThemeData(
             accentColor: Color.fromRGBO(255, 153, 0, 1.0),
@@ -76,7 +74,6 @@ class _UserHomePageState extends State<UserHomePage> {
         animationCurve: Curves.fastLinearToSlowEaseIn,
         items: <Widget>[
           Icon( Icons.home, size: 30, color: Colors.black, ),
-          Icon( Icons.search, size: 30, color: Colors.black, ),
           Icon( Icons.people, size: 30, color: Colors.black, ),
           Icon( Icons.message, size: 30, color: Colors.black, ),
           Icon( Icons.person, size: 30, color: Colors.black, ),
@@ -88,7 +85,6 @@ class _UserHomePageState extends State<UserHomePage> {
         onPageChanged: onPageChanged,
         children: [
           Container( color: backColor, child: FeedPage(), ),
-          Container( color: backColor, child: SearchPage(), ),
           Container( color: backColor, child: GroupsPage(), ),
           Container( color: backColor, child: ChatsPage(), ),
           Container( color: backColor, child: ProfilePage(), )

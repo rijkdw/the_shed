@@ -166,10 +166,6 @@ class _FeedPageState extends State<FeedPage> {
                       return Expanded(
                         child: Center(
                           child: CircularProgressIndicator(),
-                          // child: Text(
-                          //   'Waiting for posts...',
-                          //   style: TextStyle(fontSize: 20, color: Colors.white),
-                          // ),
                         ),
                       );
 
@@ -181,7 +177,6 @@ class _FeedPageState extends State<FeedPage> {
                           height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width,
                           child: ListView.builder(
-                            // padding: const EdgeInsets.all(4),
                             itemCount: posts.length,
                             itemBuilder: (context, i) {
                               return Container(
@@ -215,10 +210,6 @@ class _FeedPageState extends State<FeedPage> {
                           color: Colors.white,
                           size: 50,
                         )
-                        // child: Text(
-                        //   'Waiting for posts...',
-                        //   style: TextStyle(fontSize: 20, color: Colors.white),
-                        // ),
                       )
                     );
                   },
@@ -265,13 +256,6 @@ class _PostCardState extends State<PostCard> {
             width: 3,
           ),
         ),
-        // boxShadow: [
-        //   BoxShadow(
-        //     offset: Offset(0, 2),
-        //     blurRadius: 1,
-        //     color: Colors.black.withOpacity(0.2),
-        //   )
-        // ]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

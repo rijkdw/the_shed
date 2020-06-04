@@ -124,8 +124,10 @@ class _GroupCardState extends State<GroupCard> {
     _creatorName = http.getUsernameFromID(widget.group.creatorID);
   }
 
-  void _joinSequence() {
+  void _joinSequence() async {
     print('Attempting to join \"${widget.group.name}\".');
+    int statusCode = await http.joinGroup(widget.group.name);
+    print(statusCode);
   }
 
   void _deleteSequence() {
@@ -137,7 +139,7 @@ class _GroupCardState extends State<GroupCard> {
   }
 
   bool _userOwnsThisGroup() {
-    return widget.group.creatorID == http.userId;
+    return widget.group.createdBy == http.globalUsername;
   }
 
   bool _userIsInThisGroup() {
@@ -178,7 +180,7 @@ class _GroupCardState extends State<GroupCard> {
         // borderRadius: BorderRadius.all(Radius.circular(4)),
         border: Border(
           left: BorderSide(
-            color: Theme.of(context).accentColor.withOpacity(widget.group.creatorID == http.userId ? 1.0 : 0.0),
+            color: Theme.of(context).accentColor.withOpacity(_userOwnsThisGroup() ? 1.0 : 0.0),
             width: 3,
           ),
         ),
@@ -206,7 +208,7 @@ class _GroupCardState extends State<GroupCard> {
               children: <Widget>[
                 // the description
                 Text(
-                  widget.group.description.trimRight().trimLeft().length > 0
+                  widget.group.description.trim().length > 0
                       ? widget.group.description
                       : '(No description)',
                   overflow: TextOverflow.ellipsis,

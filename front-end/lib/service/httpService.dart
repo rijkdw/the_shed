@@ -463,7 +463,7 @@ Future<int> makeGroup(String name, String desc, String tag) async {
   return response.statusCode;
 }
 
-Future joinGroup(String grp) async {
+Future<int> joinGroup(String grp) async {
   //url = na group
   String pUrl = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
 
@@ -486,13 +486,11 @@ Future joinGroup(String grp) async {
       },
     ),
   );
-  if (response.statusCode != 200) {
-    return false;
-  }
-  return true;
+  return response.statusCode;
 }
 
 int getGid(String gUrl) {
+  print(gUrl);
   String thing = "https://theshedapi.herokuapp.com/api/v1/groups/";
   var split_ =  gUrl.split(thing);
   var temp = split_[1];

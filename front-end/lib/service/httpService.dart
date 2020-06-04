@@ -448,3 +448,38 @@ int convertTime(String time) {
   int epoch = (parsedDate.toUtc().millisecondsSinceEpoch / 1000).round();
   return epoch;
 }
+
+
+Future makeGroup(String name, String desc, String tag) async {
+  String url = "https://theshedapi.herokuapp.com/api/v1/groups/";
+  var response = await post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+    body: JsonEncoder().convert({
+      "name": name,
+      "description": desc,
+      "tag": tag
+    }),
+  );
+
+  if (response.statusCode == 200) return true;
+  else {
+    return false;
+  }
+}
+
+
+//TODO: Still in production!
+Future joinGroup(String grp) async {
+  //url = na group
+  String url_prof = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
+  var temp = getGlobalGroups();
+  var temp2 = getGlobalGroupsID();
+  String group = temp2[temp.indexOf(grp)];
+
+
+  //var response = await patch();
+}

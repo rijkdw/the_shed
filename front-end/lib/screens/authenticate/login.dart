@@ -177,12 +177,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 String psw = passwordController.value.text;
                 await loggedIn(username, psw);
 
-               Hive.box('psw').put(0,psw);
-               Hive.box('usr').put(0,username);
-               Hive.box('status').put(0,true);
-               print(Hive.box('usr').get(0));
-               print(Hive.box('status').get(0));
-
+                Hive.box('psw').put(0,psw);
+                Hive.box('usr').put(0,username);
+                Hive.box('status').put(0,true);
+                print(Hive.box('usr').get(0));
+                print(Hive.box('status').get(0));
 
                 //getAllPosts();
                 Navigator.pop(context);

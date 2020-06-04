@@ -12,7 +12,6 @@ void main () async {
   final path = await getApplicationDocumentsDirectory();
   Hive.init(path.path);
 
-
   final passBox = await Hive.openBox('psw');
   final userBox = await Hive.openBox('usr');
   final stBox = await Hive.openBox('status');

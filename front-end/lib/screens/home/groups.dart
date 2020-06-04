@@ -126,13 +126,34 @@ class _GroupCardState extends State<GroupCard> {
     print('Attempting to delete \"${widget.group.name}\".');
   }
 
+  void _leaveSequence() {
+    print('Attempting to leave \"${widget.group.name}\".');
+  }
+
+  void _performAppropriateSequence() {
+    if (_userOwnsThisGroup())
+      _deleteSequence();
+    else if (_userIsInThisGroup())
+      _leaveSequence();
+    else
+      _joinSequence();
+  }
+
+  String get _appropriateButtonText {
+    if (_userOwnsThisGroup())
+      return 'DELETE';
+    else if (_userIsInThisGroup())
+      return 'LEAVE';
+    else
+      return 'JOIN';
+  }
+
   bool _userOwnsThisGroup() {
     return widget.group.creatorID == http.userId;
   }
 
   bool _userIsInThisGroup() {
-    // TODO
-    return false;
+    return http.getGlobalGroupsID().contains(widget.group.id);
   }
 
   @override
@@ -242,15 +263,11 @@ class _GroupCardState extends State<GroupCard> {
                     FlatButton(
                       onPressed: () {
                         print('Tapped on the action button for \"${widget.group.name}\".');
-                        _userOwnsThisGroup()
-                            ? this._deleteSequence()
-                            : this._joinSequence();
+                        _performAppropriateSequence();
                       },
                       color: Theme.of(context).accentColor,
                       child: Text(
-                        _userOwnsThisGroup()
-                            ? 'DELETE'
-                            : 'JOIN', 
+                        _appropriateButtonText,
                         style: _buttonStyle
                       )
                     ),
@@ -260,81 +277,6 @@ class _GroupCardState extends State<GroupCard> {
             )
           ),
         ],
-        // children: <Widget>[
-        //   Container(
-        //     padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
-        //     child: Row(
-        //       children: <Widget>[
-        //         Expanded(
-        //           flex: 80,
-        //           child: Column(
-        //             crossAxisAlignment: CrossAxisAlignment.start,
-        //             children: <Widget>[
-        //               Text(
-        //                 widget.group.description.trimRight().trimLeft().length > 0
-        //                     ? widget.group.description
-        //                     : '(No description)',
-        //                 overflow: TextOverflow.ellipsis,
-        //                 maxLines: 10,
-        //                 style: _expandedStyle,
-        //               ),
-        //               SizedBox(
-        //                 height: 10,
-        //               ),
-        //               Text(
-        //                 'Created at ${widget.group.timeCreated}',
-        //                 overflow: TextOverflow.ellipsis,
-        //                 style: _expandedStyle,
-        //               ),
-        //               SizedBox(
-        //                 height: 10,
-        //               ),
-        //               FutureBuilder<String>(
-        //                 future: _creatorName,
-        //                 builder: (context, snapshot) {
-        //                   if (snapshot.hasData)
-        //                     return Text(
-        //                       'by ${snapshot.data}',
-        //                       overflow: TextOverflow.ellipsis,
-        //                       style: _expandedStyle,
-        //                     );
-        //                   return Text(
-        //                     'Loading...',
-        //                     overflow: TextOverflow.ellipsis,
-        //                     style: _expandedStyle,
-        //                   );
-        //                 },
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //         SizedBox(
-        //           width: 10,
-        //         ),
-        //         Expanded(
-        //           flex: 40,
-        //           child: FlatButton(
-        //             onPressed: () {
-        //               print('Tapped on the action button for \"${widget.group.name}\".');
-        //               _userOwnsThisGroup()
-        //                   ? this._deleteSequence()
-        //                   : this._joinSequence();
-        //             },
-        //             color: Theme.of(context).accentColor,
-        //             child: Text(
-        //               _userOwnsThisGroup()
-        //                   ? 'DELETE'
-        //                   : 'JOIN', 
-        //               style: TextStyle(
-        //                 fontSize: 18,
-        //               ),
-        //             )
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   )
-        // ],
       ),
     );
   }

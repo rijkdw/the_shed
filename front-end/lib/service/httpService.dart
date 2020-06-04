@@ -139,13 +139,8 @@ Future<void> makeUser() async {
   getUserFeed('Time', 'Asc');
 }
 
+/// Get a List<Group> of all the groups that exist.
 Future<List<Group>> getAllGroups() async {
-  // await Future.delayed(Duration(milliseconds: 200));
-  // return [
-  //   Group( name: 'Orgy Group', description: 'A group for orgies.', id: 0, tag: 'First', epochTime: 0 ),
-  //   Group( name: 'Jaak Experience', description: 'A group for Jaak.', id: 1, tag: 'Jaak', epochTime: 0 ),
-  // ];
-
   List data = [];
   List<Group> results = [];
   String url = "https://theshedapi.herokuapp.com/api/v1/groups/";
@@ -174,6 +169,7 @@ Future<List<Group>> getAllGroups() async {
   return results;
 }
 
+/// Get the name of the location at the given coordinates.
 Future<String> getLocationFromCoords(double lat, double long) async {
   if (lat > 90.0 || lat < -90.0 || long > 180.0 || long < -180.0) {
     return '!!!';
@@ -190,6 +186,7 @@ Future<String> getLocationFromCoords(double lat, double long) async {
   }
 }
 
+/// Get the name of location the device is currently at.
 Future<String> getCurrentLocationName() async {
   Location location = new Location();
 
@@ -213,7 +210,7 @@ Future<String> getCurrentLocationName() async {
   return await getLocationFromCoords(lat, long);
 }
 
-// makes a post by post request
+/// Makes a post with the given text in the given group.
 Future makePost(String txt, String grp) async {
   //print('Making post \"$txt\" in \"$grp\"');
   Location location = new Location();
@@ -235,17 +232,8 @@ Future makePost(String txt, String grp) async {
     long = _locationData.longitude;
   }
 
-
-  //print('makePost() found lat and long to be $lat and $long');
-
-
-  lat = lat.roundToDouble();
-  long = long.roundToDouble();
-
   String locationName = await getLocationFromCoords(lat, long);
   print(locationName);
-
-
 
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
   var temp = getGlobalGroups();
@@ -263,7 +251,7 @@ Future makePost(String txt, String grp) async {
   //print(response.statusCode);
 }
 
-//returns all posts made by the Current user
+/// Get all the posts made by the current user.
 Future<List<Post>> getAllUserPosts() async {
   List data;
   List<Post> results = [];
@@ -300,6 +288,7 @@ Future<List<Post>> getAllUserPosts() async {
   return results;
 }
 
+/// Get all the comments on the post with the given ID.
 Future<List<Comment>> getCommentsOnPost(int postID) async {
   List<Comment> results = [];
 
@@ -329,7 +318,7 @@ Future<List<Comment>> getCommentsOnPost(int postID) async {
   return results;
 }
 
-// returns all the posts the current user is interested in
+/// returns all the posts the current user is interested in
 Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   var data;
   List<int> groups;

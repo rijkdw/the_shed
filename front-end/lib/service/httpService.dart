@@ -473,11 +473,10 @@ Future<int> joinGroup(String grp) async {
 
   if (groupIdResponse.statusCode != 200) return groupIdResponse.statusCode;
   var data = json.decode(groupIdResponse.body);
-  
   print('Data:  $data');
 
   int gid = data[0]['id'];
-  print('Group ID:  $gid');
+  print('Group ID to add:  $gid');
 
   var userResponse = await get(
     'https://theshedapi.herokuapp.com/api/v1/Users/?id=$userId',
@@ -510,6 +509,58 @@ Future<int> joinGroup(String grp) async {
   );
   globalGroupsID.add('https://theshedapi.herokuapp.com/api/v1/groups/$gid/');
   globalGroups.add(grp);
+  return response.statusCode;
+}
+
+Future<int> leaveGroup(String grp) async {
+  //url = na group
+  String pUrl = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
+
+  var groupIdResponse = await get(
+    'https://theshedapi.herokuapp.com/api/v1/groups/?name=$grp',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+  );
+  if (groupIdResponse.statusCode != 200) return groupIdResponse.statusCode;
+  var data = json.decode(groupIdResponse.body);   // json of all groups matching groupname=grp  
+  print('Data:  $data');
+
+  int gid = data[0]['id']; // group id to remove
+  print('Group ID to remove:  $gid');
+
+  var userResponse = await get(
+    'https://theshedapi.herokuapp.com/api/v1/Users/?id=$userId',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+  );
+
+  if (userResponse.statusCode != 200) return userResponse.statusCode;
+  data = json.decode(userResponse.body); // json of all users matching id=userId
+
+  List<dynamic> oldListOfIDs = data[0]['groups'];   // all groups user is member of
+  var newListOfIDs = oldListOfIDs;
+  bool removed = newListOfIDs.remove(gid);
+
+  print('New list of gids:  ${newListOfIDs.toString()}');
+
+  var response = await patch(
+    pUrl,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': "Token " + token
+    },
+    body: JsonEncoder().convert(
+      {
+        "groups": newListOfIDs
+      },
+    ),
+  );
+  globalGroupsID.remove('https://theshedapi.herokuapp.com/api/v1/groups/$gid/');
+  globalGroups.remove(grp);
   return response.statusCode;
 }
 

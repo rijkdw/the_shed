@@ -158,7 +158,7 @@ Future<List<Group>> getAllGroups() async {
         id: data[i]['id'] ?? 'DEF_ID',
         epochTime: convertTime(data[i]['date_created']) ?? 'DEF_TIME',
         name: data[i]['name'] ?? 'DEF_NAME',
-        tag: data[i]['tag'] ?? 'DEF_TAG',
+        tag: data[i]['tag'] ?? '(no tags)',
         description: data[i]['description'] ?? 'DEF_DESC',
         createdBy: data[i]['created_by'],
       ),
@@ -445,7 +445,7 @@ int convertTime(String time) {
 }
 
 
-Future makeGroup(String name, String desc, String tag) async {
+Future<int> makeGroup(String name, String desc, String tag) async {
   String url = "https://theshedapi.herokuapp.com/api/v1/groups/";
   var response = await post(
     url,
@@ -460,14 +460,9 @@ Future makeGroup(String name, String desc, String tag) async {
     }),
   );
 
-  if (response.statusCode == 200) return true;
-  else {
-    return false;
-  }
+  return response.statusCode;
 }
 
-//TODO: Still in production!
-//TODO: ready for test
 Future joinGroup(String grp) async {
   //url = na group
   String pUrl = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";

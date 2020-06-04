@@ -136,24 +136,6 @@ class _GroupCardState extends State<GroupCard> {
     print('Attempting to leave \"${widget.group.name}\".');
   }
 
-  void _performAppropriateSequence() {
-    if (_userOwnsThisGroup())
-      _deleteSequence();
-    else if (_userIsInThisGroup())
-      _leaveSequence();
-    else
-      _joinSequence();
-  }
-
-  String get _appropriateButtonText {
-    if (_userOwnsThisGroup())
-      return 'DELETE';
-    else if (_userIsInThisGroup())
-      return 'LEAVE';
-    else
-      return 'JOIN';
-  }
-
   bool _userOwnsThisGroup() {
     return widget.group.creatorID == http.userId;
   }
@@ -164,6 +146,24 @@ class _GroupCardState extends State<GroupCard> {
 
   @override
   Widget build(BuildContext context) {
+
+    void _performAppropriateSequence() {
+      if (_userOwnsThisGroup())
+        _deleteSequence();
+      else if (_userIsInThisGroup())
+        _leaveSequence();
+      else
+        _joinSequence();
+    }
+
+    String _appropriateButtonText() {
+      if (_userOwnsThisGroup())
+        return 'DELETE';
+      else if (_userIsInThisGroup())
+        return 'LEAVE';
+      else
+        return 'JOIN';
+    }
 
     var _titleStyle = TextStyle( color: Theme.of(context).accentColor, fontSize: 20 );
     var _subtitleStyle = TextStyle( color: Colors.white, fontSize: 18 );
@@ -262,7 +262,7 @@ class _GroupCardState extends State<GroupCard> {
                       },
                       color: Theme.of(context).accentColor,
                       child: Text(
-                        _appropriateButtonText,
+                        _appropriateButtonText(),
                         style: _buttonStyle
                       )
                     ),

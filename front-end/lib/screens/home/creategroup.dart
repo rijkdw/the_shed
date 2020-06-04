@@ -14,15 +14,41 @@ class GroupCreatorPage extends StatefulWidget {
 
 class _GroupCreatorPageState extends State<GroupCreatorPage> {
   
-  Future<String> _locationName = getCurrentLocationName();
-  TextEditingController textController = new TextEditingController();
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _descriptionController = new TextEditingController();
+  TextEditingController _tagController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final _style = TextStyle(fontSize: 20, color: Colors.black);
+
+    void _confirmSequence() async {
+      print('Confirm button pressed');
+      String name = _nameController.text.trim();
+      String desc = _descriptionController.text.trim();
+      String tag = _tagController.text.trim();
+      if (name.length > 0 && desc.length > 0 && tag.length > 0) {
+        int statusCode = await makeGroup(name, desc, tag);
+        print(statusCode);
+        if (statusCode == 201) {
+          FocusScope.of(context).unfocus(); // to remove the keyboard
+          Navigator.pop(context);
+          widget.refreshCallback();
+        } else {
+          showDialog(
+            context: context,
+            child: AlertDialog(
+              title: Text('Error:  $statusCode'),
+            ),
+          );
+        }
+      }
+    }
+
     final _labelStyle = TextStyle(color: Colors.white, fontSize: 18);
     final _inputTextStyle = TextStyle(color: Colors.black, fontSize: 20.0);
     final _inputHintStyle = TextStyle(color: Colors.grey, fontSize: 20.0);
+    final _metadataFieldStyle = TextStyle(color: Theme.of(context).accentColor, fontSize: 18, fontWeight: FontWeight.bold);
+    final _metadataValueStyle = TextStyle(color: Colors.white, fontSize: 18);
     return Consumer<User>(builder: (context, user, child) {
       return Scaffold(
         appBar: AppBar(
@@ -36,7 +62,30 @@ class _GroupCreatorPageState extends State<GroupCreatorPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // post body
+              // group name
+              Container(
+                padding: const EdgeInsets.fromLTRB(4, 0, 4, 2),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: TextField(
+                  maxLength: 30,
+                  maxLengthEnforced: true,
+                  // expands: true,
+                  minLines: 1,
+                  maxLines: 10,
+                  style: _inputTextStyle,
+                  controller: _nameController,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'Name',
+                    hintStyle: _inputHintStyle,
+                  ),
+                ),
+              ),
+              BigSpacer(),
+
+              // description
               Container(
                 padding: const EdgeInsets.fromLTRB(4, 0, 4, 2),
                 decoration: BoxDecoration(
@@ -50,12 +99,59 @@ class _GroupCreatorPageState extends State<GroupCreatorPage> {
                   minLines: 1,
                   maxLines: 10,
                   style: _inputTextStyle,
-                  controller: textController,
+                  controller: _descriptionController,
                   decoration: InputDecoration.collapsed(
-                    hintText: 'Group Name',
+                    hintText: 'Description',
                     hintStyle: _inputHintStyle,
                   ),
                 ),
+              ),
+              BigSpacer(),
+
+              // tag
+              Container(
+                padding: const EdgeInsets.fromLTRB(4, 0, 4, 2),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: TextField(
+                  maxLength: 30,
+                  maxLengthEnforced: true,
+                  // expands: true,
+                  minLines: 1,
+                  maxLines: 10,
+                  style: _inputTextStyle,
+                  controller: _tagController,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'Tag',
+                    hintStyle: _inputHintStyle,
+                  ),
+                ),
+              ),
+              BigSpacer(),
+
+              // metadata
+              Text(
+                'with metadata',
+                style: _labelStyle,
+              ),
+              SmallSpacer(),
+              Table(
+                columnWidths: {
+                  0: FractionColumnWidth(.35),
+                  // 1: FractionColumnWidth(.7),
+                },
+                children: [
+                  TableRow(children: [
+                    Text('USERNAME', style: _metadataFieldStyle),
+                    Text(user.getUsername(), style: _metadataValueStyle),
+                  ]),
+                  TableRow(children: [
+                    Text('TIME', style: _metadataFieldStyle),
+                    Text('${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}', style: _metadataValueStyle),
+                  ]),
+                ],
               ),
               BigSpacer(),
 
@@ -74,7 +170,7 @@ class _GroupCreatorPageState extends State<GroupCreatorPage> {
                     ),
                   ),
                   onPressed: () async {
-                    print('Confirm button pressed');
+                    _confirmSequence();
                   },
                 ),
               ),

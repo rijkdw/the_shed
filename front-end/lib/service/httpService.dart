@@ -163,7 +163,6 @@ Future<List<Group>> getAllGroups() async {
       ),
     );
   }
-  allPosts = results;
 
   return results;
 }

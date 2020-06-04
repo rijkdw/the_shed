@@ -125,11 +125,11 @@ Future loggedIn(String usr, String psw) async {
     userId = await userID(usr);
     //print(userId);
     makeUser();
-    return null;
-  } else {
-    //print(response.statusCode);
-    return null;
+    return true;
   }
+    //print(response.statusCode);
+  return false;
+
 }
 
 Future<void> makeUser() async {

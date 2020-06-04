@@ -18,7 +18,7 @@ class Home extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => User(
         picture: 'assets/user1.jpeg',
-        username: Hive.box('usr').get(0),
+        username: Hive.box('usr').get(0) ?? "none",
         password: this.psw
       ),
       child: MaterialApp(

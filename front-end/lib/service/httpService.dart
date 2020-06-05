@@ -88,6 +88,8 @@ Future userID(String user) async {
   if (response.statusCode == 200) {
     list = json.decode(response.body);
   }
+  if (list.length == 0) return null;
+  
   id = list[0]["id"];
   return id;
 }

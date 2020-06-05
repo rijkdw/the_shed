@@ -150,14 +150,16 @@ class ConversationList extends StatelessWidget {
         itemBuilder: (context, i) {
           if (i < otherUserToMessagesMap.keys.length) {
             int key = otherUserToMessagesMap.keys.toList()[i];
-            var messagesList = otherUserToMessagesMap[key];
+            List<Message> messagesList = otherUserToMessagesMap[key];
             return InkWell(
               // tapping opens the chat
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                    otherUserID: key,
-                  ),
+                  builder: (context) {
+                    return ChatScreen(
+                      otherUserID: key,
+                    );
+                  }
                 ));
               },
               // build the chat row

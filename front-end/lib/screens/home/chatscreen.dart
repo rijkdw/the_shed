@@ -21,10 +21,13 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _inputController = new TextEditingController();
   final ScrollController _scrollController = new ScrollController();
 
+  Future<String> _otherUserName;
+
   @override
   void initState() { 
     super.initState();
     this._otherUserID = widget.otherUserID;
+    this._otherUserName = httpService.getUsernameFromID(this._otherUserID);
   }
 
   @override
@@ -69,8 +72,23 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.otherUsername ?? 'Other user',
+        title: FutureBuilder<String> (
+          future: this._otherUserName,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return Text(
+                'Loading...',
+              );
+            }
+            if (snapshot.hasData) {
+              return Text(
+                snapshot.data,
+              );
+            }
+            return Text(
+              'Other user',
+            );
+          },
         ),
         backgroundColor: Colors.black,
       ),

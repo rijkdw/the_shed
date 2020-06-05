@@ -236,18 +236,19 @@ Future makePost(String txt, String grp) async {
   print(locationName);
 
   String url = "https://theshedapi.herokuapp.com/api/v1/posts/";
-  var temp = getGlobalGroups();
-  var temp2 = getGlobalGroupsID();
-  String group = temp2[temp.indexOf(grp)];
-  //print(group);
+  // var temp = getGlobalGroups();
+  // var temp2 = getGlobalGroupsID();
+  // String group = temp2[temp.indexOf(grp)];
+  // print(group);
+
+  String group = await getGroupUrl(grp);
 
   final response = await post(url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Token " + token
       },
-      body: JsonEncoder().convert(
-          {"text": txt, "latitude": lat, "longitude": long, "group": group}));
+      body: JsonEncoder().convert({"text": txt, "latitude": lat, "longitude": long, "group": group}));
   //print(response.statusCode);
 }
 
@@ -604,4 +605,20 @@ Future <int> deleteAccount() async{
   }, );
   print(resp.statusCode);
   return resp.statusCode;
+}
+
+Future<String> getGroupUrl(String grp) async{
+  String res = "";
+  String url = "https://theshedapi.herokuapp.com/api/v1/groups/?name=$grp";
+
+  var resp = await get(url, headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': "Token " + token
+  }, );
+
+  var data = json.decode(resp.body);
+  int id = data[0]["id"];
+  res = "https://theshedapi.herokuapp.com/api/v1/groups/$id/";
+
+  return res;
 }

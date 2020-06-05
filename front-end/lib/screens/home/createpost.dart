@@ -15,7 +15,6 @@ class PostCreatorPage extends StatefulWidget {
 class _PostCreatorPageState extends State<PostCreatorPage> {
   
   String _selectedGroup;
-  String get selectedGroup => _selectedGroup;
 
   Future<String> _locationName = getCurrentLocationName();
   TextEditingController textController = new TextEditingController();
@@ -80,7 +79,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                 ),
                 child: DropdownButton<String>(
                   isExpanded: true,
-                  value: selectedGroup,
+                  value: _selectedGroup,
                   icon: null,
                   elevation: 8,
                   isDense: true,
@@ -164,7 +163,7 @@ class _PostCreatorPageState extends State<PostCreatorPage> {
                     String txt = textController.text;
                     user.updatePosts();
                     if (txt.trimRight().trimLeft().length > 1) {
-                      makePost(txt, selectedGroup);
+                      makePost(txt, _selectedGroup);
                       Navigator.pop(context);
                       widget.refreshCallback();
                     }

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rw334/models/post.dart';
@@ -9,7 +7,6 @@ import 'package:rw334/screens/home/postpage.dart';
 import 'package:rw334/service/httpService.dart';
 import 'drawer.dart';
 import 'feed.dart';
-import 'package:image/image.dart' as imageUtils;
 
 class ProfilePage extends StatelessWidget {
 //http request-get
@@ -48,16 +45,17 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String _url = "https://www.tinygraphs.com/labs/isogrids/hexa16/$globalUsername?theme=$_theme&numcolors=4&size=220&fmt=jpeg";
-    print(_url);
-    _url = "https://webstockreview.net/images/clipart-face-silhouette-1.png";
+    // String _url = "https://www.tinygraphs.com/labs/isogrids/hexa16/$globalUsername?theme=$_theme&numcolors=4&size=220&fmt=jpeg";
+    // String _html = '<img src=\"$_url\">';
+    // print(_html);
+    String _url = "https://ui-avatars.com/api/?name=${globalUsername[0]}&background=0D8ABC&background=ff9900&bold=true&color=141414&font-size=0.6";
 
     return Consumer<User>(builder: (context, user, child) {
       return Column(
         children: <Widget>[
           Card(
             margin: EdgeInsets.only(left:6, top: 10, right: 6, bottom: 2),
-            color: Colors.black38,
+            color: Color.fromRGBO(20, 20, 20, 1.0),
             //shadowColor: Colors.green,
             child: Container(
               margin: EdgeInsets.all(10.0),
@@ -68,6 +66,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     child: Column(
                       children: <Widget>[
                         Container(
+                          // width: 300,
                           child: CircleAvatar(
                             radius: 30.0,
                             backgroundImage:

@@ -54,7 +54,7 @@ class User extends ChangeNotifier {
   }
 
   String getUsername() {
-    return this.username;
+    return this.username ?? " ";
   }
 
   String getPicture() {

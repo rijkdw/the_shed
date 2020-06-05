@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/authenticate/login.dart';
+import 'package:rw334/service/httpService.dart';
 import 'edit.dart';
 
 class SettingsDrawer extends StatelessWidget {
@@ -40,6 +41,7 @@ class SettingsDrawer extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       onTap: () {
@@ -54,16 +56,38 @@ class SettingsDrawer extends StatelessWidget {
                         "Logout",
                         style: TextStyle(
                           fontSize: 18,
+                          fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
                       onTap: () {
                         user.logout();
                         Hive.box('status').put(0, null);
+
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => LoginScreen()),
                             (Route<dynamic> route) => false);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.arrow_back),
+                      title: Text(
+                        "Delete Account",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onTap: () {
+                        user.logout();
+                        Hive.box('status').put(0, null);
+                        deleteAccount();
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                                (Route<dynamic> route) => false);
                       },
                     ),
                   ],

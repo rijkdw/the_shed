@@ -599,3 +599,14 @@ int getGid(String gUrl) {
   int res = int.parse(temp);
   return res;
 }
+
+Future <int> deleteAccount() async{
+  String url = "https://theshedapi.herokuapp.com/api/v1/Users/$userId/";
+
+  var resp = await delete(url, headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': "Token " + token
+  }, );
+  print(resp.statusCode);
+  return resp.statusCode;
+}

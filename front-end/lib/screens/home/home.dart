@@ -40,7 +40,7 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> {
-  int _page = 0;
+  int _page = 1;
   PageController _pageController = PageController();
   Color backColor = Color.fromRGBO(41, 41, 41, 1);
 
@@ -48,7 +48,7 @@ class _UserHomePageState extends State<UserHomePage> {
   void initState() {
     super.initState();
     _pageController = PageController(
-      initialPage: 0,
+      initialPage: 1,
       keepPage: true,
       viewportFraction: 1,
     );

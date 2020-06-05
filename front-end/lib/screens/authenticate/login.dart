@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/authenticate/signup.dart';
 import 'package:rw334/screens/home/home.dart';
 import 'package:rw334/service/httpService.dart';
@@ -183,16 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 FocusScope.of(context).unfocus(); // to remove the keyboard
 
-                // showDialog<void>(
-                //   context: context,
-                //   barrierDismissible: false,
-                //   builder: (BuildContext context) => Material(
-                //     type: MaterialType.transparency,
-                //     child: Center(
-                //       child: CircularProgressIndicator(),
-                //     )
-                //   )
-                // );
+
                 String username = usernameController.value.text;
                 String psw = passwordController.value.text;
 
@@ -207,13 +197,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     )
                 );
                 if (await loggedIn(username, psw)) {
-                  Hive.box('psw').put(0, psw);
-                  Hive.box('usr').put(0, username);
-                  Hive.box('status').put(0, true);
-                  print(Hive.box('usr').get(0));
-                  print(Hive.box('status').get(0));
-
-
+                  if (_rememberMe) {
+                    Hive.box('psw').put(0, psw);
+                    Hive.box('usr').put(0, username);
+                    Hive.box('status').put(0, true);
+                  }
+                  else {
+                    Hive.box('psw').put(0, null);
+                    Hive.box('usr').put(0, " ");
+                    Hive.box('status').put(0, false);
+                  }
                   //getAllPosts();
                   Navigator.pop(context);
                   Navigator.of(context).pushAndRemoveUntil(

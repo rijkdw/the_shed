@@ -28,9 +28,9 @@ class _RootPageState extends State<RootPage> {
 
     print(_state);
 
-    if (_state == null) {
-      Hive.box('status').put(0, false);
-    }
+    //if (_state == null) {
+     // Hive.box('status').put(0, false);
+    //}
 
 
     String _usr = userBox.get(0) as String;
@@ -38,11 +38,7 @@ class _RootPageState extends State<RootPage> {
 
     if (_state) {
       WidgetsFlutterBinding.ensureInitialized();
-      print("ariba");
-      print(_usr);
-
       loggedIn(_usr, _psw);
-      wait();
       return Home(psw:_psw);
     } else {
       //Hive.box('status').put(0, null);
@@ -51,7 +47,4 @@ class _RootPageState extends State<RootPage> {
 
 
   }
-}
-void wait () async {
-  await Future.delayed(const Duration(seconds: 6));
 }

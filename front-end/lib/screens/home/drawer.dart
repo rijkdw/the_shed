@@ -35,7 +35,7 @@ class SettingsDrawer extends StatelessWidget {
                 child: Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.person),
+                      leading: Icon(Icons.person, color: Theme.of(context).accentColor, ),
                       title: Text(
                         "Profile",
                         style: TextStyle(
@@ -51,7 +51,7 @@ class SettingsDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.arrow_back),
+                      leading: Icon(Icons.arrow_back, color: Theme.of(context).accentColor, ),
                       title: Text(
                         "Logout",
                         style: TextStyle(
@@ -71,7 +71,7 @@ class SettingsDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.arrow_back),
+                      leading: Icon( Icons.delete, color: Theme.of(context).accentColor, ),
                       title: Text(
                         "Delete Account",
                         style: TextStyle(

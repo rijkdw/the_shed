@@ -97,8 +97,7 @@ class _FeedPageState extends State<FeedPage> {
                             'Time',
                             'Location',
                             'User',
-                            'Category',
-                            'Likes'
+                            'Category'
                           ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -123,8 +122,7 @@ class _FeedPageState extends State<FeedPage> {
                           elevation: 8,
                           isDense: true,
                           style: _style,
-                          items: <String>['Asc', 'Desc']
-                              .map<DropdownMenuItem<String>>((String value) {
+                          items: <String>['Asc', 'Desc'].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),

@@ -384,23 +384,16 @@ Future<List<Post>> getUserFeed(String sortKey, String sortOrder) async {
   int sortOrderNegator = sortOrder == 'Asc' ? 1 : -1;
   switch (sortKey) {
     case 'Time':
-      results.sort(
-          (a, b) => -sortOrderNegator * a.epochTime.compareTo(b.epochTime));
+      results.sort((a, b) => -sortOrderNegator * a.epochTime.compareTo(b.epochTime));
       break;
     case 'Location':
-      results.sort((a, b) =>
-          sortOrderNegator * a.locationname.compareTo(b.locationname));
+      results.sort((a, b) => sortOrderNegator * a.locationname.toLowerCase().compareTo(b.locationname.toLowerCase()));
       break;
     case 'User':
-      results
-          .sort((a, b) => sortOrderNegator * a.username.compareTo(b.username));
+      results.sort((a, b) => sortOrderNegator * a.username.toLowerCase().compareTo(b.username.toLowerCase()));
       break;
     case 'Category':
-      results.sort((a, b) =>
-          sortOrderNegator *
-          a.categories.length.compareTo(b.categories.length));
-      break;
-    case 'Likes':
+      results.sort((a, b) => sortOrderNegator * a.tag.toLowerCase().compareTo(b.tag.toLowerCase()));
       break;
     default:
       break;

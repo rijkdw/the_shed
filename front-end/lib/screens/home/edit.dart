@@ -58,8 +58,7 @@ class EditBody extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Card(
-                margin: EdgeInsets.only(
-                    top: 8.0, bottom: 8.0, left: 10.0, right: 10.0),
+                margin: EdgeInsets.only( top: 8.0, bottom: 8.0, left: 10.0, right: 10.0 ),
                 color: Color.fromRGBO(41, 41, 41, 1),
                 child: Column(
                   children: <Widget>[
@@ -69,30 +68,37 @@ class EditBody extends StatelessWidget {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          enabledBorder: new OutlineInputBorder(
+                          focusedBorder: new OutlineInputBorder(
                             borderSide: new BorderSide(
                               color: Theme.of(context).accentColor,
                             ),
                           ),
-                          hintText: "New Username",
+                          hintText: "New username",
+                          hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.7)
+                          )
                         ),
                         controller: usernameController,
                       ),
                     ),
+                    SizedBox(
+                      height: 12,
+                    ),
                     Container(
-                      margin: EdgeInsets.only(top: 10.0),
                       child: TextField(
-                        obscureText: true,
                         cursorColor: Theme.of(context).accentColor,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          enabledBorder: new OutlineInputBorder(
+                          focusedBorder: new OutlineInputBorder(
                             borderSide: new BorderSide(
                               color: Theme.of(context).accentColor,
                             ),
                           ),
-                          labelText: 'Current Password',
+                          hintText: "Current password",
+                          hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.7)
+                          )
                         ),
                         controller: passwordController,
                       ),
@@ -103,7 +109,8 @@ class EditBody extends StatelessWidget {
               RaisedButton(
                 color: Theme.of(context).accentColor,
                 child: Text(
-                  "Save",
+                  "SAVE",
+                  style: TextStyle( fontSize: 16, fontWeight: FontWeight.bold ),
                 ),
                 onPressed: () async {
                   String username = usernameController.text;

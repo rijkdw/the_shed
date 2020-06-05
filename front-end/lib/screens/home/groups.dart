@@ -289,7 +289,7 @@ class _GroupCardState extends State<GroupCard> {
                     ),
                   ],
                 )
-              ],              
+              ],
             )
           ),
         ],

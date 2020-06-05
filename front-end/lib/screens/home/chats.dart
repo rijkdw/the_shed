@@ -1,6 +1,4 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:rw334/models/user.dart';
 import 'package:rw334/screens/home/chatscreen.dart';
 import 'package:rw334/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -208,12 +206,26 @@ class Conversation extends StatelessWidget {
           
           // avatar
           Container(
-            margin:  const EdgeInsets.only(right: 8),
+            margin:  const EdgeInsets.only(right: 10),
+            width: 38,
+            height: 36,
             color: debug ? Colors.blue : _chatColor,
-            child: Icon(
-              Icons.face,
-              color: Theme.of(context).accentColor,
-              size: 40,
+            child: FutureBuilder<String> (
+              future: httpService.getUsernameFromID(_getOtherID()),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  String imageURL = "https://ui-avatars.com/api/?name=${snapshot.data[0]}&background=0D8ABC&background=ff9900&bold=true&color=292929&font-size=0.6";
+                  return CircleAvatar(
+                    radius: 18,
+                    backgroundImage: NetworkImage(imageURL),
+                  );
+                }
+                return Icon(
+                  Icons.face,
+                  color: Theme.of(context).accentColor,
+                  size: 40,
+                );
+              },
             ),
           ),
 
@@ -244,6 +256,10 @@ class Conversation extends StatelessWidget {
                                 style: _senderStyle,
                               );
                             }
+                            return Text(
+                              'Error',
+                              style: _senderStyle,
+                            );
                           },
                         ),
                       ),

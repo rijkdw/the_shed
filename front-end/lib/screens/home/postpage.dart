@@ -304,22 +304,15 @@ class CommentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    String imageURL = "https://ui-avatars.com/api/?name=${comment.username[0]}&background=0D8ABC&background=ff9900&bold=true&color=292929&font-size=0.6";
+
     // text styles
-    TextStyle _styleHeaderEmphasis = TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
-    );
-    TextStyle _styleHeaderNormal = TextStyle(
-      color: Colors.white70,
-      fontSize: 14,
-    );
-    TextStyle _styleBody = TextStyle(
-      color: Colors.white,
-      fontSize: 18,
-    );
+    TextStyle _styleHeaderEmphasis = TextStyle( color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14, );
+    TextStyle _styleHeaderNormal = TextStyle( color: Colors.white70, fontSize: 14, );
+    TextStyle _styleBody = TextStyle( color: Colors.white, fontSize: 18, );
 
     return Container(
+
       // margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
       width: MediaQuery.of(context).size.width,
       
@@ -327,13 +320,16 @@ class CommentCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.fromLTRB(0, 7, 8, 0),
+            padding: const EdgeInsets.fromLTRB(2, 7, 10, 0),
             // color: Colors.red,
-            child: Icon(
-              Icons.face,
-              color: Theme.of(context).accentColor,
-              size: 48,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(imageURL),
             ),
+            // child: Icon(
+            //   Icons.face,
+            //   color: Theme.of(context).accentColor,
+            //   size: 48,
+            // ),
           ),
           Expanded(
             child: Container(
